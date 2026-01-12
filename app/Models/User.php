@@ -2,10 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Model
+class User extends Authenticatable
 {
+    use HasFactory, Notifiable;
+
+    public $timestamps = true;
+
     protected $fillable = [
         'name',
         'email',
@@ -19,38 +26,69 @@ class User extends Model
         'google_id'
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     * 
+     * @var list<string>
+     */
 
-    public function role(){
+    protected $hidden =
+    [
+        'password',
+        'remember_token'
+    ];
+
+    /**
+     * Get the arrtibutes that should be cast.
+     * 
+     * @return array<string, string>
+     */
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+
+    public function role()
+    {
         return $this->belongsTo(Role::class);
     }
 
-    public function reviews(){
+    public function reviews()
+    {
         return $this->hasMany(Review::class);
     }
 
-    public function orders() {
+    public function orders()
+    {
         return $this->hasMany(Order::class);
     }
 
-    public function shippingAddresses() {
+    public function shippingAddresses()
+    {
         return $this->hasMany(ShippingAddress::class);
     }
 
 
-
-    public function isPending() {
+    // kiểm tra trạng thái tài khoản
+    public function isPending()
+    {
         return $this->status === 'pending';
     }
 
-    public function isActive() {
+    public function isActive()
+    {
         return $this->status === 'active';
     }
 
-    public function isBanned() {
+    public function isBanned()
+    {
         return $this->status === 'banned';
     }
 
-    public function isDeleted() {
+    public function isDeleted()
+    {
         return $this->status === 'deleted';
     }
 }
