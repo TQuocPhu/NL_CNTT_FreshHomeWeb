@@ -28,10 +28,15 @@
     <div class="wrapper">
         @include('clients.partials.header')
 
+        @hasSection('breadcrumb')
+            @include('clients.partials.breadcrumb')
+        @endif
+
         <main>
             @yield('content')
         </main>
-
+        
+        @include('clients.partials.feature')
         @include('clients.partials.footer')
     </div>
 

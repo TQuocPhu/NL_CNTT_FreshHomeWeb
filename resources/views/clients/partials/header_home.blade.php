@@ -49,7 +49,7 @@
                         <div class="col">
                             <div class="site-logo-wrap">
                                 <div class="site-logo">
-                                    <a href="index.html"><img src="{{ asset('assets/clients/img/logo.png') }}" alt="Logo"></a>
+                                    <a href="index.html" class="ltn__secondary-color"><img src="{{ asset('assets/clients/img/favicon.png') }}" alt="Logo">FreshHome</a>
                                 </div>
                             </div>
                         </div>

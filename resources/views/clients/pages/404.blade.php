@@ -1,6 +1,7 @@
-@extends('layouts.client_home')
+@extends('layouts.client')
 
 @section('title', 'Not Found')
+@section('breadcrumb', 'Not Found')
 
 @section('content')
 

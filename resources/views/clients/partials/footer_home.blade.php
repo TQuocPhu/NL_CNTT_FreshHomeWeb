@@ -6,7 +6,8 @@
                             <div class="footer-widget footer-about-widget">
                                 <div class="footer-logo">
                                     <div class="site-logo">
-                                        <img src="img/logo-2.png" alt="Logo">
+                                        <img src="{{ asset('assets/clients/img/favicon.png') }}" alt="Logo">
+                                        <p class="ltn__secondary-color" style="font-size: 22px; margin-top: 29px;">FreshHome</p>
                                     </div>
                                 </div>
                                 <p>FreshHome - Điểm đến tin cậy cho thực phẩm sạch và hàng tiêu dùng chất lượng.

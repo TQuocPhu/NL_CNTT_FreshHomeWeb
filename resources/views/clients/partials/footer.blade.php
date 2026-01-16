@@ -1,12 +1,13 @@
-<footer class="ltn__footer-area  ">
-            <div class="footer-top-area  section-bg-2 plr--5">
+        <footer class="ltn__footer-area  ">
+            <div class="footer-top-area  section-bg-1 plr--5">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-xl-3 col-md-6 col-sm-6 col-12">
                             <div class="footer-widget footer-about-widget">
                                 <div class="footer-logo">
-                                    <div class="site-logo">
-                                        <img src="img/logo-2.png" alt="Logo">
+                                    <div class="site-logo flex align-items-center gap-2">
+                                        <img src="{{ asset('assets/clients/img/favicon.png') }}" alt="Logo">
+                                        <p class="ltn__secondary-color" style="font-size: 22px; margin-top: 29px;">FreshHome</p>
                                     </div>
                                 </div>
                                 <p>FreshHome - Điểm đến tin cậy cho thực phẩm sạch và hàng tiêu dùng chất lượng.
@@ -52,7 +53,7 @@
                         </div>
                         <div class="col-xl-2 col-md-6 col-sm-6 col-12">
                             <div class="footer-widget footer-menu-widget clearfix">
-                                <h4 class="footer-title">FreshHome</h4>
+                                <h4 class="footer-title">Công ty</h4>
                                 <div class="footer-menu">
                                     <ul>
                                         <li><a href="about.html">Câu chuyện thương hiệu</a></li>
@@ -65,7 +66,7 @@
                         </div>
                         <div class="col-xl-2 col-md-6 col-sm-6 col-12">
                             <div class="footer-widget footer-menu-widget clearfix">
-                                <h4 class="footer-title">Dịch vụ khách hàng</h4>
+                                <h4 class="footer-title">Dịch vụ</h4>
                                 <div class="footer-menu">
                                     <ul>
                                         <li><a href="order-tracking.html">Theo dõi đơn hàng</a></li>
@@ -80,7 +81,7 @@
                         </div>
                         <div class="col-xl-2 col-md-6 col-sm-6 col-12">
                             <div class="footer-widget footer-menu-widget clearfix">
-                                <h4 class="footer-title">Chính sách</h4>
+                                <h4 class="footer-title">Hỗ trợ khách hàng</h4>
                                 <div class="footer-menu">
                                     <ul>
                                         <li><a href="#">Bảo mật thông tin</a></li>
@@ -99,38 +100,13 @@
                                 <p>Nhận ngay thông tin ưu đãi và mẹo nội trợ hữu ích hàng tuần từ chúng tôi.
                                 </p>
                                 <div class="footer-newsletter">
-                                    <div id="mc_embed_signup">
-                                        <form
-                                            action="https://gmail.us5.list-manage.com/subscribe/post?u=dde0a42ff09e8d43cad40dc82&amp;id=72d274d15d"
-                                            method="post" id="mc-embedded-subscribe-form"
-                                            name="mc-embedded-subscribe-form" class="validate" target="_blank"
-                                            novalidate>
-                                            <div id="mc_embed_signup_scroll">
-                                                <div class="mc-field-group">
-                                                    <input type="email" value="" name="EMAIL" class="required email"
-                                                        id="mce-EMAIL" placeholder="Email*">
-                                                </div>
-                                                <div id="mce-responses" class="clear">
-                                                    <div class="response" id="mce-error-response" style="display:none">
-                                                    </div>
-                                                    <div class="response" id="mce-success-response"
-                                                        style="display:none"></div>
-                                                </div>
-                                                <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-                                                <div style="position: absolute; left: -5000px;" aria-hidden="true">
-                                                    <input type="text" name="b_dde0a42ff09e8d43cad40dc82_72d274d15d"
-                                                        tabindex="-1" value="">
-                                                </div>
-                                                <div class="clear">
-                                                    <div class="btn-wrapper">
-                                                        <button class="theme-btn-1 btn" type="submit" value="Subscribe"
-                                                            name="subscribe" id="mc-embedded-subscribe"><i
-                                                                class="fas fa-location-arrow"></i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
+                                    <form action="#">
+                                        <input type="email" name="email" placeholder="Email*">
+                                        <div class="btn-wrapper">
+                                            <button class="theme-btn-1 btn" type="submit"><i
+                                                    class="fas fa-location-arrow"></i></button>
+                                        </div>
+                                    </form>
                                 </div>
                                 <h5 class="mt-30">Chúng tôi chấp nhận</h5>
                                 <img src="{{ asset('assets/clients/img/icons/payment-4.png') }}" alt="Payment Image">
@@ -139,7 +115,7 @@
                     </div>
                 </div>
             </div>
-            <div class="ltn__copyright-area ltn__copyright-2 section-bg-2 ltn__border-top-2 plr--5">
+            <div class="ltn__copyright-area ltn__copyright-2 section-bg-2  ltn__border-top-2--- plr--5">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-6 col-12">

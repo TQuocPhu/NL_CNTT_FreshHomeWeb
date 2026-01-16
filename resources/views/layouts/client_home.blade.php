@@ -31,7 +31,8 @@
         <main>
             @yield('content')
         </main>
-
+        
+        @include('clients.partials.feature')
         @include('clients.partials.footer_home')
     </div>
 
