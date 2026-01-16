@@ -25,3 +25,5 @@ Route::get('/faq', function() {
 
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register_post');
+
+Route::get('/activate/{token}', [AuthController::class, 'activate'])->name('activate');
