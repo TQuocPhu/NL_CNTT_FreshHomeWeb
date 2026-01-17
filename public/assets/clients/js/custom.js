@@ -67,4 +67,34 @@ $(document).ready(function () {
             e.preventDefault();
         }
     });
+
+    //Validate reset password form
+    $('#reset-password-form').submit(function(e){
+        
+        let email = $('input[name="email"]').val();
+        let password = $('input[name="password"]').val();
+        let confirmPassword = $('input[name="password_confirmation"]').val();
+        
+
+        let errorMessage = "";
+
+        let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        
+        if(!emailRegex.test(email)) {
+            errorMessage += "Email không hợp lệ. <br>";
+        }
+
+        if(password.length < 6) {
+            errorMessage += "Mật khẩu phải có ít nhất 6 kí tự. <br>";
+        }
+
+        if(password != confirmPassword) {
+            errorMessage += "Mật khẩu xác nhận không khớp. <br>";
+        }
+
+        if(errorMessage != "") {
+            toastr.error(errorMessage, 'Lỗi đăng nhập');
+            e.preventDefault();
+        }
+    });
 })

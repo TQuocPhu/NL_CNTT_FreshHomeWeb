@@ -35,7 +35,7 @@
                                 <button class="theme-btn-1 btn btn-block" type="submit">Đăng nhập</button>
                             </div>
                             <div class="go-to-btn mt-20">
-                                <a href="#"><small>Quên mật khẩu?</small></a>
+                                <a href="{{ route('password.request') }}"><small>Quên mật khẩu?</small></a>
                             </div>
                         </form>
                         <div class="ltn__journey-history-img">
