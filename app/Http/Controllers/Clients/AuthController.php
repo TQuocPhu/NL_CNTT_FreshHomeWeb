@@ -69,7 +69,7 @@ class AuthController extends Controller
         Mail::to($user->email)->send(new ActivationMail($token, $user));
 
         toastr()->success("Đăng ký thành công! Vui lòng kiểm tra email để kích hoạt tài khoản.");
-        return redirect()->route('register');
+        return redirect()->route('login');
     }
 
 
@@ -82,10 +82,60 @@ class AuthController extends Controller
             $user->save();
 
             toastr()->success('Kích hoạt tài khoản thành công');
-            return redirect()->back();
+            return redirect()->route('login');
         }
 
         toastr()->error('Token không hợp lệ hoặc đã hết hạn.');
         return redirect()->back();
     }
+
+    public function showLoginForm() {
+        return view('clients.pages.login');
+    }
+
+    public function login(Request $request) {
+        $request->validate(
+            [
+                'email' => 'required|email',
+                'password' => 'required|min:6'
+            ],
+            [
+                'email.required' => 'Email không được để trống',
+                'email.email' => 'Email không đúng định dạng',
+                'password.required' => 'Mật khẩu không được để trống',
+                'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
+            ]
+        );
+
+        //check login information
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => 'active'])) {
+            if(in_array(Auth::user()->role->name, ['customer'])) {
+
+                $request->session()->regenerate();
+                toastr()->success('Đăng nhập thành công!');
+
+                return redirect()->route('home');
+            } else {
+                Auth::logout();
+                toastr()->warning('Bạn không có quyền truy cập vào tài khoản này!');
+                return redirect()->back();
+            }
+        }
+
+        toastr()->error('Thông tin đăng nhập không hợp lệ hoặc tài khoản chưa được kích hoạt.');
+        return redirect()->back();
+    }
+
+    public function logout(Request $request) {
+        
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        toastr()->success('Đăng xuất thành công!');
+
+        return redirect()->route('login');
+    }
 }
+
+

@@ -72,7 +72,7 @@
                                 <p>Bằng cách tạo tài khoản, bạn đồng ý với các:</p>
                                 <p><a href="#">ĐIỀU KHOẢN & ĐIỀU KIỆN &nbsp; &nbsp; | &nbsp; &nbsp; CHÍNH SÁCH BẢO MẬT</a></p>
                                 <div class="go-to-btn mt-50">
-                                    <a href="login.html">BẠN ĐÃ CÓ TÀI KHOẢN ?</a>
+                                    <a href="{{ route('login') }}">BẠN ĐÃ CÓ TÀI KHOẢN ?</a>
                                 </div>
                             </div>
                         </div>
