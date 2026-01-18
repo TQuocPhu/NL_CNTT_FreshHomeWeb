@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Clients\AuthController;
 use App\Http\Controllers\Clients\ForgotPasswordController;
+use App\Http\Controllers\Clients\LoginGoogleController;
 use App\Http\Controllers\Clients\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,10 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login_post');
+
+    // đăng nhập google
+    Route::get('auth/google', [LoginGoogleController::class, 'redirectToGoogle'])->name('auth.google');
+    Route::get('auth/google/callback', [LoginGoogleController::class, 'handleGoogleCallback']);
 
     Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('password.request');
     Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetPasswordLinkToEmail'])->name('password.email');

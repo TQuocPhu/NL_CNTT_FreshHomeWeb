@@ -91,4 +91,18 @@ class User extends Authenticatable
     {
         return $this->status === 'deleted';
     }
+
+
+    // public function getAvatarUrlAttribute()
+    // {
+    //     if (!$this->avatar) {
+    //         return asset('images/default-avatar.png'); 
+    //     }
+
+    //     if (Str::startsWith($this->avatar, ['http://', 'https://'])) {
+    //         return $this->avatar;
+    //     }
+
+    //     return asset('storage/' . $this->avatar); 
+    // }
 }

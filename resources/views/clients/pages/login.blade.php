@@ -34,6 +34,12 @@
                             <div class="btn-wrapper mt-0">
                                 <button class="theme-btn-1 btn btn-block" type="submit">Đăng nhập</button>
                             </div>
+                            <div class="btn-wrapper mt-0">
+                                <a href="{{ route('auth.google') }}">
+                                    <img
+                                        src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png">
+                                </a>
+                            </div>
                             <div class="go-to-btn mt-20">
                                 <a href="{{ route('password.request') }}"><small>Quên mật khẩu?</small></a>
                             </div>
