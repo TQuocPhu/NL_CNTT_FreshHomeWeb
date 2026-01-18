@@ -14,25 +14,32 @@ use function Flasher\Toastr\Prime\toastr;
 
 class LoginGoogleController extends Controller
 {
-    public function redirectToGoogle() {
+    public function redirectToGoogle()
+    {
         return Socialite::driver('google')->redirect();
     }
 
-    public function handleGoogleCallback() {
+    public function handleGoogleCallback()
+    {
         try {
             //lấy thông tin user từ google
-            $googleUser = Socialite::driver('google')->user();
+
+            /** @var \Laravel\Socialite\Two\AbstractProvider $driver */
+            $driver = Socialite::driver('google');
+
+            $googleUser = $driver->stateless()->user();
 
             //Tìm user trong database dựa trên google_id
             $user = User::where('google_id', $googleUser->getId())->first();
 
-            if($user) {
+            if ($user) {
                 Auth::login($user);
+                toastr()->success('Đăng nhập bằng google thành công');
                 return redirect()->route('home');
             } else {
                 $existingUser = User::where('email', $googleUser->getEmail())->first();
 
-                if($existingUser) {
+                if ($existingUser) {
                     $existingUser->update([
                         'google_id' => $googleUser->getId(),
                         'avatar' => $googleUser->getAvatar(),
@@ -56,7 +63,6 @@ class LoginGoogleController extends Controller
                 return redirect()->route('home');
             }
         } catch (\Exception $e) {
-            dd($e->getMessage());
             toastr()->error('Đăng nhập với google thất bại');
             return redirect()->route('login');
         }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Clients\AccountController;
 use App\Http\Controllers\Clients\AuthController;
 use App\Http\Controllers\Clients\ForgotPasswordController;
 use App\Http\Controllers\Clients\LoginGoogleController;
@@ -29,9 +30,12 @@ Route::get('/faq', function () {
 //guest 
 
 Route::middleware('guest')->group(function () {
+    
+    //Đăng ký
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register_post');
 
+    //Đăng nhập
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login_post');
 
@@ -39,21 +43,30 @@ Route::middleware('guest')->group(function () {
     Route::get('auth/google', [LoginGoogleController::class, 'redirectToGoogle'])->name('auth.google');
     Route::get('auth/google/callback', [LoginGoogleController::class, 'handleGoogleCallback']);
 
+    //Quên mật khẩu
     Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('password.request');
     Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetPasswordLinkToEmail'])->name('password.email');
 
+    //Đặt lại mật khẩu người dùng
     Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetPasswordForm'])->name('password.reset');
     Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword'])->name('password.update');
 
 });
 
-
+//Kích hoạt tài khoản
 Route::get('/activate/{token}', [AuthController::class, 'activate'])->name('activate');
 
 
-
+//Route khi đã đăng nhập
 Route::middleware(['auth.custom'])->group(function () {
-
+    //Đăng xuất
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
+    // Nhóm các routes liên quan tới chức năng của trang tài khoản
+    Route::prefix('account')->group(function () {
+
+        //Hiển thị trang tài khoản
+        Route::get('/', [AccountController::class, 'index'])->name('account');
+
+    });
 });
