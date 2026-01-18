@@ -45,5 +45,10 @@ Route::middleware('guest')->group(function () {
 
 Route::get('/activate/{token}', [AuthController::class, 'activate'])->name('activate');
 
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
+
+Route::middleware(['auth.custom'])->group(function () {
+
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+});
