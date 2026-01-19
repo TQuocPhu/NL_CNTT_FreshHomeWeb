@@ -175,7 +175,7 @@
                                             <div class="ltn__myaccount-tab-content-inner">
 
                                                 <div class="ltn__form-box">
-                                                    <form action="#" method="post" id="change-password-form">
+                                                    <form action="{{ route('account.change-password') }}" method="post" id="change-password-form">
                                                         @csrf
                                                         <fieldset>
                                                             <div class="row">

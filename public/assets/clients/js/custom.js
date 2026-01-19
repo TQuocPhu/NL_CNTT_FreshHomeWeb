@@ -166,6 +166,74 @@ $(document).ready(function () {
                 $('.btn-wrapper button').text('Cập nhật').attr('disabled', false);
             }
         });
-    })
+    });
+
+
+    // Validate form Đổi mật khẩu
+    $('#change-password-form').submit(function(e){
+        e.preventDefault();
+        let current_password = $('input[name="current_password"]').val().trim();
+        let new_password = $('input[name="new_password"]').val().trim();
+        let new_password_confirmation = $('input[name="new_password_confirmation"]').val().trim();
+        
+
+        let errorMessage = "";
+
+        if(current_password.length < 6) {
+            errorMessage += "Mật khẩu hiện tại phải có ít nhất 6 kí tự. <br>";
+        }
+
+
+        if(new_password.length < 6) {
+            errorMessage += "Mật khẩu mới phải có ít nhất 6 kí tự. <br>";
+        }
+
+        if(new_password != new_password_confirmation) {
+            errorMessage += "Mật khẩu mới xác nhận không khớp. <br>";
+        }
+
+        if(errorMessage != "") {
+            toastr.error(errorMessage, 'Lỗi đổi mật khẩu');
+            return;
+        }
+
+        let formData = $(this).serialize();
+        let urlUpdate = $(this).attr('action');
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+
+            }
+        });
+
+        $.ajax({
+            url: urlUpdate,
+            type: 'POST',
+            data: formData,
+            beforeSend: function() {
+                $('.btn-wrapper button').text('Đang cập nhật...').attr('disabled', true);
+            },
+            success: function(res) {
+                if(res.success) {
+                    toastr.success(res.message);
+                    $('#change-password-form')[0].reset();
+                    
+                } else {
+                    toastr.error(res.message);
+                }
+            },
+            error: function(xhr) {
+                let errors = xhr.responseJSON.errors
+                $.each(errors, function (key, value) {
+                    toastr.error(value[0])
+                });
+            },
+            complete: function() {
+                $('.btn-wrapper button').text('Cập nhật').attr('disabled', false);
+            }
+        });
+
+    });
 
 })

@@ -70,5 +70,8 @@ Route::middleware(['auth.custom'])->group(function () {
         
         //Cập nhật thông tin tài khoản
         Route::put('/update', [AccountController::class, 'updateProfileHandler'])->name('account.profile');
+
+        //Đổi mật khẩu
+        Route::post('/change-password', [AccountController::class, 'changePassword'])->name('account.change-password');
     });
 });

@@ -5,15 +5,18 @@ namespace App\Http\Controllers\Clients;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class AccountController extends Controller
 {
+    //Hiển thị trang tài khoản
     public function index() {
         $user = Auth::user();
         return view('clients.pages.account', compact('user'));
     }
 
+    //Chức năng cập nhật thông tin tài khoản
     public function updateProfileHandler(Request $request) {
         $request->validate(
             [
@@ -79,4 +82,39 @@ class AccountController extends Controller
         ]);
     }
 
+
+    // Chức năng đổi mật khẩu tài khoản
+    public function changePassword(Request $request) {
+        $request->validate(
+            [
+                'current_password' => 'required',
+                'new_password' => 'required|min:6',
+                'new_password_confirmation' => 'required|same:new_password'
+            ],
+            [
+                'current_password.required' => 'Bạn phải nhập mật khẩu hiện tại.',
+                'new_password.required' => 'Bạn phải nhập mật khẩu mới.',
+                'new_password.min' => 'Mật khẩu mới phải có ít nhất 6 ký tự.',
+                'new_password_confirmation.required' => 'Bạn phải nhập lại mật khẩu mới.',
+                'new_password_confirmation.same' => 'Mật khẩu nhập lại không khớp với mật khẩu mới.'
+            ]
+        );
+
+        $user = Auth::user();
+
+        //Kiểm tra mật khẩu hiện tại đúng không => không đúng hiện lỗi 422 / đúng thì cập nhật mật khẩu mới
+        if(!Hash::check($request->current_password, $user->password)){
+            return response()->json([
+                'errors' => ['current_password' => ['Mật khẩu hiện tại không đúng!']]
+            ], 422);
+        }
+
+        //cập nhật mật khẩu mới
+        $user->update(['password' => Hash::make($request->new_password)] );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Đổi mật khẩu thành công',
+        ]);
+    }
 }
