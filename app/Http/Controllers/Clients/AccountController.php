@@ -166,4 +166,17 @@ class AccountController extends Controller
         return back()->with('success', 'Địa chỉ đã được thêm!');
 
     }
+
+    //Hàm chọn địa chỉ là mặc định
+    public function chooseDefaultAddress($id) {
+        // Tìm address có id trên tham số
+        $address = ShippingAddress::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+
+        // Đặt các địa chỉ khác của user này về default = 0
+        ShippingAddress::where('user_id', Auth::id())->update(['default' => 0]);
+
+        $address->update(['default' => 1]);
+
+        return back()->with('success', 'Địa chỉ đã được đặt là mặc định.');
+    }
 }

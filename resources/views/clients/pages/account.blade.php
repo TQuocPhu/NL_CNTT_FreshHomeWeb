@@ -69,13 +69,24 @@
                                                                     <td>{{ $address->city }}</td>
                                                                     <td>{{ $address->phone }}</td>
                                                                     <td>
-                                                                        Chọn
+                                                                        @if($address->default)
+                                                                            <span class="badge bg-success">Mặc định</span>
+                                                                        @else
+                                                                            <form action="{{ route('account.addresses.update', $address->id) }}" method="post" class="d-inline">
+                                                                                @csrf
+                                                                                @method('PUT')
+                                                                                <button class="btn btn-sm btn-effect-1 btn-warning">Chọn</button>
+                                                                            </form>
+                                                                        @endif
                                                                     </td>
                                                                     <td>
-                                                                        <button type="submit" class="btn btn-sm btn-danger"
-                                                                            onclick="return confirm('Bạn có chắc chắn xóa địa chỉ này?')">
-                                                                            Xóa
-                                                                        </button>
+                                                                        <form action="{{ route('account.addresses.delete', $address->id) }}"
+                                                                            method="POST" class="d-inline">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa địa chỉ này không ?')">Xóa</button>
+                                                                        </form>
                                                                     </td>
                                                                 </tr>
                                                             @endforeach
