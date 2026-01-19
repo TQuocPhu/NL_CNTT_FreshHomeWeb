@@ -175,6 +175,7 @@ class AccountController extends Controller
         // Đặt các địa chỉ khác của user này về default = 0
         ShippingAddress::where('user_id', Auth::id())->update(['default' => 0]);
 
+        //cập nhật cột default => 1 (mặc định: true)
         $address->update(['default' => 1]);
 
         return back()->with('success', 'Địa chỉ đã được đặt là mặc định.');
@@ -182,8 +183,10 @@ class AccountController extends Controller
 
     // Xóa địa chỉ
     public function removeAddress($id) {
+        //Tìm địa chỉ có id trên tham số
         $address = ShippingAddress::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
 
+        //Nếu không tìm thấy địa chỉ này trong csdl thì báo lỗi
         if(!$address) {
             return back()->with('error', 'Địa chỉ không tồn tại.');
         }
@@ -193,6 +196,7 @@ class AccountController extends Controller
             return back()->with('error', 'Không thể xóa địa chỉ mặc định.');
         }
 
+        //Xóa bảng ghi trong cơ sở dữ liệu
         $address->delete();
         return back()->with('success', 'Xóa địa chỉ thành công.');
     }
