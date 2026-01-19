@@ -15,3 +15,55 @@
     -ms-border-radius: 50%;
     -o-border-radius: 50%;
 }
+
+/* Button đăng nhập bằng google */
+.btn-google-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    color: #757575;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    padding: 10px 15px;
+    text-decoration: none;
+    transition:
+        background-color 0.2s,
+        box-shadow 0.2s;
+    -webkit-transition:
+        background-color 0.2s,
+        box-shadow 0.2s;
+    -moz-transition:
+        background-color 0.2s,
+        box-shadow 0.2s;
+    -ms-transition:
+        background-color 0.2s,
+        box-shadow 0.2s;
+    -o-transition:
+        background-color 0.2s,
+        box-shadow 0.2s;
+    font-weight: 500;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn-google-login:hover {
+    background-color: #f8f9fa;
+    color: #333;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+}
+
+.btn-google-login img {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+}
+
+.btn-wrapper + .btn-wrapper {
+    margin-top: 15px !important;
+}

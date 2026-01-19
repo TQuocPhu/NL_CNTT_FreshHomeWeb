@@ -34,10 +34,12 @@
                             <div class="btn-wrapper mt-0">
                                 <button class="theme-btn-1 btn btn-block" type="submit">Đăng nhập</button>
                             </div>
-                            <div class="btn-wrapper mt-0">
-                                <a href="{{ route('auth.google') }}">
-                                    <img
-                                        src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png">
+                            
+                            <div class="btn-wrapper mt-2">
+                                <a href="{{ route('auth.google') }}" class="btn-google-login">
+                                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                                        alt="Google Icon" style="width: 30px; height: 30px;">
+                                    <span>Tiếp tục với Google</span>
                                 </a>
                             </div>
                             <div class="go-to-btn mt-20">
