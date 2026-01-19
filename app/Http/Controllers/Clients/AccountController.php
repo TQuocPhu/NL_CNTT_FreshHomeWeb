@@ -179,4 +179,21 @@ class AccountController extends Controller
 
         return back()->with('success', 'Địa chỉ đã được đặt là mặc định.');
     }
+
+    // Xóa địa chỉ
+    public function removeAddress($id) {
+        $address = ShippingAddress::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+
+        if(!$address) {
+            return back()->with('error', 'Địa chỉ không tồn tại.');
+        }
+
+        //Nếu là địa chỉ mặc định thì không cho xóa
+        if($address->default) {
+            return back()->with('error', 'Không thể xóa địa chỉ mặc định.');
+        }
+
+        $address->delete();
+        return back()->with('success', 'Xóa địa chỉ thành công.');
+    }
 }

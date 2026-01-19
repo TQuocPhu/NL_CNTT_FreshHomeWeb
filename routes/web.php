@@ -76,5 +76,11 @@ Route::middleware(['auth.custom'])->group(function () {
 
         //Thêm địa chỉ mới
         Route::post('/addresses', [AccountController::class, 'addAddress'])->name('account.addresses.add');
+        
+        //Chọn địa chỉ mặc định
+        Route::put('/addresses/{id}', [AccountController::class, 'chooseDefaultAddress'])->name('account.addresses.update');
+
+        //Xóa địa chỉ
+        Route::delete('/addresses/{id}', [AccountController::class, 'removeAddress'])->name('account.addresses.delete');
     });
 });
