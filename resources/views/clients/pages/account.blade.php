@@ -48,7 +48,8 @@
                                         </div>
                                         <div class="tab-pane fade" id="liton_tab_address">
                                             <div class="ltn__myaccount-tab-content-inner">
-                                                <div class="table-responsive">
+                                                <p>Các địa chỉ sau sẽ được sử dụng mặc định trên trang thanh toán.</p>
+                                                <div class="table-responsive" style="overflow-x: auto; overflow-y: scroll; max-height: 400px;">
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
@@ -77,10 +78,55 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                <button class="btn theme-btn-1 btn-effect-1 text-uppercase mt-3">Thêm địa
+                                                <button class="btn theme-btn-1 btn-effect-1 text-uppercase mt-3" data-bs-toggle="modal" data-bs-target="#addAddressModal">Thêm địa
                                                     chỉ mới</button>
                                             </div>
                                         </div>
+
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content" style="padding: 10px;">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="addAddressModalLabel">Thêm địa chỉ mới</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="#" method="post" id="addAddressForm">
+                                                            @csrf
+                                                            <div class="mb-3">
+                                                                <label for="full_name" class="form-label">Tên người nhận</label>
+                                                                <input type="text" class="form-control" name="full_name" id="full_name" required>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label for="phone" class="form-label">Số điện thoại</label>
+                                                                <input type="text" class="form-control" name="phone" id="phone" required>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label for="address" class="form-label">Địa chỉ</label>
+                                                                <input type="text" class="form-control" name="address" id="address" required>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label for="city" class="form-label">Thành phố</label>
+                                                                <input type="text" class="form-control" name="city" id="city" required>
+                                                            </div>
+
+                                                            <div class="mb-3 form-check">
+                                                                <input type="checkbox" class="form-check-input" name="default" id="default">
+                                                                <label for="default" class="form-label">Đặt là địa chỉ mặc định</label>
+                                                            </div>
+                                                            <button type="submit" class="btn theme-btn-1 btn-effect-1 text-uppercase mt-3">Lưu địa chỉ</button>
+                                                        </form>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="tab-pane fade" id="liton_tab_order">
                                             <div class="ltn__myaccount-tab-content-inner">
                                                 <div class="table-responsive">
@@ -125,7 +171,7 @@
                                                                 <div class="profile-pic-container">
                                                                     <img src="{{ $user->avatar_url }}" alt="Avatar"
                                                                         id="preview-image" class="profile-pic" referrerpolicy="no-referrer">
-                                                                        
+
                                                                     <input type="file" name="avatar" id="avatar"
                                                                         accept="image/*" class="d-none" {{ $user->google_id ? 'disabled' : '' }}>
 

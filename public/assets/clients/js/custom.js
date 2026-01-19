@@ -236,4 +236,52 @@ $(document).ready(function () {
 
     });
 
+
+    //Validate Thêm địa chỉ
+    $('#addAddressForm').submit(function(e) {
+        e.preventDefault();
+
+        let isValid = true;
+
+        //xóa thông báo cũ
+        $('.error-message').remove();
+
+        let full_name = $('#full_name').val().trim();
+        let phone = $('#phone').val().trim();
+        let address = $('#address').val().trim();
+        let city = $('#city').val().trim();
+
+        if(full_name.length < 3) {
+            isValid = false;
+            $('#full_name').after(
+                '<p class="error-message text-danger">Họ và tên không nhỏ hơn 3 kí tự.</p>'
+            )
+        }
+
+        if(address.length < 2) {
+            isValid = false;
+            $('#address').after(
+                '<p class="error-message text-danger">Địa chỉ quá ngắn.</p>'
+            )
+        }
+
+        if(city.length < 2) {
+            isValid = false;
+            $('#city').after(
+                '<p class="error-message text-danger">Tên thành phố quá ngắn.</p>'
+            )
+        }
+
+        let phoneRegex = /^[0-9]{10,11}$/;
+        if(!phoneRegex.test(phone)) {
+            isValid = false;
+            $('#phone').after(
+                '<p class="error-message text-danger">Số điện thoại không hợp lệ.</p>'
+            )
+        }
+
+        if(isValid) {
+            $('#addAddressForm')[0].submit();
+        }
+    });
 })
