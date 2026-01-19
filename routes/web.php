@@ -67,6 +67,8 @@ Route::middleware(['auth.custom'])->group(function () {
 
         //Hiển thị trang tài khoản
         Route::get('/', [AccountController::class, 'index'])->name('account');
-
+        
+        //Cập nhật thông tin tài khoản
+        Route::put('/update', [AccountController::class, 'updateProfileHandler'])->name('account.profile');
     });
 });

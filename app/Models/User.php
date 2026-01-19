@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -93,16 +94,16 @@ class User extends Authenticatable
     }
 
 
-    // public function getAvatarUrlAttribute()
-    // {
-    //     if (!$this->avatar) {
-    //         return asset('images/default-avatar.png'); 
-    //     }
+    public function getAvatarUrlAttribute()
+    {
+        if (!$this->avatar) {
+            return asset('images/default-avatar.png');
+        }
 
-    //     if (Str::startsWith($this->avatar, ['http://', 'https://'])) {
-    //         return $this->avatar;
-    //     }
+        if (Str::startsWith($this->avatar, ['http://', 'https://'])) {
+            return $this->avatar;
+        }
 
-    //     return asset('storage/' . $this->avatar); 
-    // }
+        return asset('storage/' . $this->avatar);
+    }
 }

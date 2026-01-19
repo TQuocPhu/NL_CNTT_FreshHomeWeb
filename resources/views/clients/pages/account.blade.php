@@ -114,7 +114,7 @@
                                         <div class="tab-pane fade" id="liton_tab_account">
                                             <div class="ltn__myaccount-tab-content-inner">
                                                 <div class="ltn__form-box">
-                                                    <form action="#" method="post" id="update-account"
+                                                    <form action="{{ route('account.profile') }}" method="post" id="update-account"
                                                         enctype="multipart/form-data">
                                                         @csrf
                                                         @method('PUT')
@@ -123,8 +123,9 @@
 
                                                             <div class="col-md-12 text-center mb-3">
                                                                 <div class="profile-pic-container">
-                                                                    <img src="{{ $user->avatar }}" alt="Avatar"
-                                                                        id="preview-image" class="profile-pic">
+                                                                    <img src="{{ $user->avatar_url }}" alt="Avatar"
+                                                                        id="preview-image" class="profile-pic" referrerpolicy="no-referrer">
+                                                                        
                                                                     <input type="file" name="avatar" id="avatar"
                                                                         accept="image/*" class="d-none" {{ $user->google_id ? 'disabled' : '' }}>
 
