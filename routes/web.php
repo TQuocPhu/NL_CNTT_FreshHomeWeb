@@ -73,5 +73,8 @@ Route::middleware(['auth.custom'])->group(function () {
 
         //Đổi mật khẩu
         Route::post('/change-password', [AccountController::class, 'changePassword'])->name('account.change-password');
+
+        //Thêm địa chỉ mới
+        Route::post('/addresses', [AccountController::class, 'addAddress'])->name('account.addresses.add');
     });
 });

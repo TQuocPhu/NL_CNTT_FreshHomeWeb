@@ -62,19 +62,23 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>Jun 22, 2019</td>
-                                                                <td>Pending</td>
-                                                                <td>$3000</td>
-                                                                <td>$3000</td>
-                                                                <td>
-                                                                    <button type="submit" class="btn btn-sm btn-danger"
-                                                                        onclick="return confirm('Bạn có chắc chắn xóa địa chỉ này?')">
-                                                                        Xóa
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
+                                                            @foreach ($addresses as $address)
+                                                                <tr>
+                                                                    <td>{{ $address->full_name }}</td>
+                                                                    <td>{{ $address->address }}</td>
+                                                                    <td>{{ $address->city }}</td>
+                                                                    <td>{{ $address->phone }}</td>
+                                                                    <td>
+                                                                        Chọn
+                                                                    </td>
+                                                                    <td>
+                                                                        <button type="submit" class="btn btn-sm btn-danger"
+                                                                            onclick="return confirm('Bạn có chắc chắn xóa địa chỉ này?')">
+                                                                            Xóa
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -93,7 +97,7 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form action="#" method="post" id="addAddressForm">
+                                                        <form action="{{ route('account.addresses.add') }}" method="post" id="addAddressForm">
                                                             @csrf
                                                             <div class="mb-3">
                                                                 <label for="full_name" class="form-label">Tên người nhận</label>
@@ -138,7 +142,7 @@
                                                                 <th>Tổng tiền hàng</th>
                                                                 <th>Tổng tiền trả</th>
                                                                 <th>Trạng thái đơn hàng</th>
-                                                                <th>Phương thức thanh toán</th>
+                                                                <th>Thanh toán</th>
                                                                 <th>Hành động</th>
                                                             </tr>
                                                         </thead>

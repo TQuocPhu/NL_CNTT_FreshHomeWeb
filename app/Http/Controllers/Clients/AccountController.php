@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Clients;
 
 use App\Http\Controllers\Controller;
+use App\Models\ShippingAddress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +14,8 @@ class AccountController extends Controller
     //Hiển thị trang tài khoản
     public function index() {
         $user = Auth::user();
-        return view('clients.pages.account', compact('user'));
+        $addresses = ShippingAddress::where('user_id', $user->id)->get();
+        return view('clients.pages.account', compact('user', 'addresses'));
     }
 
     //Chức năng cập nhật thông tin tài khoản
@@ -116,5 +118,52 @@ class AccountController extends Controller
             'success' => true,
             'message' => 'Đổi mật khẩu thành công',
         ]);
+    }
+
+    public function addAddress(Request $request) {
+        $request->validate(
+            [
+                'full_name' => 'required|string|max:255',
+                'phone' => 'required|string|max:20',
+                'address' => 'required|string|max:255',
+                'city' => 'required|string|max:100',
+            ],
+            [
+                'full_name.required' => 'Vui lòng nhập họ và tên.',
+                'full_name.string'   => 'Họ và tên phải là chuỗi ký tự.',
+                'full_name.max'      => 'Họ và tên không được vượt quá 255 ký tự.',
+
+                'phone.required' => 'Vui lòng nhập số điện thoại.',
+                'phone.string'   => 'Số điện thoại phải là chuỗi ký tự.',
+                'phone.max'      => 'Số điện thoại không được vượt quá 20 ký tự.',
+
+                'address.required' => 'Vui lòng nhập địa chỉ.',
+                'address.string'   => 'Địa chỉ phải là chuỗi ký tự.',
+                'address.max'      => 'Địa chỉ không được vượt quá 255 ký tự.',
+
+                'city.required' => 'Vui lòng nhập tên thành phố.',
+                'city.string'   => 'Tên thành phố phải là chuỗi ký tự.',
+                'city.max'      => 'Tên thành phố không được vượt quá 100 ký tự.',
+            ]
+        );
+
+        //Nếu db có địa chỉ của user_id đó thì thêm một địa chỉ mới (có đánh dấu mặc định) 
+        // => các địa chỉ khác của user đó sẽ trở thành địa chỉ không phải mặc đinh
+        if($request->has('default')) {
+            ShippingAddress::where('user_id', Auth::id())->update(['default' => 0]);
+        }
+
+        // tạo bảng ghi mới trong db
+        ShippingAddress::create([
+            'user_id' => Auth::id(),
+            'full_name' => $request->full_name,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'city' => $request->city,
+            'default' => $request->has('default') ? 1 : 0,
+        ]);
+
+        return back()->with('success', 'Địa chỉ đã được thêm!');
+
     }
 }
