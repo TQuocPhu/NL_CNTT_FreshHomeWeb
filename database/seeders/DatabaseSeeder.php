@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             AdminStaffTableSeeder::class,
             UsersTableSeeder::class,
             CouponsTableSeeder::class,
+            CategoryTableSeeder::class,
         ]);
     }
 }
