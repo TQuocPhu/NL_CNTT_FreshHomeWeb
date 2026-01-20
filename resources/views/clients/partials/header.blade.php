@@ -6,7 +6,7 @@
                         <div class="col-md-7">
                             <div class="ltn__top-bar-menu">
                                 <ul>
-                                    <li><a href="#"><i class="icon-placeholder"></i> Tra Vinh, Vinh Long </a></li>
+                                    <li><a href="javascript:void(0)"><i class="icon-placeholder"></i> Tra Vinh, Vinh Long </a></li>
                                     <li><a href="mailto:tranquocphutv2019@gmail.com?Subject=Contact%20with%20to%20you"><i
                                                 class="icon-mail"></i> tranquocphutv2019@gmail.com</a></li>
                                 </ul>
@@ -70,7 +70,7 @@
                                             <li class="menu-icon"><a href="shop.html">Cửa hàng</a>
                                             </li>
                                             <li><a href="contact.html">Liên hệ</a></li>
-                                            <li class="special-link"><a href="contact.html">GET A QUOTE</a></li>
+                                            <li class="special-link"><a href="contact.html">Yêu cầu báo giá</a></li>
                                         </ul>
                                     </div>
                                 </nav>
@@ -87,7 +87,7 @@
                                 </div>
                                 <div class="header-search-1-form">
                                     <form id="#" method="get" action="#">
-                                        <input type="text" name="search" value="" placeholder="Search here..." />
+                                        <input type="text" name="search" value="" placeholder="Tìm kiếm..." />
                                         <button type="submit">
                                             <span><i class="icon-search"></i></span>
                                         </button>

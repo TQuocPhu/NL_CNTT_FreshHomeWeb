@@ -84,10 +84,10 @@
                                 <h4 class="footer-title">Chính sách</h4>
                                 <div class="footer-menu">
                                     <ul>
-                                        <li><a href="javascript(0)">Bảo mật thông tin</a></li>
-                                        <li><a href="javascript(0)">Chính sách đổi trả</a></li>
-                                        <li><a href="javascript(0)">Hình thức thanh toán</a></li>
-                                        <li><a href="javascript(0)">Hợp tác cung ứng</a></li>
+                                        <li><a href="javascript:void(0)">Bảo mật thông tin</a></li>
+                                        <li><a href="javascript:void(0)">Chính sách đổi trả</a></li>
+                                        <li><a href="javascript:void(0)">Hình thức thanh toán</a></li>
+                                        <li><a href="javascript:void(0)">Hợp tác cung ứng</a></li>
                                         <li><a href="{{ route('faq') }}">Trợ giúp</a></li>
                                         <li><a href="contact.html">Góp ý ý kiến</a></li>
                                     </ul>

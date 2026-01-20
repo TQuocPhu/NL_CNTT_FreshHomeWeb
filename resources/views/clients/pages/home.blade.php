@@ -26,7 +26,7 @@
                                         <h6 class="slide-sub-title animated "><img
                                                 src="{{ asset('assets/clients/img/icons/icon-img/1.png') }}" alt="#"> 100%
                                             Sản phẩm chính hãng & Tự nhiên</h6>
-                                        <h1 class="slide-title animated">Thực phẩm thiết yếu <br> Cho mọi gia đình</h1>
+                                        <h1 class="slide-title animated">Thực phẩm <br> thiết yếu <br> Cho mọi gia đình</h1>
                                         <div class="slide-brief animated">
                                             <p>FreshHome cung cấp các loại nông sản, thực phẩm sạch và hàng tiêu dùng chọn
                                                 lọc,
