@@ -32,4 +32,10 @@ class DatabaseSeeder extends Seeder
             CategoryTableSeeder::class,
         ]);
     }
+
+    /**
+     *
+     * run cdn:
+     * php artisan db:seed
+     */
 }
