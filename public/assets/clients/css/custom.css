@@ -67,3 +67,20 @@
 .btn-wrapper + .btn-wrapper {
     margin-top: 15px !important;
 }
+
+
+/* HomePage */
+.category-img-fixed {
+    width: 100%;
+    height: 99px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.category-img-fixed img {
+    width: 103px;
+    height: 99px;
+    object-fit: contain;    /* giữ nguyên hình, không méo */
+}

@@ -19,6 +19,9 @@ class Product extends Model
         'unit'
     ];
 
+    //Thêm trường ảo để lấy dữ liệu hiển thị 
+    protected $append = ['image_url', 'formatted_price'];
+
     public function category(){
         return $this->belongsTo(Category::class);
     }
@@ -37,5 +40,24 @@ class Product extends Model
 
     public function orderItems() {
         return $this->hasMany(OrderItem::class);
+    }
+
+    
+    //Lấy 1 ảnh đầu tiên của sản phẩm
+    public function firstImage() {
+        return $this->hasOne(ProductImage::class)->orderBy('id');
+    }
+
+    // lấy image_url
+    public function getImageUrlAttribute() {
+        return $this->firstImage?->image 
+            ? asset('storage/' . $this->firstImage->image)
+            : asset('storage/uploads/products/default-product-img.png');
+    }
+
+    // Format tiền
+    public function getFormattedPriceAttribute()
+    {
+        return number_format($this->price, 0, ',', '.') . ' ' . 'đ';
     }
 }
