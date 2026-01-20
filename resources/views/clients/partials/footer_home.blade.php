@@ -56,9 +56,9 @@
                                 <h4 class="footer-title">FreshHome</h4>
                                 <div class="footer-menu">
                                     <ul>
-                                        <li><a href="about.html">Câu chuyện thương hiệu</a></li>
+                                        <li><a href="{{ route('about') }}">Câu chuyện thương hiệu</a></li>
                                         <li><a href="shop.html">Sản phẩm</a></li>
-                                        <li><a href="faq.html">Câu hỏi thường gặp</a></li>
+                                        <li><a href="{{ route('faq') }}">Câu hỏi thường gặp</a></li>
                                         <li><a href="contact.html">Liên hệ</a></li>
                                     </ul>
                                 </div>
@@ -69,12 +69,12 @@
                                 <h4 class="footer-title">Dịch vụ khách hàng</h4>
                                 <div class="footer-menu">
                                     <ul>
-                                        <li><a href="order-tracking.html">Theo dõi đơn hàng</a></li>
+                                        <li><a href="#">Theo dõi đơn hàng</a></li>
                                         <li><a href="wishlist.html">Danh sách yêu thích</a></li>
-                                        <li><a href="login.html">Đăng nhập / Đăng ký</a></li>
-                                        <li><a href="account.html">Tài khoản</a></li>
-                                        <li><a href="about.html">Điều khoản & Điều kiện</a></li>
-                                        <li><a href="about.html">Khuyến mãi</a></li>
+                                        <li><a href="{{ route('login') }}">Đăng nhập / Đăng ký</a></li>
+                                        <li><a href="{{ route('account') }}">Tài khoản</a></li>
+                                        <li><a href="{{ route('about') }}">Điều khoản & Điều kiện</a></li>
+                                        <li><a href="{{ route('about') }}">Khuyến mãi</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -84,11 +84,11 @@
                                 <h4 class="footer-title">Chính sách</h4>
                                 <div class="footer-menu">
                                     <ul>
-                                        <li><a href="#">Bảo mật thông tin</a></li>
-                                        <li><a href="#">Chính sách đổi trả</a></li>
-                                        <li><a href="#">Hình thức thanh toán</a></li>
-                                        <li><a href="#">Hợp tác cung ứng</a></li>
-                                        <li><a href="faq.html">Trợ giúp</a></li>
+                                        <li><a href="javascript(0)">Bảo mật thông tin</a></li>
+                                        <li><a href="javascript(0)">Chính sách đổi trả</a></li>
+                                        <li><a href="javascript(0)">Hình thức thanh toán</a></li>
+                                        <li><a href="javascript(0)">Hợp tác cung ứng</a></li>
+                                        <li><a href="{{ route('faq') }}">Trợ giúp</a></li>
                                         <li><a href="contact.html">Góp ý ý kiến</a></li>
                                     </ul>
                                 </div>

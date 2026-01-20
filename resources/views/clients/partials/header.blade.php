@@ -6,7 +6,7 @@
                         <div class="col-md-7">
                             <div class="ltn__top-bar-menu">
                                 <ul>
-                                    <li><a href="locations.html"><i class="icon-placeholder"></i> Tra Vinh, Vinh Long </a></li>
+                                    <li><a href="#"><i class="icon-placeholder"></i> Tra Vinh, Vinh Long </a></li>
                                     <li><a href="mailto:tranquocphutv2019@gmail.com?Subject=Contact%20with%20to%20you"><i
                                                 class="icon-mail"></i> tranquocphutv2019@gmail.com</a></li>
                                 </ul>
@@ -49,7 +49,7 @@
                         <div class="col">
                             <div class="site-logo-wrap">
                                 <div class="site-logo">
-                                    <a href="index.html"  class="ltn__secondary-color"><img src="{{ asset('assets/clients/img/favicon.png') }}" alt="Logo"> FreshHome</a>
+                                    <a href="{{ route('home') }}"  class="ltn__secondary-color"><img src="{{ asset('assets/clients/img/favicon.png') }}" alt="Logo"> FreshHome</a>
                                 </div>
                             </div>
                         </div>
@@ -58,13 +58,13 @@
                                 <nav>
                                     <div class="ltn__main-menu">
                                         <ul>
-                                            <li class="menu-icon"><a href="index.html">Trang chủ</a> </li>
+                                            <li class="menu-icon"><a href="{{ route('home') }}">Trang chủ</a> </li>
                                             <li class="menu-icon"><a href="#">Về chúng tôi</a>
                                                 <ul>
-                                                    <li><a href="about.html">Về chúng tôi</a></li>
-                                                    <li><a href="service.html">Dịch vụ</a></li>
-                                                    <li><a href="team.html">Team</a></li>
-                                                    <li><a href="faq.html">FAQ</a></li>
+                                                    <li><a href="{{ route('about') }}">Về chúng tôi</a></li>
+                                                    <li><a href="{{ route('service') }}">Dịch vụ</a></li>
+                                                    <li><a href="{{ route('team') }}">Team</a></li>
+                                                    <li><a href="{{ route('faq') }}">FAQ</a></li>
                                                 </ul>
                                             </li>
                                             <li class="menu-icon"><a href="shop.html">Cửa hàng</a>
@@ -100,9 +100,9 @@
                                     <li>
                                         <a href="#"><i class="icon-user"></i></a>
                                         <ul>
-                                            <li><a href="login.html">Đăng nhập</a></li>
-                                            <li><a href="register.html">Đăng kí</a></li>
-                                            <li><a href="account.html">Tài khoản</a></li>
+                                            <li><a href="{{ route('login') }}">Đăng nhập</a></li>
+                                            <li><a href="{{ route('register') }}">Đăng kí</a></li>
+                                            <li><a href="{{ route('account') }}">Tài khoản</a></li>
                                             <li><a href="wishlist.html">Yêu thích</a></li>
                                         </ul>
                                     </li>
