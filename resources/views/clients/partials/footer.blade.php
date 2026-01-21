@@ -57,7 +57,7 @@
                                 <div class="footer-menu">
                                     <ul>
                                         <li><a href="{{ route('about') }}">Câu chuyện thương hiệu</a></li>
-                                        <li><a href="shop.html">Sản phẩm</a></li>
+                                        <li><a href="{{ route('products.index') }}">Sản phẩm</a></li>
                                         <li><a href="{{ route('faq') }}">Câu hỏi thường gặp</a></li>
                                         <li><a href="contact.html">Liên hệ</a></li>
                                     </ul>

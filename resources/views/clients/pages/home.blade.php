@@ -33,7 +33,7 @@
                                                 mang hương vị thuần khiết đến gian bếp nhà bạn.</p>
                                         </div>
                                         <div class="btn-wrapper animated">
-                                            <a href="shop.html" class="theme-btn-1 btn btn-effect-1 text-uppercase">Khám phá
+                                            <a href="{{ route('products.index') }}" class="theme-btn-1 btn btn-effect-1 text-uppercase">Khám phá
                                                 ngay</a>
                                         </div>
                                     </div>
@@ -63,7 +63,7 @@
                                                 phẩm tươi sống, hữu cơ được kiểm duyệt khắt khe từ FreshHome.</p>
                                         </div>
                                         <div class="btn-wrapper animated">
-                                            <a href="shop.html" class="theme-btn-1 btn btn-effect-1 text-uppercase">Mua sắm
+                                            <a href="{{ route('products.index') }}" class="theme-btn-1 btn btn-effect-1 text-uppercase">Mua sắm
                                                 ngay</a>
                                             <a href="{{ route('about') }}" class="btn btn-transparent btn-effect-3 theme-btn-2">VỀ
                                                 CHÚNG TÔI</a>
@@ -90,7 +90,7 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="ltn__banner-item">
                         <div class="ltn__banner-img">
-                            <a href="shop.html"><img src="{{ asset('assets/clients/img/banner/13.png') }}"
+                            <a href="{{ route('products.index') }}"><img src="{{ asset('assets/clients/img/banner/13.png') }}"
                                     alt="Banner Image"></a>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                         <div class="col-lg-12">
                             <div class="ltn__banner-item">
                                 <div class="ltn__banner-img">
-                                    <a href="shop.html"><img src="{{ asset('assets/clients/img/banner/2.jpg') }}"
+                                    <a href="{{ route('products.index') }}"><img src="{{ asset('assets/clients/img/banner/2.jpg') }}"
                                             alt="Banner Image"></a>
                                 </div>
                             </div>
@@ -108,7 +108,7 @@
                         <div class="col-lg-12">
                             <div class="ltn__banner-item">
                                 <div class="ltn__banner-img">
-                                    <a href="shop.html"><img src="{{ asset('assets/clients/img/banner/15.png') }}"
+                                    <a href="{{ route('products.index') }}"><img src="{{ asset('assets/clients/img/banner/15.png') }}"
                                             alt="Banner Image"></a>
                                 </div>
                             </div>
@@ -136,12 +136,12 @@
                     <div class="col-12">
                         <div class="ltn__category-item ltn__category-item-3 text-center">
                             <div class="ltn__category-item-img category-img-fixed">
-                                <a href="shop.html">
+                                <a href="{{ route('products.index') }}">
                                     <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}">
                                 </a>
                             </div>
                             <div class="ltn__category-item-name">
-                                <h5><a href="shop.html">{{ $category->name }}</a></h5>
+                                <h5><a href="{{ route('products.index') }}">{{ $category->name }}</a></h5>
                                 <h6>({{ $category->products->count() }} sản phẩm)</h6>
                             </div>
                         </div>

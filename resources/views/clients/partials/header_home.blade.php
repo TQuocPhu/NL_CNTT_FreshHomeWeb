@@ -67,7 +67,7 @@
                                             <li><a href="{{ route('faq') }}">FAQ</a></li>
                                         </ul>
                                     </li>
-                                    <li class="menu-icon"><a href="shop.html">Cửa hàng</a>
+                                    <li class="menu-icon"><a href="{{ route('products.index') }}">Cửa hàng</a>
                                     </li>
                                     <li><a href="contact.html">Liên hệ</a></li>
                                     <li class="special-link"><a href="contact.html">Yêu cầu báo giá</a></li>

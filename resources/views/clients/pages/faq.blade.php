@@ -112,7 +112,7 @@
                             </div>
                             <!-- Banner Widget -->
                             <div class="widget ltn__banner-widget">
-                                <a href="shop.html"><img src="{{ asset('assets/clients/img/banner/banner-3.jpg') }}" alt="Khuyến mãi mới"></a>
+                                <a href="{{ route('products.index') }}"><img src="{{ asset('assets/clients/img/banner/banner-3.jpg') }}" alt="Khuyến mãi mới"></a>
                             </div>
 
                         </aside>

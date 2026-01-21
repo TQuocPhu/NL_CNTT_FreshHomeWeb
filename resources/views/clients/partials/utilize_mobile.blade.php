@@ -24,7 +24,7 @@
                         <li><a href="{{ route('faq') }}">FAQ</a></li>
                     </ul>
                 </li>
-                <li><a href="shop.html">Cửa hàng</a></li>
+                <li><a href="{{ route('products.index') }}">Cửa hàng</a></li>
                 <li><a href="contact.html">Liên hệ</a></li>
             </ul>
         </div>

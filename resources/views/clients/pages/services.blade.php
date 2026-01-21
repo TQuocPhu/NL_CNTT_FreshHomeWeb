@@ -29,7 +29,7 @@
                                     <li><a href="contact.html">Giao hàng miễn phí 24/7</a></li>
                                     <li><a href="#">Đội ngũ chuyên gia tư vấn</a></li>
                                     <li><a href="#">Sản phẩm đạt chuẩn VietGAP</a></li>
-                                    <li><a href="shop.html">Danh mục hàng hóa đa dạng</a></li>
+                                    <li><a href="{{ route('products.index') }}">Danh mục hàng hóa đa dạng</a></li>
                                 </ul>
                             </div>
                         </div>

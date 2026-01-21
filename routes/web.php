@@ -5,6 +5,7 @@ use App\Http\Controllers\Clients\AuthController;
 use App\Http\Controllers\Clients\ForgotPasswordController;
 use App\Http\Controllers\Clients\HomeController;
 use App\Http\Controllers\Clients\LoginGoogleController;
+use App\Http\Controllers\Clients\ProductController;
 use App\Http\Controllers\Clients\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
@@ -83,3 +84,5 @@ Route::middleware(['auth.custom'])->group(function () {
         Route::delete('/addresses/{id}', [AccountController::class, 'removeAddress'])->name('account.addresses.delete');
     });
 });
+
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
