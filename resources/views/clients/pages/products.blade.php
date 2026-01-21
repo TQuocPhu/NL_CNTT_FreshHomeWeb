@@ -33,13 +33,7 @@
                     </div>
                     <div class="tab-content">
                         <div class="tab-pane fade active show" id="liton_product_grid">
-                            <div class="ltn__product-tab-content-inner ltn__product-grid-view">
-                                <div class="row">
-
-                                    @include('clients.components.products-grid')
-                                    
-                                </div>
-                            </div>
+                            @include('clients.components.products-grid', ['products' => $products])
                         </div>
                     </div>
                     <div class="ltn__pagination-area text-center">
@@ -62,8 +56,14 @@
                         <div class="widget ltn__menu-widget">
                             <h4 class="ltn__widget-title ltn__widget-title-border">Danh mục sản phẩm</h4>
                             <ul>
-                                <li><a href="#">Body <span><i class="fas fa-long-arrow-alt-right"></i></span></a>
-                                </li>
+                                @foreach ($categories as $category)
+
+                                    <li><a href="javascript:void(0)" class="category-filter" data-id="{{ $category->id }}">
+                                        {{ $category->name }}
+                                        <span><i class="fas fa-long-arrow-alt-right"></i></span></a>
+                                    </li>
+                                    
+                                @endforeach
                             </ul>
                         </div>
                         <!-- Price Filter Widget -->

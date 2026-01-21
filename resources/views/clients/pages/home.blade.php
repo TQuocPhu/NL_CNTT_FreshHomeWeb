@@ -183,19 +183,19 @@
                                                         <div class="product-hover-action">
                                                             <ul>
                                                                 <li>
-                                                                    <a href="#" title="Xem nhanh" data-bs-toggle="modal"
+                                                                    <a href="javascript:void(0)" title="Xem nhanh" data-bs-toggle="modal"
                                                                         data-bs-target="#quick_view_modal_{{ $product->id }}">
                                                                         <i class="far fa-eye"></i>
                                                                     </a>
                                                                 </li>
                                                                 <li>
-                                                                    <a href="#" title="Thêm vào giỏ hàng" data-bs-toggle="modal"
+                                                                    <a href="javascript:void(0)" title="Thêm vào giỏ hàng" data-bs-toggle="modal"
                                                                         data-bs-target="#add_to_cart_modal_{{ $product->id }}">
                                                                         <i class="fas fa-shopping-cart"></i>
                                                                     </a>
                                                                 </li>
                                                                 <li>
-                                                                    <a href="#" title="Yêu thích" data-bs-toggle="modal"
+                                                                    <a href="javascript:void(0)" title="Yêu thích" data-bs-toggle="modal"
                                                                         data-bs-target="#liton_wishlist_modal_{{ $product->id }}">
                                                                         <i class="far fa-heart"></i></a>
                                                                 </li>
