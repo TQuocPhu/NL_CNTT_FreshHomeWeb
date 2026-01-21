@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
+
 class ProductController extends Controller
 {
     public function index() {
@@ -18,7 +19,7 @@ class ProductController extends Controller
     }
     
     public function filter(Request $request) {
-        $query = Product::query();
+        $query = Product::query()->where('status', 'in_stock');
 
         //lọc theo category_id
         if($request->has('category_id') && $request->category_id != '') {
@@ -51,9 +52,13 @@ class ProductController extends Controller
         //Phân trang
         $products = $query->paginate(9);
 
+        /** @var \Illuminate\View\View $links */
+        $links = $products->links('clients.components.pagination.pagination-custom');
+
         return response()->json([
             'status' => 'success',
             'products' => view('clients.components.products-grid', compact('products'))->render(),
+            'pagination' => $links->render(),
         ]);
     }
 }

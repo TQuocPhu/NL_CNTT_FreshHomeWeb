@@ -287,20 +287,32 @@ $(document).ready(function () {
 
 
     /****************************
-     * PAGE ACCOUNT
+     * PAGE PRODUCTS
     *****************************/
+   //Phân trang
+    let currentPage = 1;
+    $(document).on('click', '.pagination-link', function(e) {
+        e.preventDefault();
+        let pageUrl = $(this).attr('href');
+        let page = pageUrl.split('page=')[1];
+        currentPage = page;
 
+        fetchProducts();
+    });
+
+    //load sản phẩm (kết hợp giữa price, category, sort và phân trang)
     function fetchProducts() {
         let category_id = $('.category-filter.active').data('id') || '';
         let minPrice = $(".slider-range").slider('values', 0);
         let maxPrice = $(".slider-range").slider('values', 1);
         let sort_by = $('#sort-by').val();
 
-        let urlUpdate = '/products/filter';
+        let urlUpdate = 'products/filter?page=' + currentPage;
 
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json'
             }
         });
 
@@ -319,6 +331,7 @@ $(document).ready(function () {
             },
             success: function (res) {
                 $('#liton_product_grid').html(res.products);
+                $('.ltn__pagination').html(res.pagination);
             },
             error: function (xhr) {
                 alert('Có lỗi xảy ra trong ajax fetchProducts');
@@ -334,11 +347,13 @@ $(document).ready(function () {
     $('.category-filter').click(function() {
         $('.category-filter').removeClass('active');
         $(this).addClass('active');
+        currentPage = 1;
         fetchProducts();
     });
 
     //Sort by
     $('#sort-by').change(function() {
+        currentPage = 1;
         fetchProducts();
     });
 
@@ -352,6 +367,7 @@ $(document).ready(function () {
             $(".amount").val(ui.values[0] + " - " + ui.values[1] + " đ");
         },
         change: function (event, ui) {
+            currentPage = 1;
             fetchProducts();
         }
     });
@@ -359,4 +375,5 @@ $(document).ready(function () {
         " - " + $(".slider-range").slider("values", 1) + " đ");
 
     
+
 });
