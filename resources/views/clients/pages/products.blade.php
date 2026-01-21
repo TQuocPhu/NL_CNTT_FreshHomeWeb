@@ -32,6 +32,9 @@
                         </ul>
                     </div>
                     <div class="tab-content">
+                        <div id="loading-spinner">
+                                <div class="loader"></div>
+                            </div>
                         <div class="tab-pane fade active show" id="liton_product_grid">
                             @include('clients.components.products-grid', ['products' => $products])
                         </div>
@@ -71,7 +74,7 @@
                             <h4 class="ltn__widget-title ltn__widget-title-border">Lọc theo giá</h4>
                             <div class="price_filter">
                                 <div class="price_slider_amount">
-                                    <input type="submit" value="Your range:" />
+                                    <input type="submit" value="Khoảng giá:" />
                                     <input type="text" class="amount" name="price" placeholder="Add Your Price" />
                                 </div>
                                 <div class="slider-range"></div>
@@ -84,7 +87,7 @@
                                 <li>
                                     <div class="top-rated-product-item clearfix">
                                         <div class="top-rated-product-img">
-                                            <a href="product-details.html"><img src="img/product/1.png" alt="#"></a>
+                                            <a href="product-details.html"><img src="{{ asset('assets/clients/img/product/1.png') }}" alt="Product Rated"></a>
                                         </div>
                                         <div class="top-rated-product-info">
                                             <div class="product-ratting">
@@ -99,7 +102,6 @@
                                             <h6><a href="product-details.html">Mixel Solid Seat Cover</a></h6>
                                             <div class="product-price">
                                                 <span>$49.00</span>
-                                                <del>$65.00</del>
                                             </div>
                                         </div>
                                     </div>
