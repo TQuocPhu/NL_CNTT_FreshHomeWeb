@@ -61,4 +61,12 @@ class ProductController extends Controller
             'pagination' => $links->render(),
         ]);
     }
+
+    public function detail($slug) {
+        $product = Product::with('category', 'images')->where('slug', $slug)->firstOrFail();
+        
+        //Lấy sản phẩm liên quan (tương tự category)
+        $relatedProducts = Product::where('category_id', $product->category_id)->where('id', '!=', $product->id)->limit(6)->get();
+        return view('clients.pages.product-detail', compact('product', 'relatedProducts'));
+    }
 }
