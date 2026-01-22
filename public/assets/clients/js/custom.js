@@ -289,9 +289,9 @@ $(document).ready(function () {
     /****************************
      * PAGE PRODUCTS
     *****************************/
-   //Phân trang
+    //Phân trang
     let currentPage = 1;
-    $(document).on('click', '.pagination-link', function(e) {
+    $(document).on('click', '.pagination-link', function (e) {
         e.preventDefault();
         let pageUrl = $(this).attr('href');
         let page = pageUrl.split('page=')[1];
@@ -320,10 +320,10 @@ $(document).ready(function () {
             url: urlUpdate,
             type: 'GET',
             data: {
-                category_id : category_id,
-                min_price : minPrice,
-                max_price : maxPrice,
-                sort_by : sort_by
+                category_id: category_id,
+                min_price: minPrice,
+                max_price: maxPrice,
+                sort_by: sort_by
             },
             beforeSend: function () {
                 $('#loading-spinner').css('display', 'flex');
@@ -344,7 +344,7 @@ $(document).ready(function () {
     }
 
     //Danh mục
-    $('.category-filter').click(function() {
+    $('.category-filter').click(function () {
         $('.category-filter').removeClass('active');
         $(this).addClass('active');
         currentPage = 1;
@@ -352,7 +352,7 @@ $(document).ready(function () {
     });
 
     //Sort by
-    $('#sort-by').change(function() {
+    $('#sort-by').change(function () {
         currentPage = 1;
         fetchProducts();
     });
@@ -374,6 +374,67 @@ $(document).ready(function () {
     $(".amount").val($(".slider-range").slider("values", 0) + " đ" +
         " - " + $(".slider-range").slider("values", 1) + " đ");
 
-    
+
+    /****************************
+     * PAGE PRODUCT DETAIL
+    *****************************/
+    //tăng giảm số lượng sản phẩm trong trang chi tiết
+    $(document).on('click', '.qtybutton', function () {
+        var $button = $(this);
+        var $input = $button.siblings('input'); //lấy input cùng cấp với button trên
+        var oldValue = parseInt($input.val());
+        var maxStock = parseInt($input.data('max'));
+
+        if($button.hasClass('inc')) {
+            if(oldValue < maxStock) {
+                $input.val(oldValue + 1);
+            }
+        } else if($button.hasClass('dec')) {
+            if(oldValue > 1) {
+                $input.val(oldValue - 1);
+            }
+        }
+    });
+
+    /****************************
+     * CART
+    *****************************/
+    //Thêm sản phẩm vào giỏ hàng
+    $(document).on('click', '.add-to-cart-btn', function (e) {
+        e.preventDefault();
+
+        let productId = $(this).data('id');
+        let quantity = $(this).closest('li').prev().find('.cart-plus-minus-box').val();
+
+        quantity = quantity ? quantity : 1;
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json'
+            }
+        });
+        
+        $.ajax({
+            url: '/cart/add',
+            type: 'POST',
+            data: {
+                product_id : productId,
+                quantity : quantity
+            },
+            
+            success: function (res) {
+                if(res.status == true) {
+                    toastr.success(res.message);
+                } else {
+                    toastr.error(res.message);
+                }
+            },
+            error: function (xhr) {
+                alert('Có lỗi xảy ra trong ajax addToCart');
+            },
+            
+        });
+    });
 
 });

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Clients\AccountController;
 use App\Http\Controllers\Clients\AuthController;
+use App\Http\Controllers\Clients\CartController;
 use App\Http\Controllers\Clients\ForgotPasswordController;
 use App\Http\Controllers\Clients\HomeController;
 use App\Http\Controllers\Clients\LoginGoogleController;
@@ -89,3 +90,6 @@ Route::get('/products', [ProductController::class, 'index'])->name('products.ind
 Route::get('/products/filter', [ProductController::class, 'filter'])->name('products.filter');
 
 Route::get('/product/{slug}', [ProductController::class, 'detail'])->name('product.detail');
+
+//Cart
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
