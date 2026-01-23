@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Password;
 class ForgotPasswordController extends Controller
 {
     public function showForgotPasswordForm() {
-        return view('clients.auth.forgot-password');
+        return view('clients.auth.forgot_password');
     }
 
     public function sendResetPasswordLinkToEmail(Request $request) {
