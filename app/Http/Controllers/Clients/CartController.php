@@ -76,4 +76,44 @@ class CartController extends Controller
             'cart_count' => $cartCount,
         ]);
     }
+
+    public function loadMiniCart()
+    {
+        $items = [];
+        $subTotal = 0;
+
+        if (Auth::check()) {
+            $cartItems = CartItem::with('product')->where('user_id', Auth::id())->get();
+            foreach ($cartItems as $item) {
+                $items[] = [
+                    'product'  => $item->product,
+                    'quantity' => $item->quantity,
+                ];
+                $subTotal += $item->quantity * $item->product->price;
+            }
+        } else {
+            $cart = session('cart', []);
+            $products = Product::whereIn('id', array_keys($cart))
+                ->get()
+                ->keyBy('id');
+
+            foreach ($cart as $item) {
+                $product = $products[$item['product_id']] ?? null;
+                if (!$product) continue;
+
+                $items[] = [
+                    'product'  => $product,
+                    'quantity' => $item['quantity'],
+                ];
+                $subTotal += $item['quantity'] * $product->price;
+            }
+        }
+        return response()->json([
+            'status' => true,
+            'html' => view(
+                'clients.components.includes.mini-cart',
+                compact('items', 'subTotal')
+            )->render(),
+        ]);
+    }
 }

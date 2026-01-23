@@ -20,7 +20,7 @@ class Product extends Model
     ];
 
     //Thêm trường ảo để lấy dữ liệu hiển thị 
-    protected $append = ['image_url', 'formatted_price'];
+    protected $append = ['image_url', 'formatted_price' ,'formatted_price_not_unit'];
 
     public function category(){
         return $this->belongsTo(Category::class);
@@ -59,5 +59,10 @@ class Product extends Model
     public function getFormattedPriceAttribute()
     {
         return number_format($this->price, 0, ',', '.') . ' ' . 'đ';
+    }
+
+    public function getFormattedPriceNotUnitAttribute()
+    {
+        return number_format($this->price, 0, ',', '.');
     }
 }

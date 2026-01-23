@@ -397,7 +397,7 @@ $(document).ready(function () {
     });
 
     /****************************
-     * CART
+     * CARTS
     *****************************/
     //Thêm sản phẩm vào giỏ hàng
     $(document).on('click', '.add-to-cart-btn', function (e) {
@@ -441,4 +441,26 @@ $(document).ready(function () {
         });
     });
 
+    //mini cart
+    $('.mini-cart-icon').on('click', function(e) {
+        $.ajax({
+            url: '/mini-cart',
+            type: 'GET',
+            success: function(res) {
+                if(res.status) {
+                    $('#ltn__utilize-cart-menu .ltn__utilize-menu-inner').html(res.html);
+                    $('#ltn__utilize-cart-menu').addClass('ltn__utilize-open');
+                }
+            },
+            error: function(xhr) {
+                toastr.error('Không thể load mini cart');
+            }
+        });
+    });
+
+    //Tắt mini cart
+    $(document).on('click', '.ltn__utilize-close', function (e) {
+        $('#ltn__utilize-cart-menu').removeClass('ltn__utilize-open');
+        $('.ltn__utilize-overlay').hide();
+    });
 });
