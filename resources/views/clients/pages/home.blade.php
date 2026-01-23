@@ -33,14 +33,15 @@
                                                 mang hương vị thuần khiết đến gian bếp nhà bạn.</p>
                                         </div>
                                         <div class="btn-wrapper animated">
-                                            <a href="{{ route('products.index') }}" class="theme-btn-1 btn btn-effect-1 text-uppercase">Khám phá
+                                            <a href="{{ route('products.index') }}"
+                                                class="theme-btn-1 btn btn-effect-1 text-uppercase">Khám phá
                                                 ngay</a>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- <div class="slide-item-img">
-                                                    <img src="img/slider/21.png" alt="#">
-                                                </div> -->
+                                                        <img src="img/slider/21.png" alt="#">
+                                                    </div> -->
                             </div>
                         </div>
                     </div>
@@ -63,16 +64,18 @@
                                                 phẩm tươi sống, hữu cơ được kiểm duyệt khắt khe từ FreshHome.</p>
                                         </div>
                                         <div class="btn-wrapper animated">
-                                            <a href="{{ route('products.index') }}" class="theme-btn-1 btn btn-effect-1 text-uppercase">Mua sắm
+                                            <a href="{{ route('products.index') }}"
+                                                class="theme-btn-1 btn btn-effect-1 text-uppercase">Mua sắm
                                                 ngay</a>
-                                            <a href="{{ route('about') }}" class="btn btn-transparent btn-effect-3 theme-btn-2">VỀ
+                                            <a href="{{ route('about') }}"
+                                                class="btn btn-transparent btn-effect-3 theme-btn-2">VỀ
                                                 CHÚNG TÔI</a>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- <div class="slide-item-img slide-img-left">
-                                                    <img src="img/slider/22.png" alt="#">
-                                                </div> -->
+                                                        <img src="img/slider/22.png" alt="#">
+                                                    </div> -->
                             </div>
                         </div>
                     </div>
@@ -90,8 +93,8 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="ltn__banner-item">
                         <div class="ltn__banner-img">
-                            <a href="{{ route('products.index') }}"><img src="{{ asset('assets/clients/img/banner/13.png') }}"
-                                    alt="Banner Image"></a>
+                            <a href="{{ route('products.index') }}"><img
+                                    src="{{ asset('assets/clients/img/banner/13.png') }}" alt="Banner Image"></a>
                         </div>
                     </div>
                 </div>
@@ -100,16 +103,16 @@
                         <div class="col-lg-12">
                             <div class="ltn__banner-item">
                                 <div class="ltn__banner-img">
-                                    <a href="{{ route('products.index') }}"><img src="{{ asset('assets/clients/img/banner/2.jpg') }}"
-                                            alt="Banner Image"></a>
+                                    <a href="{{ route('products.index') }}"><img
+                                            src="{{ asset('assets/clients/img/banner/2.jpg') }}" alt="Banner Image"></a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="ltn__banner-item">
                                 <div class="ltn__banner-img">
-                                    <a href="{{ route('products.index') }}"><img src="{{ asset('assets/clients/img/banner/15.png') }}"
-                                            alt="Banner Image"></a>
+                                    <a href="{{ route('products.index') }}"><img
+                                            src="{{ asset('assets/clients/img/banner/15.png') }}" alt="Banner Image"></a>
                                 </div>
                             </div>
                         </div>
@@ -183,19 +186,22 @@
                                                         <div class="product-hover-action">
                                                             <ul>
                                                                 <li>
-                                                                    <a href="javascript:void(0)" title="Xem nhanh" data-bs-toggle="modal"
+                                                                    <a href="javascript:void(0)" title="Xem nhanh"
+                                                                        data-bs-toggle="modal"
                                                                         data-bs-target="#quick_view_modal_{{ $product->id }}">
                                                                         <i class="far fa-eye"></i>
                                                                     </a>
                                                                 </li>
                                                                 <li>
-                                                                    <a href="javascript:void(0)" title="Thêm vào giỏ hàng" data-bs-toggle="modal"
+                                                                    <a href="javascript:void(0)" title="Thêm vào giỏ hàng"
+                                                                        data-bs-toggle="modal"
                                                                         data-bs-target="#add_to_cart_modal_{{ $product->id }}">
                                                                         <i class="fas fa-shopping-cart"></i>
                                                                     </a>
                                                                 </li>
                                                                 <li>
-                                                                    <a href="javascript:void(0)" title="Yêu thích" data-bs-toggle="modal"
+                                                                    <a href="javascript:void(0)" title="Yêu thích"
+                                                                        data-bs-toggle="modal"
                                                                         data-bs-target="#liton_wishlist_modal_{{ $product->id }}">
                                                                         <i class="far fa-heart"></i></a>
                                                                 </li>
@@ -224,6 +230,9 @@
                                             </div>
                                         @endforeach
                                     </div>
+                                    @foreach ($category->products as $product)
+                                        @include('clients.components.includes.include-modals')
+                                    @endforeach
                                 </div>
                             </div>
                         @endforeach

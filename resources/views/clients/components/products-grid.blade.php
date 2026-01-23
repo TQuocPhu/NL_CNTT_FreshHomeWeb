@@ -44,3 +44,7 @@
         @endforeach
     </div>
 </div>
+
+@foreach ($products as $product)
+    @include('clients.components.includes.include-modals')
+@endforeach
