@@ -76,7 +76,7 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <a href="javascript:void(0)"
+                                                <a href="#"
                                                     class="theme-btn-1 btn btn-effect-1 add-to-cart-btn"
                                                     title="Thêm vào giỏ hàng" data-id="{{ $product->id }}">
                                                     <i class="fas fa-shopping-cart"></i>
@@ -85,6 +85,8 @@
                                             </li>
 
                                         </ul>
+                                        <br>
+                                        <span>Số lượng còn lại: {{ $product->stock }}</span>
                                     </div>
                                     <div class="ltn__product-details-menu-3">
                                         <ul>
@@ -236,6 +238,7 @@
             </div>
         </div>
     </div>
+    @include('clients.components.includes.include-modals')
 
     <div class="ltn__product-slider-area ltn__product-gutter pb-70">
         <div class="container">

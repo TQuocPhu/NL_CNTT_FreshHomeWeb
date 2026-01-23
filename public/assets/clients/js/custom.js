@@ -425,6 +425,10 @@ $(document).ready(function () {
             
             success: function (res) {
                 if(res.status == true) {
+                    // console.log(res.cart_count)
+                    $('#quick_view_modal_' + productId).modal('hide');
+                    $('#add_to_cart_modal_' + productId).modal('show');
+                    $('#cart_count').text(res.cart_count);
                     toastr.success(res.message);
                 } else {
                     toastr.error(res.message);

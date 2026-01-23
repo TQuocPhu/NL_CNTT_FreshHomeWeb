@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    public function addToCart(Request $request) {
+    public function addToCart(Request $request)
+    {
         $request->merge(['quantity' => $request->quantity]);
 
         $request->validate([
@@ -20,7 +21,7 @@ class CartController extends Controller
 
         $product = Product::findOrFail($request->product_id);
 
-        if($request->quantity > $product->stock) {
+        if ($request->quantity > $product->stock) {
             return response()->json([
                 'status' => false,
                 'message' => 'Số lượng vượt quá tồn kho'
@@ -28,9 +29,9 @@ class CartController extends Controller
         }
 
         //Nếu người dùng đã đăng nhập => lưu vào db
-        if(Auth::check()) {
+        if (Auth::check()) {
             $cartItem = CartItem::where('user_id', Auth::id())->where('product_id', $request->product_id)->first();
-            if($cartItem) {
+            if ($cartItem) {
                 $cartItem->quantity += $request->quantity;
                 $cartItem->save();
             } else {
@@ -44,8 +45,15 @@ class CartController extends Controller
         } else {
             //nếu người dùng chưa đăng nhập => lưu vào session
             $cart = session()->get('cart', []);
-            if(isset($cart[$request->product_id])) {
-                $cart[$request->product_id]['quantity'] += $request->quantity;
+
+            // nếu cart bị lỗi cấu trúc cũ => reset
+            if (!empty($cart) && array_key_first($cart) === 0 && is_array($cart[0])) {
+                session()->forget('cart');
+                $cart = [];
+            }
+
+            if (isset($cart[$request->product_id])) {
+                $cart[$request->product_id]['quantity'] += (int) $request->quantity;
             } else {
                 $cart[$request->product_id] = [
                     'product_id' => $request->product_id,
@@ -58,7 +66,7 @@ class CartController extends Controller
                 ];
             }
 
-            session()->push('cart', $cart);
+            session()->put('cart', $cart);
             $cartCount = count($cart);
         }
 
