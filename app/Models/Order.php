@@ -17,27 +17,58 @@ class Order extends Model
         'shipping_address_id',
     ];
 
-    public function coupon() {
+    protected $appends = [
+        'formatted_total_price',
+        'formatted_discount_amount',
+        'formatted_final_price',
+    ];
+
+    public function coupon()
+    {
         return $this->belongsTo(Coupon::class);
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function orderItems() {
+    public function orderItems()
+    {
         return $this->hasMany(OrderItem::class);
     }
 
-    public function shippingAddress(){
+    public function shippingAddress()
+    {
         return $this->belongsTo(ShippingAddress::class);
     }
 
-    public function payment() {
+    public function payment()
+    {
         return $this->hasOne(Payment::class);
     }
 
-    public function orderStatusHistory() {
+    public function orderStatusHistory()
+    {
         return $this->hasMany(OrderStatusHistory::class);
+    }
+
+
+    // Tổng tiền trước giảm
+    public function getFormattedTotalPriceAttribute()
+    {
+        return number_format($this->total_price, 0, ',', '.');
+    }
+
+    // Tiền giảm
+    public function getFormattedDiscountAmountAttribute()
+    {
+        return number_format($this->discount_amount ?? 0, 0, ',', '.');
+    }
+
+    // Tổng tiền phải trả
+    public function getFormattedFinalPriceAttribute()
+    {
+        return number_format($this->final_price, 0, ',', '.');
     }
 }
