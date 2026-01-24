@@ -77,8 +77,7 @@ class CartController extends Controller
         ]);
     }
 
-    public function loadMiniCart()
-    {
+    public function loadMiniCartData() {
         $items = [];
         $subTotal = 0;
 
@@ -108,12 +107,48 @@ class CartController extends Controller
                 $subTotal += $item['quantity'] * $product->price;
             }
         }
+        return compact('items', 'subTotal');
+    }
+
+    public function loadMiniCart()
+    {
+        
         return response()->json([
             'status' => true,
             'html' => view(
                 'clients.components.includes.mini-cart',
-                compact('items', 'subTotal')
+                $this->loadMiniCartData()
             )->render(),
+        ]);
+    }
+
+    public function removeFromMiniCart(Request $request) {
+        $request->validate([
+            'product_id' => 'required',
+        ]);
+
+        if(Auth::check()) {
+            CartItem::where('user_id', Auth::id())->where('product_id', $request->product_id)->delete();
+
+            $cartCount = CartItem::where('user_id', Auth::id())->count();
+        } else {
+            $cart = session('cart', []);
+            unset($cart[$request->product_id]);
+            session()->put('cart', $cart);
+
+            $cartCount = count($cart);
+        }
+
+        //load lại mini cart
+        $miniCartHtml = view('clients.components.includes.mini-cart',
+                        app(\App\Http\Controllers\Clients\CartController::class)->loadMiniCartData()
+        )->render();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Xóa sản phẩm trong mini cart thành công',
+            'cart_count' => $cartCount,
+            'html' => $miniCartHtml,
         ]);
     }
 }

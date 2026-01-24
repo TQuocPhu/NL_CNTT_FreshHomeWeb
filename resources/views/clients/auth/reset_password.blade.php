@@ -14,15 +14,12 @@
                     @csrf
                     <input type="hidden" name="token" value="{{ $token }}">
 
+                    <input type="hidden" name="email" value="{{ request('email') }}">
+
                     <fieldset>
                         <div class="row">
                             <div class="col-md-12">
 
-                                @error('email')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                                <input type="email" name="email" placeholder="Nhập email của bạn*" value="{{ old('email') }}" required>
-                                
                                 @error('password')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror

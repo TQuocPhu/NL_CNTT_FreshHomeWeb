@@ -429,7 +429,6 @@ $(document).ready(function () {
                     $('#quick_view_modal_' + productId).modal('hide');
                     $('#add_to_cart_modal_' + productId).modal('show');
                     $('#cart_count').text(res.cart_count);
-                    toastr.success(res.message);
                 } else {
                     toastr.error(res.message);
                 }
@@ -455,6 +454,41 @@ $(document).ready(function () {
             error: function(xhr) {
                 toastr.error('Không thể load mini cart');
             }
+        });
+    });
+
+    //xóa sản phẩm khỏi giỏ hàng trong mini cart
+    $(document).on('click', '.mini-cart-item-delete', function() {
+
+        let productId = $(this).data('id');
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json'
+            }
+        });
+        
+        $.ajax({
+            url: '/cart/remove',
+            type: 'POST',
+            data: {
+                product_id : productId,
+            },
+            
+            success: function (res) {
+                if(res.status == true) {
+                    // console.log(res);
+                    $('#cart_count').text(res.cart_count);
+                    $('#ltn__utilize-cart-menu .ltn__utilize-menu-inner').html(res.html);
+                } else {
+                    toastr.error(res.message);
+                }
+            },
+            error: function (xhr) {
+                alert('Có lỗi xảy ra trong ajax removeFormMiniCart');
+            },
+            
         });
     });
 
