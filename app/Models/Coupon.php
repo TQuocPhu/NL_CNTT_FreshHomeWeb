@@ -30,8 +30,6 @@ class Coupon extends Model
     }
 
 
-
-
     public function isActive(): bool{
         return $this->is_active;
     }

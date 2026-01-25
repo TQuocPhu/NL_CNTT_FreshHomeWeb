@@ -8,6 +8,7 @@ use App\Http\Controllers\Clients\HomeController;
 use App\Http\Controllers\Clients\LoginGoogleController;
 use App\Http\Controllers\Clients\ProductController;
 use App\Http\Controllers\Clients\ResetPasswordController;
+use App\Http\Controllers\Clients\CheckoutController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -31,7 +32,7 @@ Route::get('/faq', function () {
 //guest 
 
 Route::middleware('guest')->group(function () {
-    
+
     //Đăng ký
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register_post');
@@ -51,7 +52,6 @@ Route::middleware('guest')->group(function () {
     //Đặt lại mật khẩu người dùng
     Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetPasswordForm'])->name('password.reset');
     Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword'])->name('password.update');
-
 });
 
 //Kích hoạt tài khoản
@@ -68,7 +68,7 @@ Route::middleware(['auth.custom'])->group(function () {
 
         //Hiển thị trang tài khoản
         Route::get('/', [AccountController::class, 'index'])->name('account');
-        
+
         //Cập nhật thông tin tài khoản
         Route::put('/update', [AccountController::class, 'updateProfileHandler'])->name('account.profile');
 
@@ -77,13 +77,15 @@ Route::middleware(['auth.custom'])->group(function () {
 
         //Thêm địa chỉ mới
         Route::post('/addresses', [AccountController::class, 'addAddress'])->name('account.addresses.add');
-        
+
         //Chọn địa chỉ mặc định
         Route::put('/addresses/{id}', [AccountController::class, 'chooseDefaultAddress'])->name('account.addresses.update');
 
         //Xóa địa chỉ
         Route::delete('/addresses/{id}', [AccountController::class, 'removeAddress'])->name('account.addresses.delete');
     });
+    //Trang thanh toán
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('account');
 });
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');

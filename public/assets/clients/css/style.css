@@ -11826,7 +11826,7 @@ input.cart-plus-minus-box {
   position: relative;
   padding-left: 30px;
   margin-bottom: 0; }
-  .ltn__checkout-payment-method .ltn__card-title::before {
+  /* .ltn__checkout-payment-method .ltn__card-title::before {
     position: absolute;
     top: 50%;
     left: 0;
@@ -11838,7 +11838,7 @@ input.cart-plus-minus-box {
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
     border: 1px solid #333;
-    border-radius: 50%; }
+    border-radius: 50%; } */
   .ltn__checkout-payment-method .ltn__card-title::after {
     position: absolute;
     top: 50%;
