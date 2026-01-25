@@ -61,7 +61,7 @@
                                 </tbody>
                             </table>
                             <div class="btn-wrapper text-right text-end">
-                                <a href="checkout.html" class="theme-btn-1 btn btn-effect-1">Đặt hàng</a>
+                                <a href="{{ route('checkout.index') }}" class="theme-btn-1 btn btn-effect-1">Đặt hàng</a>
                             </div>
                         </div>
                         @else

@@ -139,4 +139,7 @@ class CheckoutController extends Controller
             'totalPrice' => number_format($totalPrice, 0, ',', '.'),
         ]);
     }
+
+    //Đặt hàng
+    
 }
