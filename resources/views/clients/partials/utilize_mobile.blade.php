@@ -48,10 +48,18 @@
                     </a>
                 </li>
                 <li>
-                    <a href="cart.html" title="Giỏ hàng">
+                    <a href="{{ route('cart.index') }}" title="Giỏ hàng">
                         <span class="utilize-btn-icon">
                             <i class="fas fa-shopping-cart"></i>
-                            <sup>5</sup>
+                            <sup id="cart_count">
+                                @auth
+                                    {{-- {{ \App\Models\CartItem::where('user_id', auth()->id())->sum('quantity') }} --}}
+                                    {{ \App\Models\CartItem::where('user_id', auth()->id())->count() }}
+                                @else
+                                    {{-- {{ session('cart') ? array_sum(array_column(session('cart'), 'quantity')) : 0 }} --}}
+                                    {{ session('cart') ? count(session('cart')) : 0 }}
+                                @endauth
+                            </sup>
                         </span>
                         Giỏ hàng
                     </a>

@@ -379,25 +379,46 @@ $(document).ready(function () {
      * PAGE PRODUCT DETAIL
     *****************************/
     //tăng giảm số lượng sản phẩm trong trang chi tiết
-    $(document).on('click', '.qtybutton', function () {
-        var $button = $(this);
-        var $input = $button.siblings('input'); //lấy input cùng cấp với button trên
-        var oldValue = parseInt($input.val());
-        var maxStock = parseInt($input.data('max'));
+    if (window.location.pathname != '/cart') { //trang hiện tại không phải trang cart
+        $(document).on('click', '.qtybutton', function () {
+            var $button = $(this);
+            var $input = $button.siblings('input'); //lấy input cùng cấp với button trên
+            var oldValue = parseInt($input.val());
+            var maxStock = parseInt($input.data('max'));
 
-        if($button.hasClass('inc')) {
-            if(oldValue < maxStock) {
-                $input.val(oldValue + 1);
+            if ($button.hasClass('inc')) {
+                if (oldValue < maxStock) {
+                    $input.val(oldValue + 1);
+                }
+            } else if ($button.hasClass('dec')) {
+                if (oldValue > 1) {
+                    $input.val(oldValue - 1);
+                }
             }
-        } else if($button.hasClass('dec')) {
-            if(oldValue > 1) {
-                $input.val(oldValue - 1);
+        });
+    } else {
+        $(document).on('click', '.qtybutton', function () {
+            let $button = $(this);
+            let $input = $button.siblings('input'); // lấy input cùng cấp button trên 
+            let oldValue = parseInt($input.val());
+            let maxStock = parseInt($input.data('max'));
+            let productId = $input.data('id');
+            let newValue = oldValue;
+
+            if ($button.hasClass('inc') && oldValue < maxStock) {
+                newValue = oldValue + 1;
+            } else if ($button.hasClass('dec') && oldValue > 1) {
+                newValue = oldValue - 1;
             }
-        }
-    });
+
+            if (newValue != oldValue) {
+                updateCart(productId, newValue, $input);
+            }
+        });
+    }
 
     /****************************
-     * CARTS
+     * CART
     *****************************/
     //Thêm sản phẩm vào giỏ hàng
     $(document).on('click', '.add-to-cart-btn', function (e) {
@@ -414,17 +435,17 @@ $(document).ready(function () {
                 'Accept': 'application/json'
             }
         });
-        
+
         $.ajax({
             url: '/cart/add',
             type: 'POST',
             data: {
-                product_id : productId,
-                quantity : quantity
+                product_id: productId,
+                quantity: quantity
             },
-            
+
             success: function (res) {
-                if(res.status == true) {
+                if (res.status == true) {
                     // console.log(res.cart_count)
                     $('#quick_view_modal_' + productId).modal('hide');
                     $('#add_to_cart_modal_' + productId).modal('show');
@@ -436,29 +457,29 @@ $(document).ready(function () {
             error: function (xhr) {
                 alert('Có lỗi xảy ra trong ajax addToCart');
             },
-            
+
         });
     });
 
     //mini cart
-    $('.mini-cart-icon').on('click', function(e) {
+    $('.mini-cart-icon').on('click', function (e) {
         $.ajax({
             url: '/mini-cart',
             type: 'GET',
-            success: function(res) {
-                if(res.status) {
+            success: function (res) {
+                if (res.status) {
                     $('#ltn__utilize-cart-menu .ltn__utilize-menu-inner').html(res.html);
                     $('#ltn__utilize-cart-menu').addClass('ltn__utilize-open');
                 }
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 toastr.error('Không thể load mini cart');
             }
         });
     });
 
     //xóa sản phẩm khỏi giỏ hàng trong mini cart
-    $(document).on('click', '.mini-cart-item-delete', function() {
+    $(document).on('click', '.mini-cart-item-delete', function () {
 
         let productId = $(this).data('id');
 
@@ -468,16 +489,16 @@ $(document).ready(function () {
                 'Accept': 'application/json'
             }
         });
-        
+
         $.ajax({
             url: '/cart/remove',
             type: 'POST',
             data: {
-                product_id : productId,
+                product_id: productId,
             },
-            
+
             success: function (res) {
-                if(res.status == true) {
+                if (res.status == true) {
                     // console.log(res);
                     $('#cart_count').text(res.cart_count);
                     $('#ltn__utilize-cart-menu .ltn__utilize-menu-inner').html(res.html);
@@ -488,7 +509,7 @@ $(document).ready(function () {
             error: function (xhr) {
                 alert('Có lỗi xảy ra trong ajax removeFormMiniCart');
             },
-            
+
         });
     });
 
@@ -497,4 +518,40 @@ $(document).ready(function () {
         $('#ltn__utilize-cart-menu').removeClass('ltn__utilize-open');
         $('.ltn__utilize-overlay').hide();
     });
+
+
+    /****************************
+     * PAGE CART
+    *****************************/
+
+    function updateCart(productId, quantity, $input) {
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json'
+            }
+        });
+
+        $.ajax({
+            url: '/cart/update',
+            method: 'POST',
+            data: {
+                product_id: productId,
+                quantity: quantity,
+            },
+            success: function (res) {
+                $input.val(res.quantity);
+                $input.closest('tr')
+                    .find('.cart-product-subtotal')
+                    .text(res.item_subtotal + ' VND');
+
+                $('.cart-total').text(res.total + ' VND');
+                $('.cart-grand-total').text(res.grandTotal + ' VND');
+            },
+            error: function (xhr) {
+                alert(xhr.responseJSON.error);
+            }
+        });
+    }
 });

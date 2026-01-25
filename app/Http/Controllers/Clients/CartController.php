@@ -166,4 +166,41 @@ class CartController extends Controller
     {
         return view('clients.pages.cart', $this->getCartViewData());
     }
+
+    //update
+    public function updateCart(Request $request)
+    {
+        $product = Product::findOrFail($request->product_id);
+
+        if ($request->quantity > $product->stock) {
+            return response()->json([
+                'error' => 'Số lượng vượt quá tồn kho'
+            ], 422);
+        }
+
+        if (Auth::check()) {
+            CartItem::where('user_id', Auth::id())
+                ->where('product_id', $request->product_id)
+                ->update(['quantity' => $request->quantity]);
+        } else {
+            $cart = session('cart', []);
+
+            if (!isset($cart[$request->product_id])) {
+                return response()->json(['error' => 'Không tồn tại sản phẩm'], 404);
+            }
+
+            $cart[$request->product_id]['quantity'] = $request->quantity;
+            session()->put('cart', $cart);
+        }
+
+        $cartData = $this->getCartViewData();
+        $itemSubTotal = $request->quantity * $product->price;
+
+        return response()->json([
+            'quantity' => $request->quantity,
+            'item_subtotal' => number_format($itemSubTotal, 0, ',', '.'),
+            'total' => number_format($cartData['subTotal'], 0, ',', '.'),
+            'grandTotal' => number_format($cartData['grandTotal'], 0, ',', '.'),
+        ]);
+    }
 }

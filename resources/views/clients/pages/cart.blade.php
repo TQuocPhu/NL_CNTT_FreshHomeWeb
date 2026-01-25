@@ -14,7 +14,7 @@
                             <table class="table">
                                 <tbody>
                                     @forelse ($items as $item)
-                                    <tr data-id="{{ $item['product']->id }}"">
+                                    <tr>
                                         <td class="cart-product-remove">x</td>
                                         <td class="cart-product-image">
                                             <a href="{{ route('product.detail', $item['product']->slug) }}"><img src="{{ $item['product']->image_url }}" alt="{{ $item['product']->name }}"></a>
@@ -27,7 +27,7 @@
                                             <div class="cart-plus-minus">
                                                 <div class="dec qtybutton">-</div>
                                                 <input type="text" value="{{ $item['quantity'] }}" name="qtybutton" class="cart-plus-minus-box"
-                                                    data-max="{{ $item['product']->stock }}" readonly>
+                                                    data-max="{{ $item['product']->stock }}" data-id="{{ $item['product']->id }}" readonly>
                                                 <div class="inc qtybutton">+</div>
                                             </div>
                                         </td>
@@ -48,7 +48,7 @@
                                 <tbody>
                                     <tr>
                                         <td>Tổng tiền hàng</td>
-                                        <td>{{ number_format($subTotal, 0, ',', '.') }} VND</td>
+                                        <td><span class="cart-total">{{ number_format($subTotal, 0, ',', '.') }} VND</span></td>
                                     </tr>
                                     <tr>
                                         <td>Phí vận chuyển</td>
@@ -56,7 +56,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>Tổng đơn hàng</strong></td>
-                                        <td><strong>{{ number_format($subTotal + 25000, 0, ',', '.') }} VND</strong></td>
+                                        <td><strong><span class="cart-grand-total">{{ number_format($subTotal + 25000, 0, ',', '.') }} VND</span></strong></td>
                                     </tr>
                                 </tbody>
                             </table>

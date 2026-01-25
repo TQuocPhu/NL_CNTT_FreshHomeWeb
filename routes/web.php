@@ -100,3 +100,4 @@ Route::get('/mini-cart', [CartController::class, 'loadMiniCart'])->name('cart.mi
 
 //Trang Giỏ hàng
 Route::get('/cart', [CartController::class, 'showCartDetail'])->name('cart.index');
+Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');

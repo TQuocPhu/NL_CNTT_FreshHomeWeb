@@ -22,7 +22,7 @@
                                         <p class="added-cart"><i class="fa fa-check-circle"></i> Thêm vào giỏ hàng thành
                                             công</p>
                                         <div class="btn-wrapper">
-                                            <a href="cart.html" class="theme-btn-1 btn btn-effect-1">Xem giỏ hàng</a>
+                                            <a href="{{ route('cart.index') }}" class="theme-btn-1 btn btn-effect-1">Xem giỏ hàng</a>
                                         </div>
                                     </div>
                                 </div>

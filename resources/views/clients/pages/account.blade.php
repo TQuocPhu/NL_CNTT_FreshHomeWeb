@@ -165,7 +165,7 @@
                                                                 <td>Yes</td>
                                                                 <td>Yes</td>
                                                                 <td>Yes</td>
-                                                                <td><a href="cart.html">View</a></td>
+                                                                <td><a href="order-detail.html">View</a></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
