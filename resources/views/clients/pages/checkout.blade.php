@@ -20,7 +20,7 @@
                                     <select name="address_id" id="list_address" class="input-item">
                                         @foreach ($addresses as $address)
                                             <option value="{{ $address->id }}" {{ $address->default ? 'selected' : '' }}>
-                                                {{ $address->full_name }} - {{ $address->address }}
+                                                Địa chỉ: {{ $address->full_name }} - {{ $address->address }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -52,14 +52,14 @@
                                     <div class="col-md-6">
                                         <h6>Địa chỉ</h6>
                                         <div class="input-item">
-                                            <input type="text" placeholder="Số nhà và tên đường"
+                                            <input type="text" name="ltn__address" placeholder="Số nhà và tên đường"
                                                 value="{{ $defaultAddress->address }}" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <h6>Thành phố </h6>
                                         <div class="input-item">
-                                            <input type="text" placeholder="Thành phố" value="{{ $defaultAddress->city }}"
+                                            <input type="text" name="ltn__city" placeholder="Thành phố" value="{{ $defaultAddress->city }}"
                                                 readonly>
                                         </div>
                                     </div>

@@ -556,7 +556,7 @@ $(document).ready(function () {
     }
 
     //remove cart trong trang giỏ hàng
-    $('.cart-product-remove').on('click', function(e){
+    $('.cart-product-remove').on('click', function (e) {
         let product_id = $(this).data('id');
         let row = $(this).closest('tr');
 
@@ -578,7 +578,7 @@ $(document).ready(function () {
 
                 $('.cart-total').text(res.total + ' VND');
                 $('.cart-grand-total').text(res.grandTotal + ' VND');
-                
+
                 if (res.empty) location.reload();
             },
             error: function (xhr) {
@@ -587,4 +587,37 @@ $(document).ready(function () {
         });
     });
 
+
+    /****************************
+     * PAGE CHECKOUT
+    *****************************/
+    $('#list_address').change(function (e) {
+        let address_id = $(this).val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json'
+            }
+        });
+
+        $.ajax({
+            url: '/checkout/get-address',
+            method: 'GET',
+            data: {
+                address_id: address_id,
+            },
+            success: function (res) {
+                if(res.success) {
+                    $('input[name="ltn__name"]').val(res.data.full_name);
+                    $('input[name="ltn__phone"]').val(res.data.phone);
+                    $('input[name="ltn__address"]').val(res.data.address);
+                    $('input[name="ltn__city"]').val(res.data.city);
+                }
+            },
+            error: function (xhr) {
+                alert(xhr.responseJSON.error);
+            }
+        });
+    });
 });

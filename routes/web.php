@@ -85,7 +85,8 @@ Route::middleware(['auth.custom'])->group(function () {
         Route::delete('/addresses/{id}', [AccountController::class, 'removeAddress'])->name('account.addresses.delete');
     });
     //Trang thanh toán
-    Route::get('/checkout', [CheckoutController::class, 'index'])->name('account');
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::get('/checkout/get-address', [CheckoutController::class, 'getAddresses'])->name('checkout.address.get');
 });
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');

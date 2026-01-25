@@ -23,4 +23,22 @@ class CheckoutController extends Controller
         }
         return view('clients.pages.checkout', compact('addresses', 'defaultAddress'));
     }
+
+    public function getAddresses(Request $request) {
+        $address = ShippingAddress::where('id', $request->address_id)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if(!$address) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Không tìm thấy địa chỉ',
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $address,
+        ]);
+    }
 }
