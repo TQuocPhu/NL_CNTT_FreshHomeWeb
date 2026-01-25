@@ -554,4 +554,37 @@ $(document).ready(function () {
             }
         });
     }
+
+    //remove cart trong trang giỏ hàng
+    $('.cart-product-remove').on('click', function(e){
+        let product_id = $(this).data('id');
+        let row = $(this).closest('tr');
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json'
+            }
+        });
+
+        $.ajax({
+            url: '/cart/remove-cart',
+            method: 'POST',
+            data: {
+                product_id: product_id,
+            },
+            success: function (res) {
+                row.remove();
+
+                $('.cart-total').text(res.total + ' VND');
+                $('.cart-grand-total').text(res.grandTotal + ' VND');
+                
+                if (res.empty) location.reload();
+            },
+            error: function (xhr) {
+                alert(xhr.responseJSON.error);
+            }
+        });
+    });
+
 });

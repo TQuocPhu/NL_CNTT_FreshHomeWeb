@@ -203,4 +203,26 @@ class CartController extends Controller
             'grandTotal' => number_format($cartData['grandTotal'], 0, ',', '.'),
         ]);
     }
+
+    public function removeCartItemFromDetailCart(Request $request)
+    {
+        $productId = $request->product_id;
+
+        if (Auth::check()) {
+            CartItem::where('user_id', Auth::id())
+                ->where('product_id', $productId)->delete();
+        } else {
+            $cart = session('cart', []);
+            unset($cart[$productId]);
+            session()->put('cart', $cart);
+        }
+
+        $cartData = $this->getCartViewData();
+        
+        return response()->json([
+            'total' => number_format($cartData['subTotal'], 0, ',', '.'),
+            'grandTotal' => number_format($cartData['grandTotal'], 0, ',', '.'),
+            'empty' => count($cartData['items']) === 0
+        ]);
+    }
 }

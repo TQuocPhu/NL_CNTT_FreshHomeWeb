@@ -11,11 +11,11 @@
                 <div class="col-lg-12">
                     <div class="shoping-cart-inner">
                         <div class="shoping-cart-table table-responsive">
-                            <table class="table">
+                            <table class="table cart-table">
                                 <tbody>
                                     @forelse ($items as $item)
                                     <tr>
-                                        <td class="cart-product-remove">x</td>
+                                        <td class="cart-product-remove" data-id="{{ $item['product']->id }}"><span>x</span></td>
                                         <td class="cart-product-image">
                                             <a href="{{ route('product.detail', $item['product']->slug) }}"><img src="{{ $item['product']->image_url }}" alt="{{ $item['product']->name }}"></a>
                                         </td>
@@ -31,7 +31,7 @@
                                                 <div class="inc qtybutton">+</div>
                                             </div>
                                         </td>
-                                        <td class="cart-product-subtotal">{{ $item['quantity'] * $item['product']->price }} đ</td>
+                                        <td class="cart-product-subtotal">{{ number_format($item['quantity'] * $item['product']->price, 0, ',', '.') }} đ</td>
                                     </tr>
                                     @empty
                                     <tr>
@@ -48,7 +48,7 @@
                                 <tbody>
                                     <tr>
                                         <td>Tổng tiền hàng</td>
-                                        <td><span class="cart-total">{{ number_format($subTotal, 0, ',', '.') }} VND</span></td>
+                                        <td><span class="cart-total">{{ number_format($subTotal, 0, ',', '.') }} đ</span></td>
                                     </tr>
                                     <tr>
                                         <td>Phí vận chuyển</td>
@@ -56,7 +56,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>Tổng đơn hàng</strong></td>
-                                        <td><strong><span class="cart-grand-total">{{ number_format($subTotal + 25000, 0, ',', '.') }} VND</span></strong></td>
+                                        <td><strong><span class="cart-grand-total">{{ number_format($subTotal + 25000, 0, ',', '.') }} đ</span></strong></td>
                                     </tr>
                                 </tbody>
                             </table>
