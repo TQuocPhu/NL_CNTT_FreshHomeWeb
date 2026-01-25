@@ -77,7 +77,8 @@ class CartController extends Controller
         ]);
     }
 
-    public function loadMiniCartData() {
+    public function getCartViewData()
+    {
         $items = [];
         $subTotal = 0;
 
@@ -98,6 +99,7 @@ class CartController extends Controller
 
             foreach ($cart as $item) {
                 $product = $products[$item['product_id']] ?? null;
+
                 if (!$product) continue;
 
                 $items[] = [
@@ -107,27 +109,32 @@ class CartController extends Controller
                 $subTotal += $item['quantity'] * $product->price;
             }
         }
-        return compact('items', 'subTotal');
+        return [
+            'items' => $items,
+            'subTotal' => $subTotal,
+            'shipping' => 25000,
+            'grandTotal' => $subTotal + 25000,
+        ];
     }
 
     public function loadMiniCart()
     {
-        
         return response()->json([
             'status' => true,
             'html' => view(
                 'clients.components.includes.mini-cart',
-                $this->loadMiniCartData()
+                $this->getCartViewData()
             )->render(),
         ]);
     }
 
-    public function removeFromMiniCart(Request $request) {
+    public function removeFromMiniCart(Request $request)
+    {
         $request->validate([
             'product_id' => 'required',
         ]);
 
-        if(Auth::check()) {
+        if (Auth::check()) {
             CartItem::where('user_id', Auth::id())->where('product_id', $request->product_id)->delete();
 
             $cartCount = CartItem::where('user_id', Auth::id())->count();
@@ -140,8 +147,9 @@ class CartController extends Controller
         }
 
         //load lại mini cart
-        $miniCartHtml = view('clients.components.includes.mini-cart',
-                        app(\App\Http\Controllers\Clients\CartController::class)->loadMiniCartData()
+        $miniCartHtml = view(
+            'clients.components.includes.mini-cart',
+            $this->getCartViewData()
         )->render();
 
         return response()->json([
@@ -150,5 +158,12 @@ class CartController extends Controller
             'cart_count' => $cartCount,
             'html' => $miniCartHtml,
         ]);
+    }
+
+
+    //Trang giỏ hàng
+    public function showCartDetail()
+    {
+        return view('clients.pages.cart', $this->getCartViewData());
     }
 }

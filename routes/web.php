@@ -97,3 +97,6 @@ Route::post('/cart/remove', [CartController::class, 'removeFromMiniCart'])->name
 
 //mini cart
 Route::get('/mini-cart', [CartController::class, 'loadMiniCart'])->name('cart.mini');
+
+//Trang Giỏ hàng
+Route::get('/cart', [CartController::class, 'showCartDetail'])->name('cart.index');
