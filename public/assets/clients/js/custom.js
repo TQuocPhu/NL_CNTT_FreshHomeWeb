@@ -591,6 +591,7 @@ $(document).ready(function () {
     /****************************
      * PAGE CHECKOUT
     *****************************/
+    //lấy danh sách địa chỉ của tài khoản
     $('#list_address').change(function (e) {
         let address_id = $(this).val();
 
@@ -608,12 +609,80 @@ $(document).ready(function () {
                 address_id: address_id,
             },
             success: function (res) {
-                if(res.success) {
+                if (res.success) {
                     $('input[name="ltn__name"]').val(res.data.full_name);
                     $('input[name="ltn__phone"]').val(res.data.phone);
                     $('input[name="ltn__address"]').val(res.data.address);
                     $('input[name="ltn__city"]').val(res.data.city);
                 }
+            },
+            error: function (xhr) {
+                alert(xhr.responseJSON.error);
+            }
+        });
+    });
+
+
+    // apply mã khuyến mãi
+    $('#apply_coupon_btn').on('click', function (e) {
+        let code = $('input[name="coupon_code"]').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json'
+            }
+        });
+
+        $.ajax({
+            url: '/checkout/apply-coupon',
+            method: 'POST',
+            data: {
+                coupon_code: code,
+            },
+            success: function (res) {
+                if (!res.success) {
+                    toastr.error(res.message);
+                    return;
+                }
+
+                $('#discount_amount').text(res.discount + ' đ');
+                $('#final_price').text(res.final_price + ' đ');
+
+                if (!$('#cancel_coupon_btn').length) {
+                    $('.coupon-wrapper').append(`
+                        <button type="button" id="cancel_coupon_btn" class="btn btn-danger">
+                            Hủy
+                        </button>
+                    `);
+                }
+                toastr.success(res.message);
+            },
+            error: function (xhr) {
+                alert(xhr.responseJSON.error);
+            }
+        });
+    });
+
+    //Hủy coupon
+    $(document).on('click', '#cancel_coupon_btn', function (e) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json'
+            }
+        });
+
+        $.ajax({
+            url: '/checkout/cancel-coupon',
+            method: 'POST',
+
+            success: function (res) {
+                $('#discount_amount').text('0 đ');
+                $('#final_price').text(res.totalPrice + ' đ');
+                $('input[name="coupon_code"]').val('');
+                $('#cancel_coupon_btn').remove();
+                toastr.info('Đã hủy mã khuyến mãi');
             },
             error: function (xhr) {
                 alert(xhr.responseJSON.error);

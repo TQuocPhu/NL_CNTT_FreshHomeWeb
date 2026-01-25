@@ -108,30 +108,33 @@
                 <div class="col-lg-6">
                     <div class="shoping-cart-total mt-50">
                         <h4 class="title-2">Tổng sản phẩm</h4>
-                        <div class="coupon-wrapper mb-20" style="display: flex; gap: 10px;">
+                        <div class="coupon-wrapper mb-20">
                             <input type="text" name="coupon_code" class="input-item" placeholder="Nhập mã khuyến mãi"
                                 style="flex: 1;">
-                            <button type="button" class="btn theme-btn-2 btn-effect-2" style="height: 63px" id="apply_coupon_btn">
+                            <button type="button" class="btn theme-btn-1 btn-effect-1" style="height: 63px" id="apply_coupon_btn">
                                 Áp dụng
                             </button>
                         </div>
+                        <br>
                         <table class="table">
                             <tbody>
+                                @foreach ($cartItem as $item)
                                 <tr>
-                                    <td>Vegetables Juices <strong>× 2</strong></td>
-                                    <td>298.00</td>
+                                    <td>{{ $item->product->name }} <strong>x {{ $item->quantity }}</strong></td>
+                                    <td>{{number_format($item->product->price * $item->quantity, 0, ',', '.')}} VND</td>
                                 </tr>
+                                @endforeach
                                 <tr>
                                     <td>Vận chuyển và xử lý</td>
-                                    <td>15.00</td>
+                                    <td>25.000 đ</td>
                                 </tr>
                                 <tr>
                                     <td>Mã giảm giá</td>
-                                    <td>0.00</td>
+                                    <td id="discount_amount" class="text-danger"> - 0.00 đ</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Tổng tiền</strong></td>
-                                    <td><strong>633.00</strong></td>
+                                    <td><strong id="final_price" class="total-price-checkout">{{ number_format($totalPrice + 25000, 0, ',', '.') }} đ</strong></td>
                                 </tr>
                             </tbody>
                         </table>

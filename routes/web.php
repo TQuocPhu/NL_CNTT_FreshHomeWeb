@@ -87,6 +87,10 @@ Route::middleware(['auth.custom'])->group(function () {
     //Trang thanh toán
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::get('/checkout/get-address', [CheckoutController::class, 'getAddresses'])->name('checkout.address.get');
+
+    //Coupon
+    Route::post('/checkout/apply-coupon', [CheckoutController::class, 'applyCoupon'])->name('checkout.applyCoupon');
+    Route::post('/checkout/cancel-coupon', [CheckoutController::class, 'cancelCoupon'])->name('checkout.cancelCoupon');
 });
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
