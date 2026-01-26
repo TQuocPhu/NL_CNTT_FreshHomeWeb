@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="{{ asset('assets/clients/css/custom.css')}}">
 
     <!-- toastr -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 </head>
 
 <body>
@@ -42,7 +42,7 @@
         <main>
             @yield('content')
         </main>
-        
+
         @include('clients.partials.feature')
         @include('clients.partials.footer')
     </div>
@@ -59,7 +59,11 @@
     <!-- preloader area end -->
 
     <!-- JQuery JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+    {{--
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
     <!-- All JS Plugins -->
     <script src="{{ asset('assets/clients/js/plugins.js') }}"></script>
     <!-- Main JS -->

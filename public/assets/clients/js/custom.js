@@ -595,13 +595,6 @@ $(document).ready(function () {
     $('#list_address').change(function (e) {
         let address_id = $(this).val();
 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                'Accept': 'application/json'
-            }
-        });
-
         $.ajax({
             url: '/checkout/get-address',
             method: 'GET',
@@ -614,6 +607,7 @@ $(document).ready(function () {
                     $('input[name="ltn__phone"]').val(res.data.phone);
                     $('input[name="ltn__address"]').val(res.data.address);
                     $('input[name="ltn__city"]').val(res.data.city);
+                    $('input[name="address_id"]').val(res.data.id);
                 }
             },
             error: function (xhr) {
@@ -689,4 +683,6 @@ $(document).ready(function () {
             }
         });
     });
+
+
 });

@@ -72,8 +72,9 @@
                 <div class="col-lg-6">
                     <div class="ltn__checkout-payment-method mt-50">
                         <h4 class="title-2">Phương thức thanh toán</h4>
-                        <form action="" method="post">
+                        <form action="{{ route('checkout.place-order') }}" method="post">
                             @csrf
+                            <input type="hidden" name="address_id" value="{{ $defaultAddress->id }}">
                             <div id="checkout_payment">
                                 <div class="card">
                                     <h5 class="ltn__card-title">

@@ -5,9 +5,15 @@ namespace App\Http\Controllers\Clients;
 use App\Http\Controllers\Controller;
 use App\Models\CartItem;
 use App\Models\Coupon;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\OrderStatusHistory;
+use App\Models\Payment;
 use App\Models\ShippingAddress;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 use function Flasher\Toastr\Prime\toastr;
 use function PHPUnit\Framework\isEmpty;
@@ -130,7 +136,7 @@ class CheckoutController extends Controller
     {
         $coupon = session('coupon', []);
         $totalPrice = $coupon['final_price'] + $coupon['discount_amount'];
-        
+
         session()->forget('coupon');
 
         return response()->json([
@@ -141,5 +147,102 @@ class CheckoutController extends Controller
     }
 
     //Đặt hàng
-    
+    public function placeOrder(Request $request)
+    {
+        $request->validate([
+            'address_id' => 'required',
+            'payment_method' => 'required',
+        ]);
+
+        $user = Auth::user();
+        $cartItems = CartItem::where('user_id', $user->id)->get();
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Giỏ hàng đang trống');
+        }
+
+        DB::beginTransaction();
+        try {
+
+            //Lấy coupon trong session
+            $couponSession = session('coupon');
+
+            //Tạo đơn hàng
+            $order = new Order();
+
+            $order->user_id = $user->id;
+            $order->shipping_address_id = $request->address_id;
+
+            $originTotal = $cartItems->sum(fn($item) => $item->quantity * $item->product->price) + 25000;
+            $order->total_price = $originTotal;
+            $order->discount_amount = $couponSession['discount_amount'] ?? 0;
+            $order->final_price = $originTotal - ($couponSession['discount_amount'] ?? 0);
+            $order->coupon_id = $couponSession['coupon_id'] ?? null;
+            $order->coupon_code = $couponSession['coupon_code'] ?? null;
+            $order->status = 'pending';
+            $order->save();
+
+            if ($couponSession) {
+                $updated = Coupon::where('id', $couponSession['coupon_id'])
+                    ->whereColumn('used_count', '<', 'usage_limit')
+                    ->increment('used_count');
+
+                if ($updated === 0) {
+                    throw new Exception('Mã khuyến mãi đã hết lượt sử dụng');
+                }
+
+                session()->forget('coupon');
+            }
+
+            // Tạo OrderStatusHistory
+            OrderStatusHistory::create([
+                'order_id' => $order->id,
+                'status' => 'pending',
+                'changed_at' => now(),
+                'note' => 'Khách hàng tạo đơn hàng'
+            ]);
+
+            foreach ($cartItems as $item) {
+                //Tạo OrderItem
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'price' => $item->product->price
+                ]);
+
+                $product = $item->product;
+
+                if ($product->stock < $item->quantity) {
+                    throw new Exception("Sản phẩm {$product->name} không đủ hàng trong kho.");
+                }
+
+                $product->stock -= $item->quantity;
+                $product->save();
+            }
+
+            //Tạo Payment
+            Payment::create([
+                'order_id' => $order->id,
+                'payment_method' => $request->payment_method,
+                'amount' => $order->final_price,
+                'status' => 'pending',
+                'paid_at' => null,
+            ]);
+
+            //Xóa sản phẩm khỏi giỏ hàng
+            CartItem::where('user_id', $user->id)->delete();
+
+            DB::commit();
+
+            toastr()->success('Đặt hàng thành công !');
+            return redirect()->route('account');
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            // dd($e->getMessage());
+            toastr()->error('Có lỗi xảy ra, vui lòng thử lại');
+            return redirect()->route('checkout.index');
+        }
+    }
 }

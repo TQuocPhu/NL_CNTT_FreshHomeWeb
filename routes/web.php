@@ -91,6 +91,9 @@ Route::middleware(['auth.custom'])->group(function () {
     //Coupon
     Route::post('/checkout/apply-coupon', [CheckoutController::class, 'applyCoupon'])->name('checkout.applyCoupon');
     Route::post('/checkout/cancel-coupon', [CheckoutController::class, 'cancelCoupon'])->name('checkout.cancelCoupon');
+
+    //Đặt hàng
+    Route::post('/checkout', [CheckoutController::class, 'placeOrder'])->name('checkout.place-order');
 });
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
