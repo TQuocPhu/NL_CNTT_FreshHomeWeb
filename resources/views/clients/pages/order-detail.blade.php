@@ -140,10 +140,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Sản phẩm</td>
-                            <td>Đánh giá</td>
-                        </tr>
+                        @foreach ($order->orderItems as $item)
+                            <tr>
+                                <td>{{ $item->product->name }}</td>
+                                <td>
+                                    <a href="{{ route('product.detail', $item->product->slug) }}"
+                                        class="btn theme-btn-1 btn-effect-1">Đánh giá</a>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             @endif
