@@ -182,7 +182,7 @@
                                                                             <img style="width: 80px; height: 80px;" src="{{ asset('assets/clients/img/icons/buy-cash.png') }}" alt="Cash Img">
                                                                         @endif
                                                                     </td>
-                                                                    <td><a href="order-detail.html" class="btn btn-link text-primary fw-bold">Xem chi tiết</a></td>
+                                                                    <td><a href="{{ route('order.show-detail', $order->id) }}" class="btn btn-link text-primary fw-bold">Xem chi tiết</a></td>
                                                                 </tr>
                                                             @endforeach
                                                         </tbody>

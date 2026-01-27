@@ -9,6 +9,7 @@ use App\Http\Controllers\Clients\LoginGoogleController;
 use App\Http\Controllers\Clients\ProductController;
 use App\Http\Controllers\Clients\ResetPasswordController;
 use App\Http\Controllers\Clients\CheckoutController;
+use App\Http\Controllers\Clients\OrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -95,6 +96,11 @@ Route::middleware(['auth.custom'])->group(function () {
     //Đặt hàng
     Route::post('/checkout', [CheckoutController::class, 'placeOrder'])->name('checkout.place-order');
     Route::post('/checkout/paypal', [CheckoutController::class, 'placeOrderByPayPal'])->name('checkout.place-order-paypal');
+
+    //Đơn hàng
+    Route::get('/order/{id}', [OrderController::class, 'showOrderDetail'])->name('order.show-detail');
+    Route::post('/order/{id}/cancel', [OrderController::class, 'canceledOrder'])->name('order.cancel');
+    Route::post('/order/{id}/complete', [OrderController::class, 'completeOrder'])->name('order.completed');
 });
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
