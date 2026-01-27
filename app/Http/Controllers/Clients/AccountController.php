@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Clients;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\ShippingAddress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,8 @@ class AccountController extends Controller
     public function index() {
         $user = Auth::user();
         $addresses = ShippingAddress::where('user_id', $user->id)->get();
-        return view('clients.pages.account', compact('user', 'addresses'));
+        $orders = Order::where('user_id', $user->id)->orderByDesc('created_at')->get();
+        return view('clients.pages.account', compact('user', 'addresses', 'orders'));
     }
 
     //Chức năng cập nhật thông tin tài khoản

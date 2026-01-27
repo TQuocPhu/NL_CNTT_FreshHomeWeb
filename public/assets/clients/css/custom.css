@@ -206,7 +206,6 @@
     }
 }
 
-
 /* Cart */
 .cart-product-remove {
     width: 40px;
@@ -286,3 +285,21 @@
     margin: 10px 0;
 }
 
+#liton_tab_order table thead th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+#liton_tab_order table td {
+    vertical-align: middle;
+}
+
+#liton_tab_order table td:nth-child(3),
+#liton_tab_order table td:nth-child(4) {
+    text-align: right;
+}
+
+#liton_tab_order table td:nth-child(5),
+#liton_tab_order table td:nth-child(6) {
+    text-align: center;
+}

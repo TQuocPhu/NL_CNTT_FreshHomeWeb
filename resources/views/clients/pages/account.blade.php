@@ -13,7 +13,7 @@
                     <div class="ltn__product-tab-area">
                         <div class="container">
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     <div class="ltn__tab-menu-list mb-50">
                                         <div class="nav">
                                             <a class="active show" data-bs-toggle="tab" href="#liton_tab_dashboard">Bảng
@@ -31,7 +31,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-8">
+                                <div class="col-lg-9">
                                     <div class="tab-content">
                                         <div class="tab-pane fade active show" id="liton_tab_dashboard">
                                             <div class="ltn__myaccount-tab-content-inner">
@@ -150,23 +150,41 @@
                                                             <tr>
                                                                 <th>Đơn hàng</th>
                                                                 <th>Thời điểm đặt</th>
-                                                                <th>Tổng tiền hàng</th>
-                                                                <th>Tổng tiền trả</th>
+                                                                <th>Tổng tiền hàng (đ)</th>
+                                                                <th>Tổng tiền trả (đ)</th>
                                                                 <th>Trạng thái đơn hàng</th>
-                                                                <th>Thanh toán</th>
+                                                                <th>Phương thức thanh toán</th>
                                                                 <th>Hành động</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td>Carsafe - Car Service PSD Template</td>
-                                                                <td>Nov 22, 2020</td>
-                                                                <td>Yes</td>
-                                                                <td>Yes</td>
-                                                                <td>Yes</td>
-                                                                <td>Yes</td>
-                                                                <td><a href="order-detail.html">View</a></td>
-                                                            </tr>
+                                                            @foreach ($orders as $order)
+                                                                <tr>
+                                                                    <td>{{ $order->id }}</td>
+                                                                    <td>{{ $order->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('d/m/Y - H:i:s') }}</td>
+                                                                    <td>{{ $order->formatted_total_price }}</td>
+                                                                    <td>{{ $order->formatted_final_price }}</td>
+                                                                    <td>
+                                                                        @if($order->status == 'pending')
+                                                                            <span class="badge bg-warning">Chờ xác nhận</span>
+                                                                        @elseif ($order->status == 'processing')
+                                                                            <span class="badge bg-primary">Đang xử lý</span>
+                                                                        @elseif ($order->status == 'completed')
+                                                                            <span class="badge bg-success">Hoàn thành</span>
+                                                                        @elseif ($order->status == 'canceled')
+                                                                            <span class="badge bg-danger">Đã hủy</span>
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>
+                                                                        @if ($order->payment->payment_method == 'paypal')
+                                                                            <img style="width: 80px; height: 80px;" src="{{ asset('assets/clients/img/icons/paypal.webp') }}" alt="PayPal">
+                                                                        @else
+                                                                            <img style="width: 80px; height: 80px;" src="{{ asset('assets/clients/img/icons/buy-cash.png') }}" alt="Cash Img">
+                                                                        @endif
+                                                                    </td>
+                                                                    <td><a href="order-detail.html" class="btn btn-link text-primary fw-bold">Xem chi tiết</a></td>
+                                                                </tr>
+                                                            @endforeach
                                                         </tbody>
                                                     </table>
                                                 </div>

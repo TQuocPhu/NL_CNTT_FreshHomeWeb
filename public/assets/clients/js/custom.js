@@ -740,6 +740,9 @@ $(document).ready(function () {
         });
     });
 
+    // ===============================
+    // CANCELED COUPON - cập nhật giá PayPal
+    // ===============================
     $(document).on('click', '#cancel_coupon_btn', function () {
         $.ajaxSetup({
             headers: {
