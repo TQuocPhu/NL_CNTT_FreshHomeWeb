@@ -62,6 +62,7 @@
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
 
+
     {{--
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
     <!-- All JS Plugins -->
@@ -72,6 +73,9 @@
     <!-- toastr -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+    <script src="https://www.paypal.com/sdk/js?client-id={{ env('PAYPAL_CLIENT_ID') }}&currency=USD"></script>
+
+    @yield('scripts')
     <script src="{{asset('assets/clients/js/custom.js')}}"></script>
 
 </body>

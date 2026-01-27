@@ -103,6 +103,7 @@
                             </div>
                             <button class="btn theme-btn-1 btn-effect-1 text-uppercase" type="submit"
                                 id="order_button_cash">Đặt hàng</button>
+                            <div id="paypal-button-container"></div>
                         </form>
                     </div>
                 </div>
@@ -145,4 +146,10 @@
         </div>
     </div>
 
+@endsection
+
+@section('scripts')
+<script>
+    window.BASE_CHECKOUT_PRICE = {{ $totalPrice + 25000 }};
+</script>
 @endsection

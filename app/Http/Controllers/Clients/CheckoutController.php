@@ -245,4 +245,105 @@ class CheckoutController extends Controller
             return redirect()->route('checkout.index');
         }
     }
+
+    public function placeOrderByPayPal(Request $request)
+    {
+        $request->validate([
+            'address_id' => 'required',
+            'transactionID' => 'required',
+        ]);
+        $user = Auth::user();
+        $cartItems = CartItem::where('user_id', $user->id)->get();
+
+        if ($cartItems->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Giỏ hàng đang trống'
+            ], 400);
+        }
+        DB::beginTransaction();
+
+        try {
+            $couponSession = session('coupon');
+
+            $originTotal = $cartItems->sum(
+                fn($item) => $item->quantity * $item->product->price
+            ) + 25000;
+
+            $discount = $couponSession['discount_amount'] ?? 0;
+
+            $finalPrice = max($originTotal - $discount, 0);
+
+            $order = Order::create([
+                'user_id' => $user->id,
+                'shipping_address_id' => $request->address_id,
+                'total_price' => $originTotal,
+                'discount_amount' => $discount,
+                'final_price' => $finalPrice,
+                'coupon_id' => $couponSession['coupon_id'] ?? null,
+                'coupon_code' => $couponSession['coupon_code'] ?? null,
+                'status' => 'pending',
+            ]);
+
+            if ($couponSession) {
+                $updated = Coupon::where('id', $couponSession['coupon_id'])
+                    ->whereColumn('used_count', '<', 'usage_limit')
+                    ->increment('used_count');
+
+                if ($updated === 0) {
+                    throw new Exception('Mã khuyến mãi đã hết lượt sử dụng');
+                }
+
+                session()->forget('coupon');
+            }
+
+            OrderStatusHistory::create([
+                'order_id' => $order->id,
+                'status' => 'pending',
+                'changed_at' => now(),
+                'note' => 'Khách hàng thanh toán PayPal'
+            ]);
+
+            foreach ($cartItems as $item) {
+
+                if ($item->product->stock < $item->quantity) {
+                    throw new Exception("Sản phẩm {$item->product->name} không đủ hàng.");
+                }
+
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'price' => $item->product->price,
+                ]);
+
+                $item->product->decrement('stock', $item->quantity);
+            }
+
+            Payment::create([
+                'order_id' => $order->id,
+                'payment_method' => 'paypal',
+                'transaction_id' => $request->transactionID,
+                'amount' => $finalPrice,
+                'status' => 'completed',
+                'paid_at' => now(),
+            ]);
+            CartItem::where('user_id', $user->id)->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'order_id' => $order->id
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // toastr()->error('Có lỗi xảy ra, vui lòng thử lại. Lỗi: ' . $e->getMessage());
+            // return redirect()->route('checkout');
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

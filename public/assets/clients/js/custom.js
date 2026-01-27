@@ -684,5 +684,124 @@ $(document).ready(function () {
         });
     });
 
+    //Đặt hàng
+    // render button
+    function togglePayment() {
+        if ($('#payment_paypal').is(':checked')) {
+            $('#paypal-button-container').show()
+            $('#order_button_cash').hide()
+        } else {
+            $('#paypal-button-container').hide();
+            $('#order_button_cash').show();
+        }
+    }
 
+    togglePayment()
+
+    $('input[name="payment_method"]').on('change', togglePayment);
+
+    let finalCheckoutPrice = window.BASE_CHECKOUT_PRICE;
+
+    // ===============================
+    // APPLY COUPON - cập nhật giá PayPal
+    // ===============================
+    $('#apply_coupon_btn').on('click', function () {
+        let code = $('input[name="coupon_code"]').val();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json'
+            }
+        });
+
+        $.ajax({
+            url: '/checkout/apply-coupon',
+            method: 'POST',
+            data: {
+                coupon_code: code
+            },
+            success: function (res) {
+                if (!res.success) {
+                    toastr.error(res.message);
+                    return;
+                }
+
+                $('#discount_amount').text(res.discount + ' đ');
+                $('#final_price').text(res.final_price + ' đ');
+
+                // CẬP NHẬT GIÁ PAYPAL
+                finalCheckoutPrice = parseFloat(
+                    res.final_price.replace(/\./g, '')
+                );
+
+                toastr.success(res.message);
+            }
+        });
+    });
+
+    $(document).on('click', '#cancel_coupon_btn', function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json'
+            }
+        });
+        $.ajax({
+            url: '/checkout/cancel-coupon',
+            method: 'POST',
+            success: function (res) {
+                finalCheckoutPrice = res.totalPrice;
+                $('#discount_amount').text('0 đ');
+                $('#final_price').text(finalCheckoutPrice.toLocaleString('vi-VN') + ' đ');
+                $('input[name="coupon_code"]').val('');
+                toastr.info('Đã hủy mã khuyến mãi');
+            }
+        });
+    });
+
+    paypal.Buttons({
+        createOrder: function (data, actions) {
+            return actions.order.create({
+                purchase_units: [
+                    {
+                        amount: {
+                            // DÙNG GIÁ SAU COUPON
+                            value: (finalCheckoutPrice / 26304).toFixed(2),
+                        }
+                    }
+                ]
+            });
+        },
+
+        onApprove: function (data, actions) {
+            return actions.order.capture().then(function (details) {
+
+                fetch("/checkout/paypal", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+                    },
+                    body: JSON.stringify({
+                        orderID: data.orderID,
+                        payerID: data.payerID,
+                        transactionID: details.id,
+                        amount: details.purchase_units[0].amount.value,
+                        address_id: $("#list_address").val(),
+                    })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.href = "/account";
+                            toastr.success("Thanh toán thành công");
+                        } else {
+                            toastr.error("Có lỗi xảy ra, vui lòng thử lại");
+                        }
+                    });
+
+            });
+        }
+    }).render('#paypal-button-container');
 });

@@ -94,6 +94,7 @@ Route::middleware(['auth.custom'])->group(function () {
 
     //Đặt hàng
     Route::post('/checkout', [CheckoutController::class, 'placeOrder'])->name('checkout.place-order');
+    Route::post('/checkout/paypal', [CheckoutController::class, 'placeOrderByPayPal'])->name('checkout.place-order-paypal');
 });
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
