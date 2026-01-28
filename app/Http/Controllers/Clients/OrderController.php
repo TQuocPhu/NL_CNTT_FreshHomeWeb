@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderStatusHistory;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -67,6 +68,61 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             toastr()->error('Không thể hủy đơn hàng. Vui lòng thử lại. Lỗi: ' . $e);
+            return redirect()->back();
+        }
+    }
+
+    public function completeOrder($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $user = Auth::user();
+            $order = Order::where('id', $id)->where('user_id', $user->id)->where('status', 'processing')->firstOrFail();
+
+            //cập nhật trạng thái đơn hàng
+            $order->update(['status' => 'completed']);
+
+            //Lưu lịch sử trạng thái
+            OrderStatusHistory::create([
+                'order_id'   => $order->id,
+                'status'     => 'completed',
+                'changed_at' => now(),
+                'note'       => 'Khách hàng xác nhận đã nhận hàng'
+            ]);
+
+            //Cập nhật payment
+            $payment = $order->payment;
+
+            if ($payment) {
+                if ($payment->paid_at) {
+                    $payment->update([
+                        'status'  => 'completed'
+                    ]);
+                } else {
+                    $payment->update([
+                        'status'  => 'completed',
+                        'paid_at' => now(),
+                    ]);
+                }
+            } else {
+                Payment::create([
+                    'order_id'       => $order->id,
+                    'payment_method' => 'cash',
+                    'amount'         => $order->final_price,
+                    'status'         => 'completed',
+                    'paid_at'        => now(),
+                ]);
+            }
+
+            DB::commit();
+
+            toastr()->success('Đã nhận đơn hàng thành công! Bạn có thể đánh giá đơn hàng này');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            toastr()->error('Không thể hoàn thành đơn hàng. Vui lòng thử lại. Lỗi: ' . $e);
             return redirect()->back();
         }
     }
