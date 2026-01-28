@@ -10,6 +10,7 @@ use App\Http\Controllers\Clients\ProductController;
 use App\Http\Controllers\Clients\ResetPasswordController;
 use App\Http\Controllers\Clients\CheckoutController;
 use App\Http\Controllers\Clients\OrderController;
+use App\Http\Controllers\Clients\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -101,6 +102,8 @@ Route::middleware(['auth.custom'])->group(function () {
     Route::get('/order/{id}', [OrderController::class, 'showOrderDetail'])->name('order.show-detail');
     Route::post('/order/{id}/cancel', [OrderController::class, 'canceledOrder'])->name('order.cancel');
     Route::post('/order/{id}/complete', [OrderController::class, 'completeOrder'])->name('order.completed');
+
+    Route::post('/review', [ReviewController::class, 'createReview'])->name('review.create');
 });
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');

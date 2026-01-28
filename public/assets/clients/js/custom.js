@@ -807,4 +807,89 @@ $(document).ready(function () {
             });
         }
     }).render('#paypal-button-container');
+
+    /****************************
+     * REVIEW PRODUCT
+    *****************************/
+
+    // ===============================
+    // CHỈNH SỬA RATING
+    // ===============================
+    let selectedRating = 0
+
+    //hover star
+    $(".rating-star").hover(function() {
+        let value = $(this).data("value");
+        highlightStars(value);
+    }, function() {
+        highlightStars(selectedRating);
+    });
+
+
+    $(".rating-star").click(function(e) {
+        e.preventDefault();
+        selectedRating = $(this).data("value");
+        $("#rating-value").val(selectedRating);
+        highlightStars(selectedRating);
+    });
+
+    function highlightStars(value) {
+        $(".rating-star i").each(function() {
+            let starValue = $(this).parent().data("value");
+            if(starValue <= value) {
+                $(this).removeClass("far").addClass("fas");
+            } else {
+                $(this).removeClass("fas").addClass("far");
+            }
+        });
+    }
+
+    //Xử lý submit form với ajax
+    $("#review-form").submit(function(e) {
+        e.preventDefault();
+
+        let product_id = $(this).data("product-id");
+        let rating = $("#rating-value").val();
+        let comment  = $("#review-content").val();
+
+        if(rating === 0) {
+            toastr.error('Vui lòng chọn số sao đánh giá');
+            return;
+        }
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json'
+            }
+        });
+
+        $.ajax({
+            url: '/review',
+            method: 'POST',
+            data: {
+                product_id: product_id,
+                rating: rating,
+                comment: comment,
+            },
+            beforeSend: function() {
+                $(".submit-review").text("Đang gửi đánh giá ...");
+            },
+            success: function (res) {
+                $('#review-content').val("");
+                selectedRating = 0;
+                highlightStars(0);
+                $(".ltn__comment-reply-area").hide();
+                toastr.success(res.message);
+                
+            },
+            error: function (xhr) {
+                alert(xhr.responseJSON.error);
+            },
+            complete: function() {
+                $(".submit-review").text("Gửi");
+            }
+        });
+    });
+
 });
