@@ -103,6 +103,7 @@ Route::middleware(['auth.custom'])->group(function () {
     Route::post('/order/{id}/cancel', [OrderController::class, 'canceledOrder'])->name('order.cancel');
     Route::post('/order/{id}/complete', [OrderController::class, 'completeOrder'])->name('order.completed');
 
+    Route::get('/review/{product}', [ReviewController::class, 'showReview'])->name('review.show');
     Route::post('/review', [ReviewController::class, 'createReview'])->name('review.create');
 });
 

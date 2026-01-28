@@ -155,37 +155,7 @@
                                     <!-- comment-area -->
                                     <div class="ltn__comment-area mb-30">
                                         <div class="ltn__comment-inner">
-                                            <ul>
-                                                <li>
-                                                    <div class="ltn__comment-item clearfix">
-                                                        <div class="ltn__commenter-img">
-                                                            <img src="img/testimonial/1.jpg" alt="Image">
-                                                        </div>
-                                                        <div class="ltn__commenter-comment">
-                                                            <h6><a href="#">Adam Smit</a></h6>
-                                                            <div class="product-ratting">
-                                                                <ul>
-                                                                    <li><a href="#"><i class="fas fa-star"></i></a>
-                                                                    </li>
-                                                                    <li><a href="#"><i class="fas fa-star"></i></a>
-                                                                    </li>
-                                                                    <li><a href="#"><i class="fas fa-star"></i></a>
-                                                                    </li>
-                                                                    <li><a href="#"><i class="fas fa-star-half-alt"></i></a>
-                                                                    </li>
-                                                                    <li><a href="#"><i class="far fa-star"></i></a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                                elit. Doloribus, omnis fugit corporis iste magnam
-                                                                ratione.</p>
-                                                            <span class="ltn__comment-reply-btn">September 3,
-                                                                2020</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                            @include('clients.components.includes.review-list', ['product' => $product])
                                         </div>
                                     </div>
                                     <!-- comment-reply -->

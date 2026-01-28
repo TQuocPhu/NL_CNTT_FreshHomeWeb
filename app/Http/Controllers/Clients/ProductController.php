@@ -63,7 +63,7 @@ class ProductController extends Controller
     }
 
     public function detail($slug) {
-        $product = Product::with('category', 'images')->where('slug', $slug)->firstOrFail();
+        $product = Product::with('category', 'images', 'reviews.user')->where('slug', $slug)->firstOrFail();
         
         //Lấy sản phẩm liên quan (tương tự category)
         $relatedProducts = Product::where('category_id', $product->category_id)->where('id', '!=', $product->id)->limit(6)->get();

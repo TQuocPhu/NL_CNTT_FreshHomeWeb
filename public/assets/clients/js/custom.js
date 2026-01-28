@@ -881,7 +881,8 @@ $(document).ready(function () {
                 highlightStars(0);
                 $(".ltn__comment-reply-area").hide();
                 toastr.success(res.message);
-                
+
+                loadReviews(product_id);
             },
             error: function (xhr) {
                 alert(xhr.responseJSON.error);
@@ -891,5 +892,15 @@ $(document).ready(function () {
             }
         });
     });
+
+    function loadReviews(product_id) {
+        $.ajax({
+            url: "/review/"+product_id,
+            type: "GET",
+            success: function(res) {
+                $(".ltn__comment-inner").html(res)
+            }
+        });
+    }
 
 });
