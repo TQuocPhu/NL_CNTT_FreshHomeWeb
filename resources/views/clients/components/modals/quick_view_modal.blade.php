@@ -19,11 +19,7 @@
                                 <div class="col-lg-6 col-12">
                                     <div class="modal-product-info">
                                         <div class="product-ratting">
-                                            <ul>
-                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                                <li class="review-total"> <a href="#"> ( 95 Reviews )</a></li>
-                                            </ul>
+                                            @include('clients.components.includes.rating', ['product' => $product])
                                         </div>
                                         <h3>{{ $product->name }}</h3>
                                         <div class="product-price">

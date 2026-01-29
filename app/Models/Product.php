@@ -20,7 +20,7 @@ class Product extends Model
     ];
 
     //Thêm trường ảo để lấy dữ liệu hiển thị 
-    protected $append = ['image_url', 'formatted_price' ,'formatted_price_not_unit'];
+    protected $append = ['image_url', 'formatted_price' ,'formatted_price_not_unit', 'average_rating'];
 
     public function category(){
         return $this->belongsTo(Category::class);
@@ -46,6 +46,11 @@ class Product extends Model
     //Lấy 1 ảnh đầu tiên của sản phẩm
     public function firstImage() {
         return $this->hasOne(ProductImage::class)->orderBy('id');
+    }
+
+    //Lấy trung bình đánh giá
+    public function getAverageRatingAttribute() {
+        return $this->reviews->avg('rating') ?? 0;
     }
 
     // lấy image_url

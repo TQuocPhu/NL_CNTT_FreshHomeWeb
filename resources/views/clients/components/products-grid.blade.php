@@ -32,10 +32,7 @@
                     </div>
                     <div class="product-info">
                         <div class="product-ratting">
-                            <ul>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                            </ul>
+                            @include('clients.components.includes.rating', ['product' => $product])
                         </div>
                         <h2 class="product-title"><a href="{{ route('product.detail', $product->slug) }}">{{ $product->name }}</a></h2>
                         <div class="product-price">

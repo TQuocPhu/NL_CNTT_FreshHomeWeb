@@ -33,8 +33,8 @@
                     </div>
                     <div class="tab-content">
                         <div id="loading-spinner">
-                                <div class="loader"></div>
-                            </div>
+                            <div class="loader"></div>
+                        </div>
                         <div class="tab-pane fade active show" id="liton_product_grid">
                             @include('clients.components.products-grid', ['products' => $products])
                         </div>
@@ -54,10 +54,10 @@
                                 @foreach ($categories as $category)
 
                                     <li><a href="javascript:void(0)" class="category-filter" data-id="{{ $category->id }}">
-                                        {{ $category->name }}
-                                        <span><i class="fas fa-long-arrow-alt-right"></i></span></a>
+                                            {{ $category->name }}
+                                            <span><i class="fas fa-long-arrow-alt-right"></i></span></a>
                                     </li>
-                                    
+
                                 @endforeach
                             </ul>
                         </div>
@@ -75,30 +75,30 @@
                         <!-- Top Rated Product Widget -->
                         <div class="widget ltn__top-rated-product-widget">
                             <h4 class="ltn__widget-title ltn__widget-title-border">Sản phẩm được đánh giá cao</h4>
-                            <ul>
-                                <li>
-                                    <div class="top-rated-product-item clearfix">
-                                        <div class="top-rated-product-img">
-                                            <a href="product-details.html"><img src="{{ asset('assets/clients/img/product/1.png') }}" alt="Product Rated"></a>
-                                        </div>
-                                        <div class="top-rated-product-info">
-                                            <div class="product-ratting">
-                                                <ul>
-                                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                </ul>
+                            @if ($productsHighRating->count() > 0)
+                                <ul>
+                                    @foreach ($productsHighRating as $product)
+                                        <li>
+                                        <div class="top-rated-product-item clearfix">
+                                            <div class="top-rated-product-img">
+                                                <a href="{{ route('product.detail', $product->slug) }}"><img
+                                                        src="{{ $product->image_url }}"
+                                                        alt="{{ $product->name }}"></a>
                                             </div>
-                                            <h6><a href="product-details.html">Mixel Solid Seat Cover</a></h6>
-                                            <div class="product-price">
-                                                <span>$49.00</span>
+                                            <div class="top-rated-product-info">
+                                                <div class="product-ratting">
+                                                    @include('clients.components.includes.rating', ['product' => $product])
+                                                </div>
+                                                <h6><a href="{{ route('product.detail', $product->slug) }}">{{ $product->name }}</a></h6>
+                                                <div class="product-price">
+                                                    <span>{{ $product->formatted_price }}</span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
-                            </ul>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            @endif
                         </div>
                         <!-- Search Widget -->
                         <div class="widget ltn__search-widget">

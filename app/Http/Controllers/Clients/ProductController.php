@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Clients;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class ProductController extends Controller
@@ -14,8 +17,9 @@ class ProductController extends Controller
         $categories = Category::with('products')->get();
 
         $products = Product::with('firstImage')->where('status', 'in_stock')->paginate(9);
+        $productsHighRating = Product::withAvg('reviews', 'rating')->orderByDesc('reviews_avg_rating')->limit(2)->get();
 
-        return view('clients.pages.products', compact('categories', 'products'));
+        return view('clients.pages.products', compact('categories', 'products', 'productsHighRating'));
     }
     
     public function filter(Request $request) {
@@ -67,6 +71,22 @@ class ProductController extends Controller
         
         //Lấy sản phẩm liên quan (tương tự category)
         $relatedProducts = Product::where('category_id', $product->category_id)->where('id', '!=', $product->id)->limit(6)->get();
-        return view('clients.pages.product-detail', compact('product', 'relatedProducts'));
+
+        $averageRating = round($product->reviews->avg('rating') ?? 0, 1);
+
+        $hasPurchased = false; //Biến kiểm tra có mua sản phẩm chưa
+        $hasReviewed = false; // Biến kiểm tra có đánh giá sản phẩm chưa
+
+        if(Auth::check()) {
+            $user = Auth::user();
+            
+            $hasPurchased = OrderItem::whereHas('order', function($query) use ($user) {
+                 $query->where('user_id', $user->id)->where('status', 'completed');
+            })->where('product_id', $product->id)->exists();
+
+            $hasReviewed = Review::where('user_id', $user->id)->where('product_id', $product->id)->exists();
+
+        }
+        return view('clients.pages.product-detail', compact('product', 'relatedProducts', 'hasPurchased', 'hasReviewed', 'averageRating'));
     }
 }

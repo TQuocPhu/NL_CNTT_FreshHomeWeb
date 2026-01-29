@@ -37,11 +37,7 @@
                             <div class="col-md-6">
                                 <div class="modal-product-info shop-details-info pl-0">
                                     <div class="product-ratting">
-                                        <ul>
-                                            <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                            <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                            <li class="review-total"> <a href="#"> ( 95 Reviews )</a></li>
-                                        </ul>
+                                        @include('clients.components.includes.rating', ['product' => $product])
                                     </div>
                                     <h3>{{ $product->name }}</h3>
                                     <div class="product-price">
@@ -146,9 +142,16 @@
                                     <h4 class="title-2">Đánh giá của khách hàng</h4>
                                     <div class="product-ratting">
                                         <ul>
-                                            <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                            <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                            <li class="review-total"> <a href="#"> ( 95 Reviews )</a></li>
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                @if ($i <= floor($averageRating))
+                                                    <li><a href="javascript:void(0)"><i class="fas fa-star"></i></a></li>
+                                                @elseif ($i === ceil($averageRating) && $averageRating - floor($averageRating) >= 0.5)
+                                                    <li><a href="javascript:void(0)"><i class="fas fa-star-half-alt"></i></a></li>
+                                                @else
+                                                    <li><a href="javascript:void(0)"><i class="far fa-star"></i></a></li>
+                                                @endif
+                                            @endfor
+                                            <li class="review-total"> <a href="javascript:void(0)"> ( {{ $product->reviews->count() }} Đánh giá )</a></li>
                                         </ul>
                                     </div>
                                     <hr>
@@ -159,40 +162,43 @@
                                         </div>
                                     </div>
                                     <!-- comment-reply -->
-                                    <div class="ltn__comment-reply-area ltn__form-box mb-30">
-                                        <form id="review-form" method="post" data-product-id="{{ $product->id }}">
-                                            <h4 class="title-2">Gửi đánh giá</h4>
-                                            <div class="mb-30">
-                                                <div class="add-a-review">
-                                                    <h6>Đánh giá của bạn:</h6>
-                                                    <div class="product-ratting">
-                                                        <ul>
-                                                            @for ($i = 1; $i <= 5; $i++)
-                                                                <li>
-                                                                    <a href="javascript:void(0)" class="rating-star" data-value="{{ $i }}">
-                                                                        <i class="far fa-star"></i>
-                                                                    </a>
-                                                                </li>
-                                                            @endfor
-                                                        </ul>
+                                    @if (Auth::check() && $hasPurchased && !$hasReviewed)
+                                        <div class="ltn__comment-reply-area ltn__form-box mb-30">
+                                            <form id="review-form" method="post" data-product-id="{{ $product->id }}">
+                                                <h4 class="title-2">Gửi đánh giá</h4>
+                                                <div class="mb-30">
+                                                    <div class="add-a-review">
+                                                        <h6>Đánh giá của bạn:</h6>
+                                                        <div class="product-ratting">
+                                                            <ul>
+                                                                @for ($i = 1; $i <= 5; $i++)
+                                                                    <li>
+                                                                        <a href="javascript:void(0)" class="rating-star"
+                                                                            data-value="{{ $i }}">
+                                                                            <i class="far fa-star"></i>
+                                                                        </a>
+                                                                    </li>
+                                                                @endfor
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <input type="hidden" name="rating" id="rating-value" value="0">
+                                                <input type="hidden" name="rating" id="rating-value" value="0">
 
-                                            <div class="input-item input-item-textarea ltn__custom-icon">
-                                                <textarea placeholder="Nhập đánh giá của bạn...."
-                                                    id="review-content"></textarea>
-                                            </div>
+                                                <div class="input-item input-item-textarea ltn__custom-icon">
+                                                    <textarea placeholder="Nhập đánh giá của bạn...."
+                                                        id="review-content"></textarea>
+                                                </div>
 
 
-                                            <div class="btn-wrapper">
-                                                <button class="btn theme-btn-1 btn-effect-1 text-uppercase submit-review"
-                                                    type="submit">Gửi</button>
-                                            </div>
-                                        </form>
-                                    </div>
+                                                <div class="btn-wrapper">
+                                                    <button class="btn theme-btn-1 btn-effect-1 text-uppercase submit-review"
+                                                        type="submit">Gửi</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -246,10 +252,7 @@
                             </div>
                             <div class="product-info">
                                 <div class="product-ratting">
-                                    <ul>
-                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                    </ul>
+                                    @include('clients.components.includes.rating', ['product' => $product])
                                 </div>
                                 <h2 class="product-title"><a
                                         href="{{ route('product.detail', $product->slug) }}">{{ $product->name }}</a></h2>
