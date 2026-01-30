@@ -26,7 +26,7 @@
                             <p>Với quy trình kiểm soát nghiêm ngặt từ nông trại đến bàn ăn, chúng tôi cam kết mang lại những dịch vụ hậu mãi và chăm sóc khách hàng tốt nhất trong ngành thực phẩm hữu cơ.</p>
                             <div class="list-item-with-icon">
                                 <ul>
-                                    <li><a href="contact.html">Giao hàng miễn phí 24/7</a></li>
+                                    <li><a href="{{ route('contact.index') }}">Giao hàng miễn phí 24/7</a></li>
                                     <li><a href="#">Đội ngũ chuyên gia tư vấn</a></li>
                                     <li><a href="#">Sản phẩm đạt chuẩn VietGAP</a></li>
                                     <li><a href="{{ route('products.index') }}">Danh mục hàng hóa đa dạng</a></li>

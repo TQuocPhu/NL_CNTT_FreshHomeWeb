@@ -9,6 +9,7 @@ use App\Http\Controllers\Clients\LoginGoogleController;
 use App\Http\Controllers\Clients\ProductController;
 use App\Http\Controllers\Clients\ResetPasswordController;
 use App\Http\Controllers\Clients\CheckoutController;
+use App\Http\Controllers\Clients\ContactController;
 use App\Http\Controllers\Clients\OrderController;
 use App\Http\Controllers\Clients\ReviewController;
 use Illuminate\Support\Facades\Route;
@@ -124,3 +125,7 @@ Route::get('/cart', [CartController::class, 'showCartDetail'])->name('cart.index
 Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
 //remove trong trang giỏ hàng
 Route::post('/cart/remove-cart', [CartController::class, 'removeCartItemFromDetailCart'])->name('cart.remove-cart');
+
+//Liên hệ (Page Contact)
+Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/contact', [ContactController::class, 'sendContact'])->name('contact.send');

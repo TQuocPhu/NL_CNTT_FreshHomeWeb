@@ -310,7 +310,7 @@
                         </div>
                         <div class="btn-wrapper">
                             <a href="tel:+84913193089" class="theme-btn-1 btn btn-effect-1">GỌI NGAY</a>
-                            <a href="contact.html" class="btn btn-transparent btn-effect-4 white-color">LIÊN HỆ TƯ VẤN</a>
+                            <a href="{{ route('contact.index') }}" class="btn btn-transparent btn-effect-4 white-color">LIÊN HỆ TƯ VẤN</a>
                         </div>
                     </div>
                 </div>

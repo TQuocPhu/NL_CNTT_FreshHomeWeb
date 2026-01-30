@@ -25,7 +25,7 @@
                     </ul>
                 </li>
                 <li><a href="{{ route('products.index') }}">Cửa hàng</a></li>
-                <li><a href="contact.html">Liên hệ</a></li>
+                <li><a href="{{ route('contact.index') }}">Liên hệ</a></li>
             </ul>
         </div>
         <div class="ltn__utilize-buttons ltn__utilize-buttons-2">

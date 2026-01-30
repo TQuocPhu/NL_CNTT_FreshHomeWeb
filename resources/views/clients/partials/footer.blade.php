@@ -59,7 +59,7 @@
                                         <li><a href="{{ route('about') }}">Câu chuyện thương hiệu</a></li>
                                         <li><a href="{{ route('products.index') }}">Sản phẩm</a></li>
                                         <li><a href="{{ route('faq') }}">Câu hỏi thường gặp</a></li>
-                                        <li><a href="contact.html">Liên hệ</a></li>
+                                        <li><a href="{{ route('contact.index') }}">Liên hệ</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -69,7 +69,7 @@
                                 <h4 class="footer-title">Dịch vụ</h4>
                                 <div class="footer-menu">
                                     <ul>
-                                        <li><a href="#">Theo dõi đơn hàng</a></li>
+                                        <li><a href="{{ route('account') }}">Theo dõi đơn hàng</a></li>
                                         <li><a href="wishlist.html">Danh sách yêu thích</a></li>
                                         <li><a href="{{ route('login') }}">Đăng nhập / Đăng ký</a></li>
                                         <li><a href="{{ route('account') }}">Tài khoản</a></li>
@@ -89,7 +89,7 @@
                                         <li><a href="javascript:void(0)">Hình thức thanh toán</a></li>
                                         <li><a href="javascript:void(0)">Hợp tác cung ứng</a></li>
                                         <li><a href="{{ route('faq') }}">Trợ giúp</a></li>
-                                        <li><a href="contact.html">Góp ý ý kiến</a></li>
+                                        <li><a href="{{ route('contact.index') }}">Góp ý ý kiến</a></li>
                                     </ul>
                                 </div>
                             </div>

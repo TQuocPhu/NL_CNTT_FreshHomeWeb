@@ -818,15 +818,15 @@ $(document).ready(function () {
     let selectedRating = 0
 
     //hover star
-    $(".rating-star").hover(function() {
+    $(".rating-star").hover(function () {
         let value = $(this).data("value");
         highlightStars(value);
-    }, function() {
+    }, function () {
         highlightStars(selectedRating);
     });
 
 
-    $(".rating-star").click(function(e) {
+    $(".rating-star").click(function (e) {
         e.preventDefault();
         selectedRating = $(this).data("value");
         $("#rating-value").val(selectedRating);
@@ -834,9 +834,9 @@ $(document).ready(function () {
     });
 
     function highlightStars(value) {
-        $(".rating-star i").each(function() {
+        $(".rating-star i").each(function () {
             let starValue = $(this).parent().data("value");
-            if(starValue <= value) {
+            if (starValue <= value) {
                 $(this).removeClass("far").addClass("fas");
             } else {
                 $(this).removeClass("fas").addClass("far");
@@ -845,14 +845,14 @@ $(document).ready(function () {
     }
 
     //Xử lý submit form với ajax
-    $("#review-form").submit(function(e) {
+    $("#review-form").submit(function (e) {
         e.preventDefault();
 
         let product_id = $(this).data("product-id");
         let rating = $("#rating-value").val();
-        let comment  = $("#review-content").val();
+        let comment = $("#review-content").val();
 
-        if(rating === 0) {
+        if (rating === 0) {
             toastr.error('Vui lòng chọn số sao đánh giá');
             return;
         }
@@ -872,7 +872,7 @@ $(document).ready(function () {
                 rating: rating,
                 comment: comment,
             },
-            beforeSend: function() {
+            beforeSend: function () {
                 $(".submit-review").text("Đang gửi đánh giá ...");
             },
             success: function (res) {
@@ -887,7 +887,7 @@ $(document).ready(function () {
             error: function (xhr) {
                 alert(xhr.responseJSON.error);
             },
-            complete: function() {
+            complete: function () {
                 $(".submit-review").text("Gửi");
             }
         });
@@ -895,12 +895,78 @@ $(document).ready(function () {
 
     function loadReviews(product_id) {
         $.ajax({
-            url: "/review/"+product_id,
+            url: "/review/" + product_id,
             type: "GET",
-            success: function(res) {
+            success: function (res) {
                 $(".ltn__comment-inner").html(res)
             }
         });
     }
 
+    /****************************
+     * CONTACT
+    *****************************/
+
+    //Gửi liên hệ
+    $('#contact-form').on('submit', function (e) {
+        e.preventDefault();
+
+        let name = $('input[name="name"]').val();
+        let phone = $('input[name="phone"]').val();
+        let email = $('input[name="email"]').val();
+        let message = $('textarea[name="message"]').val();
+
+        let errorMessage = "";
+
+        if (name.length < 3) {
+            errorMessage += "Họ và tên phải có ít nhất 3 kí tự. <br>";
+        }
+
+        let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        if (!emailRegex.test(email)) {
+            errorMessage += "Email không hợp lệ. <br>";
+        }
+
+        let phoneRegex = /^[0-9]{10,11}$/;
+        if (!phoneRegex.test(phone)) {
+            errorMessage += "Số điện thoại không hợp lệ. <br>";
+        }
+
+        if(message.length < 5) {
+            errorMessage += "Tin nhắn liên hệ phải có ít nhất 5 kí tự. <br>";
+        }
+
+        if (errorMessage != "") {
+            toastr.error(errorMessage, 'Lỗi gửi liên hệ');
+            return;
+        }
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json'
+            }
+        });
+
+        $.ajax({
+            url: '/contact',
+            type: 'POST',
+            data: {
+                name: name,
+                phone: phone,
+                email: email,
+                message: message,
+            },
+            beforeSend: function () {
+                $('.btn-send-contact').text('Đang gửi liên hệ...').addClass('disabled');
+            },
+            success: function (res) {
+                toastr.success(res.message);
+                $('#contact-form')[0].reset();
+            },
+            complete: function () {
+                $('.btn-send-contact').text('Gửi liên hệ').removeClass('disabled');
+            }
+        });
+    });
 });

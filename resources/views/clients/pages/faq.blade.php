@@ -90,7 +90,7 @@
                             <div class="need-support text-center mt-100">
                                 <h2>Bạn vẫn cần hỗ trợ? Liên hệ với chúng tôi 24/7:</h2>
                                 <div class="btn-wrapper mb-30">
-                                    <a href="contact.html" class="theme-btn-1 btn">Liên hệ ngay</a>
+                                    <a href="{{ route('contact.index') }}" class="theme-btn-1 btn">Liên hệ ngay</a>
                                 </div>
                                 <h3><i class="fas fa-phone"></i> +84913193089</h3>
                             </div>
