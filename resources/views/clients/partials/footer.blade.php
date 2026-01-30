@@ -70,7 +70,7 @@
                                 <div class="footer-menu">
                                     <ul>
                                         <li><a href="{{ route('account') }}">Theo dõi đơn hàng</a></li>
-                                        <li><a href="wishlist.html">Danh sách yêu thích</a></li>
+                                        <li><a href="{{ route('wishlist.index') }}">Danh sách yêu thích</a></li>
                                         <li><a href="{{ route('login') }}">Đăng nhập / Đăng ký</a></li>
                                         <li><a href="{{ route('account') }}">Tài khoản</a></li>
                                         <li><a href="{{ route('about') }}">Điều khoản & Điều kiện</a></li>

@@ -12,6 +12,7 @@ use App\Http\Controllers\Clients\CheckoutController;
 use App\Http\Controllers\Clients\ContactController;
 use App\Http\Controllers\Clients\OrderController;
 use App\Http\Controllers\Clients\ReviewController;
+use App\Http\Controllers\Clients\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -104,8 +105,13 @@ Route::middleware(['auth.custom'])->group(function () {
     Route::post('/order/{id}/cancel', [OrderController::class, 'canceledOrder'])->name('order.cancel');
     Route::post('/order/{id}/complete', [OrderController::class, 'completeOrder'])->name('order.completed');
 
+    //Đánh giá
     Route::get('/review/{product}', [ReviewController::class, 'showReview'])->name('review.show');
     Route::post('/review', [ReviewController::class, 'createReview'])->name('review.create');
+
+    //Yêu thích
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/wishlist/add', [WishlistController::class, 'addToWishlist'])->name('wishlist.add');
 });
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');

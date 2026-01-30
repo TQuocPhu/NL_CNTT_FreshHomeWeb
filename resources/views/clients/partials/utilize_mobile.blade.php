@@ -39,10 +39,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="wishlist.html" title="Yêu thích">
+                    <a href="{{ route('wishlist.index') }}" title="Yêu thích">
                         <span class="utilize-btn-icon">
                             <i class="far fa-heart"></i>
-                            <sup>3</sup>
                         </span>
                         Yêu thích
                     </a>

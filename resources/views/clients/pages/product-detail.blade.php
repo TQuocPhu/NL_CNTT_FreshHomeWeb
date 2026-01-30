@@ -86,8 +86,8 @@
                                     <div class="ltn__product-details-menu-3">
                                         <ul>
                                             <li>
-                                                <a href="javascript:void(0)" title="Yêu thích" data-bs-toggle="modal"
-                                                    data-bs-target="#liton_wishlist_modal_{{ $product->id }}">
+                                                <a href="javascript:void(0)" title="Yêu thích" class="add-to-wishlist"
+                                                    data-id="{{ $product->id }}">
                                                     <i class="far fa-heart"></i></a>
                                                 <span>Yêu thích</span>
                                             </li>
@@ -151,7 +151,8 @@
                                                     <li><a href="javascript:void(0)"><i class="far fa-star"></i></a></li>
                                                 @endif
                                             @endfor
-                                            <li class="review-total"> <a href="javascript:void(0)"> ( {{ $product->reviews->count() }} Đánh giá )</a></li>
+                                            <li class="review-total"> <a href="javascript:void(0)"> (
+                                                    {{ $product->reviews->count() }} Đánh giá )</a></li>
                                         </ul>
                                     </div>
                                     <hr>
@@ -243,8 +244,8 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="javascript:void(0)" title="Yêu thích" data-bs-toggle="modal"
-                                                data-bs-target="#liton_wishlist_modal_{{ $product->id }}">
+                                            <a href="javascript:void(0)" title="Yêu thích" class="add-to-wishlist"
+                                                data-id="{{ $product->id }}">
                                                 <i class="far fa-heart"></i></a>
                                         </li>
                                     </ul>

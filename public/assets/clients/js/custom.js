@@ -969,4 +969,39 @@ $(document).ready(function () {
             }
         });
     });
+
+    /****************************
+     * WISHLIST
+    *****************************/
+   $(document).on('click', '.add-to-wishlist', function (e) {
+        e.preventDefault();
+
+        let productId = $(this).data('id');
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json'
+            }
+        });
+
+        $.ajax({
+            url: '/wishlist/add',
+            type: 'POST',
+            data: {
+                product_id: productId,
+            },
+            success: function (res) {
+                if (res.status == true) {
+                    $('#liton_wishlist_modal_' + productId).modal("show");
+                    $('#quick_view_modal_' + productId).modal("hide");
+                } else {
+                    toastr.info(res.message);
+                }
+            },
+            error: function (xhr) {
+                alert('Có lỗi xảy ra trong ajax addToWishlist');
+            },
+        });
+    });
 });
