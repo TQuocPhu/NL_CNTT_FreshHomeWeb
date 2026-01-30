@@ -112,6 +112,7 @@ Route::middleware(['auth.custom'])->group(function () {
     //Yêu thích
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist/add', [WishlistController::class, 'addToWishlist'])->name('wishlist.add');
+    Route::post('/wishlist/remove', [WishlistController::class, 'removeFromWishlist'])->name('wishlist.remove');
 });
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');

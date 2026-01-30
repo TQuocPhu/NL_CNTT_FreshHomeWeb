@@ -618,7 +618,9 @@ $(document).ready(function () {
 
 
     // apply mã khuyến mãi
-    $('#apply_coupon_btn').on('click', function (e) {
+    $('#apply_coupon_btn').off('click').on('click', function (e) {
+        e.preventDefault();
+
         let code = $('input[name="coupon_code"]').val();
 
         $.ajaxSetup({
@@ -644,6 +646,7 @@ $(document).ready(function () {
                 $('#final_price').text(res.final_price + ' đ');
 
                 if (!$('#cancel_coupon_btn').length) {
+                    $('#apply_coupon_btn').addClass("disabled");
                     $('.coupon-wrapper').append(`
                         <button type="button" id="cancel_coupon_btn" class="btn btn-danger">
                             Hủy
@@ -654,7 +657,7 @@ $(document).ready(function () {
             },
             error: function (xhr) {
                 alert(xhr.responseJSON.error);
-            }
+            },
         });
     });
 
@@ -676,6 +679,7 @@ $(document).ready(function () {
                 $('#final_price').text(res.totalPrice + ' đ');
                 $('input[name="coupon_code"]').val('');
                 $('#cancel_coupon_btn').remove();
+                $('#apply_coupon_btn').removeClass("disabled");
                 toastr.info('Đã hủy mã khuyến mãi');
             },
             error: function (xhr) {
@@ -1001,6 +1005,40 @@ $(document).ready(function () {
             },
             error: function (xhr) {
                 alert('Có lỗi xảy ra trong ajax addToWishlist');
+            },
+        });
+    });
+
+    //xóa khỏi wishlist
+    $('.wishlist-product-remove').on('click', function(e) {
+        e.preventDefault();
+
+        let productId = $(this).data('id');
+        let row = $(this).closest('tr');
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json'
+            }
+        });
+
+        $.ajax({
+            url: '/wishlist/remove',
+            type: 'POST',
+            data: {
+                product_id: productId,
+            },
+            success: function (res) {
+                if (res.status == true) {
+                    row.remove();
+                    toastr.success(res.message);
+                } else {
+                    toastr.error(res.message);
+                }
+            },
+            error: function (xhr) {
+                alert('Có lỗi xảy ra trong ajax removeFromWishlist');
             },
         });
     });
