@@ -79,23 +79,24 @@
                                 <ul>
                                     @foreach ($productsHighRating as $product)
                                         <li>
-                                        <div class="top-rated-product-item clearfix">
-                                            <div class="top-rated-product-img">
-                                                <a href="{{ route('product.detail', $product->slug) }}"><img
-                                                        src="{{ $product->image_url }}"
-                                                        alt="{{ $product->name }}"></a>
-                                            </div>
-                                            <div class="top-rated-product-info">
-                                                <div class="product-ratting">
-                                                    @include('clients.components.includes.rating', ['product' => $product])
+                                            <div class="top-rated-product-item clearfix">
+                                                <div class="top-rated-product-img">
+                                                    <a href="{{ route('product.detail', $product->slug) }}"><img
+                                                            src="{{ $product->image_url }}" alt="{{ $product->name }}"></a>
                                                 </div>
-                                                <h6><a href="{{ route('product.detail', $product->slug) }}">{{ $product->name }}</a></h6>
-                                                <div class="product-price">
-                                                    <span>{{ $product->formatted_price }}</span>
+                                                <div class="top-rated-product-info">
+                                                    <div class="product-ratting">
+                                                        @include('clients.components.includes.rating', ['product' => $product])
+                                                    </div>
+                                                    <h6><a
+                                                            href="{{ route('product.detail', $product->slug) }}">{{ $product->name }}</a>
+                                                    </h6>
+                                                    <div class="product-price">
+                                                        <span>{{ $product->formatted_price }}</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </li>
+                                        </li>
                                     @endforeach
                                 </ul>
                             @endif
@@ -103,9 +104,12 @@
                         <!-- Search Widget -->
                         <div class="widget ltn__search-widget">
                             <h4 class="ltn__widget-title ltn__widget-title-border">Tìm kiếm</h4>
-                            <form action="#">
-                                <input type="text" name="search" placeholder="Nhập tên sản phẩm...">
-                                <button type="submit"><i class="fas fa-search"></i></button>
+                            <form id="search-form" method="get" action="{{ route('search.index') }}">
+                                <input type="text" name="keyword" value="" placeholder="Tìm kiếm..." />
+
+                                <button type="submit">
+                                    <span><i class="icon-search"></i></span>
+                                </button>
                             </form>
                         </div>
 

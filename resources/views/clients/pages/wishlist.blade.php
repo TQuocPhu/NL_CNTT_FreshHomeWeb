@@ -11,7 +11,7 @@
                 <div class="col-lg-12">
                     <style>
                         .add-to-cart-btn:hover i {
-                            transform: scale(1.2);
+                            transform: scale(1.3);
                             transition: transform 0.2s ease;
                         }
                     </style>
