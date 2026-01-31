@@ -140,3 +140,4 @@ Route::post('/contact', [ContactController::class, 'sendContact'])->name('contac
 
 //Search
 Route::get('/search', [SearchProductController::class, 'index'])->name('search.index');
+Route::post('/search-img', [SearchProductController::class, 'searchByImage'])->name('search.searchImg');

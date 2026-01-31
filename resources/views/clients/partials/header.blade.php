@@ -69,7 +69,8 @@
                                     <li class="menu-icon"><a href="{{ route('products.index') }}">Cửa hàng</a>
                                     </li>
                                     <li><a href="{{ route('contact.index') }}">Liên hệ</a></li>
-                                    <li class="special-link"><a href="{{ route('contact.index') }}">Yêu cầu báo giá</a></li>
+                                    <li class="special-link"><a href="{{ route('contact.index') }}">Yêu cầu báo giá</a>
+                                    </li>
                                 </ul>
                             </div>
                         </nav>
@@ -85,9 +86,21 @@
                             </div>
                         </div>
                         <div class="header-search-1-form">
-                            <form id="search-form" method="get" action="{{ route('search.index') }}">
-                                <input type="text" name="keyword" value="" placeholder="Tìm kiếm..." />
-                                 <i class="fa fa-microphone" aria-hidden="true" id="voice-search"></i>
+                            <form id="search-form" class="search-wrapper" method="get" action="{{ route('search.index') }}">
+                                <input type="text" name="keyword" id="search-keyword" value=""
+                                    placeholder="Tìm kiếm..." />
+                                {{-- <i class="fa fa-microphone" aria-hidden="true" id="voice-search"></i>
+
+                                <i class="fa fa-camera" aria-hidden="true" id="image-search-trigger"
+                                    style="cursor: pointer; margin-left: 10px;" title="Tìm kiếm bằng hình ảnh"></i> --}}
+
+                                <div class="search-actions">
+                                    <i class="fa fa-microphone" id="voice-search"></i>
+                                    <i class="fa fa-camera" id="image-search-trigger"
+                                        title="Tìm kiếm bằng hình ảnh"></i>
+                                </div>
+                                <input type="file" id="image-input" name="search_image" accept="image/*"
+                                    style="display: none;">
                                 <button type="submit">
                                     <span><i class="icon-search"></i></span>
                                 </button>
@@ -121,7 +134,8 @@
                                     {{-- {{ \App\Models\CartItem::where('user_id', auth()->id())->sum('quantity') }} --}}
                                     {{ \App\Models\CartItem::where('user_id', auth()->id())->count() }}
                                 @else
-                                    {{-- {{ session('cart') ? array_sum(array_column(session('cart'), 'quantity')) : 0 }} --}}
+                                    {{-- {{ session('cart') ? array_sum(array_column(session('cart'), 'quantity')) : 0 }}
+                                    --}}
                                     {{ session('cart') ? count(session('cart')) : 0 }}
                                 @endauth
                             </sup>

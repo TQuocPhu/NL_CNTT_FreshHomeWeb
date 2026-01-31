@@ -1042,4 +1042,56 @@ $(document).ready(function () {
             },
         });
     });
+
+    
+    //Kích hoạt chọn file
+    $('#image-search-trigger').on('click', function() {
+        $('#image-input').click();
+    });
+
+    //Khi chọn file
+    $('#image-input').on('change', function(e) {
+        let file = this.files[0];
+
+        if(!file) return;
+
+        let formData = new FormData();
+        formData.append('search_image', file)
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            url: '/search-img',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+
+            beforeSend: function() {
+                toastr.info('Đang nhận diện hình ảnh');
+            },
+            success: function(res) {
+                if(res.keyword) {
+                    $('#search-keyword').val(res.keyword);
+
+                    toastr.success('Đã nhận diện: ' + res.keyword);
+
+                    setTimeout(function() {
+                        $('#search-form').submit();
+                    }, 800);
+                } else {
+                    toastr.error('Không tìm thấy từ khóa phù hợp.');
+                }
+            },
+            error: function(xhr) {
+                console.error(xhr.responseText);
+                toastr.error('Có lỗi xảy ra trong quá trình nhận diện.');
+            }
+        });
+    })
+
 });

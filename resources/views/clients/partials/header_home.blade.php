@@ -87,9 +87,21 @@
                             </div>
                         </div>
                         <div class="header-search-1-form">
-                            <form id="search-form" method="get" action="{{ route('search.index') }}">
-                                <input type="text" name="keyword" value="" placeholder="Tìm kiếm..." />
-                                <i class="fa fa-microphone" aria-hidden="true" id="voice-search"></i>
+                            <form id="search-form" class="search-wrapper" method="get" action="{{ route('search.index') }}">
+                                <input type="text" name="keyword" id="search-keyword" value=""
+                                    placeholder="Tìm kiếm..." />
+                                {{-- <i class="fa fa-microphone" aria-hidden="true" id="voice-search"></i>
+
+                                <i class="fa fa-camera" aria-hidden="true" id="image-search-trigger"
+                                    style="cursor: pointer; margin-left: 10px;" title="Tìm kiếm bằng hình ảnh"></i> --}}
+
+                                <div class="search-actions">
+                                    <i class="fa fa-microphone" id="voice-search"></i>
+                                    <i class="fa fa-camera" id="image-search-trigger"
+                                        title="Tìm kiếm bằng hình ảnh"></i>
+                                </div>
+                                <input type="file" id="image-input" name="search_image" accept="image/*"
+                                    style="display: none;">
                                 <button type="submit">
                                     <span><i class="icon-search"></i></span>
                                 </button>
