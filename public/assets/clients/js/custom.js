@@ -1044,6 +1044,9 @@ $(document).ready(function () {
     });
 
     
+    /****************************
+     * SEARCH
+    *****************************/
     //Kích hoạt chọn file
     $('#image-search-trigger').on('click', function() {
         $('#image-input').click();
@@ -1092,6 +1095,64 @@ $(document).ready(function () {
                 toastr.error('Có lỗi xảy ra trong quá trình nhận diện.');
             }
         });
-    })
+    });
 
+    //Tìm kiếm bằng giọng nói
+    
+    //Kiểm tra trình duyệt có hỗ trợ không
+    if('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+
+        recognition.lang = 'vi-VN';
+        recognition.continueous = true;
+        recognition.interimResults = true;
+
+        var isRecognizing = false;
+        $('#voice-search').on('click', function() {
+            if(isRecognizing) {
+                recognition.stop();
+                $('#voice-search').removeClass('fa-microphone-slash').addClass('fa-microphone');
+            } else {
+                recognition.start();
+                $('#voice-search').removeClass('fa-microphone').addClass('fa-microphone-slash');
+            }
+        })
+
+        recognition.onstart = function() {
+            console.log('Speech: ');
+            $('#voice-search').removeClass('fa-microphone').addClass('fa-microphone-slash');
+            isRecognizing = true;
+        }
+
+        recognition.onend = function() {
+            console.log('Voice end: ');
+            $('#voice-search').removeClass('fa-microphone-slash').addClass('fa-microphone');
+            isRecording = false;
+        }
+
+        recognition.onerror = function (event) {
+            console.log('Voice recognization error: ', event);
+            $('#voice-search').removeClass('fa-microphone-slash').addClass('fa-microphone');
+            isRecognizing = false;
+            toastr.error('Lỗi nhận diện giọng nói. Vui lòng thử lại');
+        }
+
+        recognition.onresult = function(event) {
+            let transcript = '';
+
+            for(let i = event.resultIndex; i < event.results.length; i++) {
+                transcript += event.results[i][0].transcript;
+            }
+            transcript = transcript.trim().replace(/\.+$/, "");
+
+            $('input[name="keyword"]').val(transcript);
+
+            if(event.results[event.results.length - 1].isFinal) {
+                $('#search-form').submit();
+            }
+        };
+    } else {
+        $('#voice-search').hide();
+    }
 });

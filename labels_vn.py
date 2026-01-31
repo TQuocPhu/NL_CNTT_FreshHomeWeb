@@ -680,4 +680,9 @@ TRANSLATIONS = {
     "broccoli": "bông cải xanh",
     "cauliflower": "bông cải trắng",
     "zucchini": "bí ngòi",
+    "pop bottle": "Nước mắm", 
+    "bottle": "Chai gia vị",
+    "package":"Đồ đóng gói",
+    "bucket": "Cá tươi Hải sản",
+    "plastic bag": "Rau sạch",
 }

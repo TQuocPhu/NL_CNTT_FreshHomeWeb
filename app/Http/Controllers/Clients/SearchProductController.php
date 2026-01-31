@@ -69,30 +69,6 @@ class SearchProductController extends Controller
                     return response()->json(['error' => 'Không nhận diện được vật thể.'], 404);
                 }
 
-                // // Xử lý từ khóa: Tách thành mảng để tìm kiếm bao phủ (VD: "Sữa tươi organic" -> ["Sữa", "tươi", "organic"])
-                // $words = explode(' ', $keyword);
-
-                // // Truy vấn sản phẩm dựa trên từ khóa tiếng Việt AI trả về
-                // $products = Product::where(function ($query) use ($keyword, $words) {
-                //     // Ưu tiên tìm chính xác cụm từ trước
-                //     $query->where('name', 'LIKE', "%{$keyword}%")
-                //         ->orWhere('description', 'LIKE', "%{$keyword}%");
-
-                //     // Sau đó tìm theo từng từ đơn lẻ (tăng khả năng trúng)
-                //     foreach ($words as $word) {
-                //         if (strlen($word) > 2) { // Chỉ tìm các từ có nghĩa, bỏ qua từ quá ngắn
-                //             $query->orWhere('name', 'LIKE', "%{$word}%");
-                //         }
-                //     }
-                // })
-                //     ->paginate(12)
-                //     ->withQueryString();
-
-                // return view('clients.pages.products-search', [
-                //     'products' => $products,
-                //     'keyword' => "Kết quả cho: " . $keyword
-                // ]);
-
                 return response()->json([
                     'status' => true,
                     'keyword' => $keyword

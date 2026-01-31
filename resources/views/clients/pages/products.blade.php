@@ -67,7 +67,7 @@
                             <div class="price_filter">
                                 <div class="price_slider_amount">
                                     <input type="submit" value="Khoảng giá:" />
-                                    <input type="text" class="amount" name="price" placeholder="Add Your Price" />
+                                    <input type="text" class="amount" name="price" placeholder="Nhập giá của bạn" />
                                 </div>
                                 <div class="slider-range"></div>
                             </div>
