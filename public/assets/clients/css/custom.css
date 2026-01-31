@@ -364,7 +364,7 @@
     align-items: center;
     position: relative;
     border: 1px solid #e1e1e1; /* Màu viền giống trong ảnh của bạn */
-    padding: 5px 15px;
+    padding: 0px 15px;
     background: #fff;
 }
 
@@ -379,25 +379,48 @@
 /* Nhóm các icon (Micro và Camera) */
 .search-actions {
     display: flex;
+    align-items: center;
     gap: 15px; /* Khoảng cách giữa 2 icon */
     margin-right: 15px;
     color: #333; /* Màu icon */
     font-size: 16px;
 }
 
-.search-actions i {
+.search-actions i, 
+.search-actions button {
     cursor: pointer;
-    transition: 0.3s;
+    font-size: 16px;
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s;
 }
 
-.search-actions i:hover {
-    color: #82b440; /* Màu xanh lá giống nút báo giá của bạn */
+.search-actions i:hover,
+.search-actions button:hover i {
+    color: #82b440; /* Màu xanh lá đặc trưng của bạn */
 }
 
 /* Nút Submit (Kính lúp) */
-.search-wrapper button {
-    background: none;
-    border: none;
+.search-actions button i {
+    font-weight: bold;
+}
+
+
+#voice-search {
+    position: absolute;
+    right: 70px;
+    top: 22px;
+    align-items: center;
     cursor: pointer;
-    font-size: 18px;
+}
+
+#image-search-trigger {
+    position: absolute;
+    right: 43px;
+    top: 22px;
+    align-items: center;
+    cursor: pointer;
 }
