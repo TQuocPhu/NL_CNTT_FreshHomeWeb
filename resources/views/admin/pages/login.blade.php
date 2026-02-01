@@ -30,7 +30,7 @@
         <div class="login_wrapper">
             <div class="animate form login_form">
                 <section class="login_content">
-                    <form method="post" action="">
+                    <form method="post" action="{{ route('admin.login-post') }}">
                         @csrf
                         <h1>Đăng nhập</h1>
                         <div>
