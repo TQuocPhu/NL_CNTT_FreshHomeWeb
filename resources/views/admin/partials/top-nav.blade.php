@@ -17,8 +17,8 @@
                             <span>Settings</span>
                         </a>
                         <a class="dropdown-item" href="javascript:;">Help</a>
-                        <a class="dropdown-item" href="login.html"><i class="fa fa-sign-out pull-right"></i>
-                            Log Out</a>
+                        <a class="dropdown-item" href="{{ route('admin.logout') }}"><i class="fa fa-sign-out pull-right"></i>
+                            Đăng xuất</a>
                     </div>
                 </li>
 
