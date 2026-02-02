@@ -72,7 +72,7 @@
 
                     @if ($adminUser->role->permissions->contains('name', 'manage_contacts'))
                         <li>
-                            <a href=""><i class="fa fa-paper-plane"></i> Quản Lý Liên hệ </a>
+                            <a href="#"><i class="fa fa-paper-plane"></i> Quản Lý Liên hệ </a>
                         </li>
                     @endif
 
