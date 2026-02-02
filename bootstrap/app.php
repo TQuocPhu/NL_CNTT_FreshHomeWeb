@@ -14,7 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
         //đăng kí middleware
         $middleware->alias([
             'auth.custom' => \App\Http\Middleware\RedirectIfNotAuthenticated::class,
-
+            'check.auth.admin' => \App\Http\Middleware\RedirectIfAuthenticatedAdmin::class,
+            
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
