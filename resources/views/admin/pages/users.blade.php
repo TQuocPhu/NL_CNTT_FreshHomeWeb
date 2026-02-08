@@ -94,21 +94,18 @@
 
                                         <div class="profile-bottom text-center"
                                             style="margin-top: auto; background: #f5f5f5; padding: 10px; width: 100%; border-top: 1px solid #e5e5e5;">
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-4 role-user-button">
                                                 @if ($user->role->name == 'admin')
-                                                    {{-- Nút Admin - Màu xanh dương (Primary) --}}
                                                     <button type="button" class="btn btn-primary btn-xs" disabled
                                                         style="opacity: 1; cursor: default; font-weight: bold; text-transform: uppercase; min-width: 80px;">
                                                         <i class="fa fa-shield"></i> Quản trị viên
                                                     </button>
                                                 @elseif ($user->role->name == 'staff')
-                                                    {{-- Nút Staff - Màu xanh lá (Success) --}}
                                                     <button type="button" class="btn btn-success btn-xs" disabled
                                                         style="opacity: 1; cursor: default; font-weight: bold; text-transform: uppercase; min-width: 80px;">
                                                         <i class="fa fa-user-md"></i> Nhân viên
                                                     </button>
                                                 @else
-                                                    {{-- Nút Customer - Màu xám (Secondary/Default) --}}
                                                     <button type="button" class="btn btn-secondary btn-xs" disabled
                                                         style="opacity: 1; cursor: default; font-weight: bold; text-transform: uppercase; min-width: 80px; background-color: #6c757d; border-color: #6c757d; color: #fff;">
                                                         <i class="fa fa-user"></i> Khách hàng
@@ -126,10 +123,13 @@
                                                         </button>
                                                     @endif
 
-                                                    <button type="button" class="btn btn-primary btn-sm upgradeStaff"
-                                                        data-userid="{{ $user->id }}">
-                                                        <i class="fa fa-user"> </i> Nhân viên
-                                                    </button>
+                                                    @if($user->status == 'active')
+                                                        <button type="button" class="btn btn-primary btn-sm upgradeStaff"
+                                                            data-userid="{{ $user->id }}">
+                                                            <i class="fa fa-user"> </i> Nhân viên
+                                                        </button>
+                                                    @endif
+
                                                     @if ($user->status == 'banned')
                                                         <button type="button" class="btn btn-success btn-sm changeStatus"
                                                             data-userid="{{ $user->id }}" data-status="active">

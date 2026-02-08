@@ -21,7 +21,7 @@ Route::prefix('admin')->group(function () {
             //  Quản lý người dùng
             // *********************
             Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
-            
+            Route::post('/user/upgrade', [AdminUserController::class, 'upgradedStaff'])->name('admin.user.upgrade');
         });
 
         Route::middleware(['permission:manage_categories'])->group(function () {

@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {{-- csrf --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{{ asset('assets/admin/images/favicon.ico')}}" type="image/ico" />
+    <link rel="icon" href="{{ asset('assets/admin/images/favicon.png')}}" type="image/ico" />
 
     <title>@yield('title')</title>
 
