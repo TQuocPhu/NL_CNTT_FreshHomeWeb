@@ -32,7 +32,7 @@
                     <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard </a></li>
 
                     @if ($adminUser->role->permissions->contains('name', 'manage_users'))
-                        <li><a href="#"><i class="fa fa-users"></i> Quản lý người dùng </a>
+                        <li><a href="{{ route('admin.users.index') }}"><i class="fa fa-users"></i> Quản lý người dùng </a>
                         </li>
                     @endif
 

@@ -1,6 +1,6 @@
 <footer>
-                <div class="pull-right">
-                    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-                </div>
-                <div class="clearfix"></div>
-            </footer>
+    <div class="pull-right">
+        Fresh_Home_Admin - Bootstrap Admin Template by <a href="javascript:void(0)">TQP</a>
+    </div>
+    <div class="clearfix"></div>
+</footer>

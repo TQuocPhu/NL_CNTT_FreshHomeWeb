@@ -1,12 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->group(function () {
-
-
 
     Route::middleware(['check.auth.admin'])->group(function () {
         Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
@@ -21,7 +20,8 @@ Route::prefix('admin')->group(function () {
             // *********************
             //  Quản lý người dùng
             // *********************
-
+            Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+            
         });
 
         Route::middleware(['permission:manage_categories'])->group(function () {

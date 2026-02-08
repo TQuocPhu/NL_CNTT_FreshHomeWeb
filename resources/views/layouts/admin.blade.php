@@ -33,6 +33,8 @@
     <!-- Custom Theme Style -->
     <link href="{{ asset('assets/admin/build/css/custom.min.css')}}" rel="stylesheet">
 
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/style.css') }}"/>
+
     <!-- toastr -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
