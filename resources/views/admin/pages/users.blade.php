@@ -65,7 +65,7 @@
                                                             {{ $user->phone_number ?? "Chưa cập nhật!" }}
                                                         </li>
 
-                                                        <li>
+                                                        <li class="status-text">
                                                             <i
                                                                 class="fa {{ $user->status == 'active' ? 'fa-check-circle text-success' : ($user->status == 'pending' ? 'fa-clock-o text-warning' : 'fa-times-circle text-danger') }}"></i>
                                                             Trạng thái:
