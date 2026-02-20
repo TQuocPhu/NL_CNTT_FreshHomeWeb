@@ -147,10 +147,28 @@ $(document).ready(function () {
     *****************************/
     $('#category-image').change(function () {
         let file = this.files[0];
-        if(file) {
+        if (file) {
             let render = new FileReader();
             render.onload = function (e) {
                 $('#image-preview').attr('src', e.target.result);
+            }
+            render.readAsDataURL(file);
+        } else {
+            $('#image-preview').attr('src', '');
+        }
+    });
+
+    $('.category-image-input').change(function () {
+        let file = this.files[0];
+        let category_id = $(this).data('id');
+        if (file) {
+            let render = new FileReader();
+            render.onload = function (e) {
+                $('.image-preview').each(function () {
+                    if ($(this).closest(".modal").attr("id") === "modalUpdate-" + category_id) {
+                        $(this).attr("src", e.target.result);
+                    }
+                });
             }
             render.readAsDataURL(file);
         } else {
@@ -165,5 +183,134 @@ $(document).ready(function () {
         form.find('input[type="file"]').val('');
         form.find('#image-preview').html = null;
         form.find('#image-preview').attr('src', '');
+    });
+
+    // update category
+    $(document).on('click', '.btn-update-submit-category', function (e) {
+        e.preventDefault();
+
+        let button = $(this);
+        let form = $(this).closest('.modal').find('form');
+        let formData = new FormData(form[0]);
+
+        let category_id = button.data('id');
+
+        formData.append('category_id', category_id);
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '/admin/category/update',
+            data: formData,
+            contentType: false,
+            processData: false,
+
+            beforeSend: function () {
+                button.prop('disabled', true);
+                button.text('Đang cập nhật...');
+            },
+            success: function (res) {
+                if (res.status) {
+                    toastr.success(res.message);
+                    let category = res.data;
+                    let categoryId = category.id;
+
+                    let row = $(`#category-row-${categoryId}`);
+
+                    if (category.image) {
+                        row.find('.category-image').attr('src', category.image);
+                    }
+
+                    row.find('td:nth-child(2)').text(category.name);
+                    row.find('td:nth-child(3)').text(category.slug);
+                    row.find('td:nth-child(4)').text(category.description || '');
+
+                    let modal = $(`#modalUpdate-${categoryId}`);
+                    modal.find('input[name="name"]').val(category.name);
+                    modal.find('input[name="description"]').val(category.description);
+
+                    if (category.image) {
+                        modal.find('.image-preview').attr('src', category.image);
+                    }
+
+                    modal.modal('hide');
+
+                    row.addClass('table-info');
+                    setTimeout(() => row.removeClass('table-info'), 2000);
+                } else {
+                    toastr.error(res.message);
+                }
+            },
+            error: function (xhr) {
+                console.error(xhr);
+                if (xhr.status === 422) {
+                    let errors = xhr.responseJSON.errors;
+                    // Hiển thị lỗi đầu tiên bằng toastr
+                    toastr.error(Object.values(errors)[0][0]);
+                } else if (xhr.status === 404) {
+                    toastr.error(xhr.responseJSON?.message || 'Không tìm thấy danh mục');
+                } else {
+                    toastr.error('Đã có lỗi hệ thống xảy ra.');
+                }
+            },
+            complete: function () {
+                button.prop('disabled', false).text('Chỉnh sửa');
+            }
+        });
+    });
+
+    $(document).on('click', '.btn-delete-submit-category', function (e) {
+        e.preventDefault();
+
+        let button = $(this);
+        let category_id = button.data('id');
+        let row = button.closest('tr');
+
+        if (confirm('Bạn có chắc chắn muốn xóa danh mục này?')) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/admin/category/delete",
+                data: {
+                    category_id: category_id,
+                },
+                success: function (res) {
+                    if (res.status) {
+                        toastr.success(res.message);
+                        row.fadeOut(300, function () {
+                            $(this).remove();
+                        });
+                    } else {
+                        toastr.error(res.message);
+                    }
+                },
+                error: function (xhr) {
+                    console.error(xhr);
+                    if (xhr.status === 422) {
+                        let errors = xhr.responseJSON.errors;
+                        // Hiển thị lỗi đầu tiên bằng toastr
+                        toastr.error(Object.values(errors)[0][0]);
+                    } else if (xhr.status === 400) {
+                        // Đây là lỗi nghiệp vụ 
+                        toastr.warning(xhr.responseJSON.message);
+                    }
+                    else if (xhr.status === 404) {
+                        toastr.error(xhr.responseJSON?.message || 'Không tìm thấy danh mục');
+                    } else {
+                        toastr.error('Đã có lỗi hệ thống xảy ra.');
+                    }
+                }
+            });
+        }
     });
 });

@@ -33,6 +33,8 @@ Route::prefix('admin')->group(function () {
             Route::get('/categories', [AdminCategoryController::class, 'index'])->name('admin.categories.index');
             Route::get('/category/add', [AdminCategoryController::class, 'showFormAddCategory'])->name('admin.categories.add');
             Route::post('/category/add', [AdminCategoryController::class, 'addCategory'])->name('admin.categories.add-post');
+            Route::post('/category/update', [AdminCategoryController::class, 'updateCategory'])->name('admin.categories.update');
+            Route::post('/category/delete', [AdminCategoryController::class, 'deleteCategory'])->name('admin.categories.delete');
         });
 
         Route::middleware(['permission:manage_products'])->group(function () {
