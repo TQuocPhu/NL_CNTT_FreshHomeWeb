@@ -139,5 +139,31 @@ $(document).ready(function () {
                 button.prop('disabled', false).removeClass('disabled').html(originalHtml);
             },
         });
-    })
+    });
+
+
+    /****************************
+     * CATEGORIES MANAGEMENT
+    *****************************/
+    $('#category-image').change(function () {
+        let file = this.files[0];
+        if(file) {
+            let render = new FileReader();
+            render.onload = function (e) {
+                $('#image-preview').attr('src', e.target.result);
+            }
+            render.readAsDataURL(file);
+        } else {
+            $('#image-preview').attr('src', '');
+        }
+    });
+
+    //ấn nút reset
+    $('.btn-reset').on('click', function (e) {
+        let form = this.closest('form');
+        form.trigger('reset');
+        form.find('input[type="file"]').val('');
+        form.find('#image-preview').html = null;
+        form.find('#image-preview').attr('src', '');
+    });
 });

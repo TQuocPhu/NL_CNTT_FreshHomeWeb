@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
@@ -29,7 +30,9 @@ Route::prefix('admin')->group(function () {
             // *********************
             //  Quản lý danh mục
             // *********************
-            
+            Route::get('/categories', [AdminCategoryController::class, 'index'])->name('admin.categories.index');
+            Route::get('/category/add', [AdminCategoryController::class, 'showFormAddCategory'])->name('admin.categories.add');
+            Route::post('/category/add', [AdminCategoryController::class, 'addCategory'])->name('admin.categories.add-post');
         });
 
         Route::middleware(['permission:manage_products'])->group(function () {
