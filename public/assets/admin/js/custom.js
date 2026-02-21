@@ -178,11 +178,16 @@ $(document).ready(function () {
 
     //ấn nút reset
     $('.btn-reset').on('click', function (e) {
-        let form = this.closest('form');
+        let form = $(this).closest('form');
         form.trigger('reset');
         form.find('input[type="file"]').val('');
-        form.find('#image-preview').html = null;
+        // form.find('#image-preview').html('');
+        form.find('#image-preview-container').empty();
+
         form.find('#image-preview').attr('src', '');
+
+        form.find('.is-invalid').removeClass('is-invalid');
+        form.find('.invalid-feedback').empty().hide();
     });
 
     // update category
@@ -313,4 +318,33 @@ $(document).ready(function () {
             });
         }
     });
+
+
+    /****************************
+     * PRODUCTS MANAGEMENT
+    *****************************/
+    $('#product-images').on('change', function (e) {
+        let files = e.target.files;
+        let previewContainer = $('#image-preview-container');
+
+        previewContainer.empty();
+
+        if (files.length === 0) {
+            previewContainer.append('<p>Không có ảnh nào được chọn</p>');
+            return;
+        }
+
+        $.each(files, function (index, file) {
+            let render = new FileReader();
+            render.onload = function (e) {
+                const img = $('<img>').attr('src', e.target.result)
+                    .attr('alt', file.name)
+                    .addClass('image-preview');
+                previewContainer.append(img);
+            }
+            render.readAsDataURL(file);
+        });
+    });
+
+
 });

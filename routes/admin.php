@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminCategoryController;
+use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
@@ -41,7 +42,11 @@ Route::prefix('admin')->group(function () {
             // *********************
             //  Quản lý sản phẩm
             // *********************
-            
+            Route::get('/products', [AdminProductController::class, 'index'])->name('admin.products.index');
+            Route::get('/product/add', [AdminProductController::class, 'showFormAddProduct'])->name('admin.products.add');
+            Route::post('/product/add', [AdminProductController::class, 'addProduct'])->name('admin.product.add-post');
+            Route::post('/product/update', [AdminProductController::class, 'updateProduct'])->name('admin.product.update');
+            Route::post('/product/delete', [AdminProductController::class, 'deleteProduct'])->name('admin.product.delete');
         });
 
         Route::middleware(['permission:manage_coupons'])->group(function () {

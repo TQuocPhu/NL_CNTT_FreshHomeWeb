@@ -29,18 +29,28 @@
 }
 
 .image-preview {
+    display: block;
     margin-top: 10px;
-    max-width: 200px;
-    max-height: 200px;
-    border: 2px solid rgb(49, 49, 225);
+    max-width: 150px;
+    max-height: 150px;
+    padding: 6px;
+    border: 1px solid #ddd;
     padding: 5px;
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     -ms-border-radius: 5px;
     -o-border-radius: 5px;
+    object-fit: cover;
+}
+.image-preview-container {
+    display: flex;
 }
 
 .category-image-input {
+    display: none;
+}
+
+.product-images {
     display: none;
 }

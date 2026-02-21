@@ -48,8 +48,8 @@
                     @if ($adminUser->role->permissions->contains('name', 'manage_products'))
                         <li><a><i class="fa fa-cubes"></i> Quản lý sản phẩm <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
-                                <li><a href="{{ route('admin.categories.add') }}"> Thêm sản phẩm </a></li>
-                                <li><a href="{{ route('admin.categories.index') }}"> Danh sách sản phẩm </a></li>
+                                <li><a href="{{ route('admin.products.add') }}"> Thêm sản phẩm </a></li>
+                                <li><a href="{{ route('admin.products.index') }}"> Danh sách sản phẩm </a></li>
                             </ul>
                         </li>
                     @endif
