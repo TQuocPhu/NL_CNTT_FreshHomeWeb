@@ -19,7 +19,7 @@
     </div>
     <div class="mini-cart-footer">
         <div class="mini-cart-sub-total">
-            <h5>Tổng tiền: <span>{{ number_format($subTotal, 0, ',', '.') }} VND</span></h5>
+            <h5>Tổng tiền: <span>{{ number_format($subTotal, 2, ',', '.') }} VND</span></h5>
         </div>
         <div class="btn-wrapper">
             <a href="{{ route('cart.index') }}" class="theme-btn-1 btn btn-effect-1">Xem giỏ hàng</a>

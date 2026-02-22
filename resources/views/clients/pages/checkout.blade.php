@@ -123,7 +123,7 @@
                                 @foreach ($cartItem as $item)
                                 <tr>
                                     <td>{{ $item->product->name }} <strong>x {{ $item->quantity }}</strong></td>
-                                    <td>{{number_format($item->product->price * $item->quantity, 0, ',', '.')}} VND</td>
+                                    <td>{{number_format($item->product->price * $item->quantity, 2, ',', '.')}} VND</td>
                                 </tr>
                                 @endforeach
                                 <tr>
@@ -136,7 +136,7 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Tổng tiền</strong></td>
-                                    <td><strong id="final_price" class="total-price-checkout">{{ number_format($totalPrice + 25000, 0, ',', '.') }} đ</strong></td>
+                                    <td><strong id="final_price" class="total-price-checkout">{{ number_format($totalPrice + 25000, 2, ',', '.') }} đ</strong></td>
                                 </tr>
                             </tbody>
                         </table>

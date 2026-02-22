@@ -59,18 +59,18 @@ class Order extends Model
     // Tổng tiền trước giảm
     public function getFormattedTotalPriceAttribute()
     {
-        return number_format($this->total_price, 0, ',', '.');
+        return number_format($this->total_price, 2, ',', '.');
     }
 
     // Tiền giảm
     public function getFormattedDiscountAmountAttribute()
     {
-        return number_format($this->discount_amount ?? 0, 0, ',', '.');
+        return number_format($this->discount_amount ?? 0, 2, ',', '.');
     }
 
     // Tổng tiền phải trả
     public function getFormattedFinalPriceAttribute()
     {
-        return number_format($this->final_price, 0, ',', '.');
+        return number_format($this->final_price, 2, ',', '.');
     }
 }

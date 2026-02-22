@@ -198,9 +198,9 @@ class CartController extends Controller
 
         return response()->json([
             'quantity' => $request->quantity,
-            'item_subtotal' => number_format($itemSubTotal, 0, ',', '.'),
-            'total' => number_format($cartData['subTotal'], 0, ',', '.'),
-            'grandTotal' => number_format($cartData['grandTotal'], 0, ',', '.'),
+            'item_subtotal' => number_format($itemSubTotal, 2, ',', '.'),
+            'total' => number_format($cartData['subTotal'], 2, ',', '.'),
+            'grandTotal' => number_format($cartData['grandTotal'], 2, ',', '.'),
         ]);
     }
 
@@ -220,8 +220,8 @@ class CartController extends Controller
         $cartData = $this->getCartViewData();
         
         return response()->json([
-            'total' => number_format($cartData['subTotal'], 0, ',', '.'),
-            'grandTotal' => number_format($cartData['grandTotal'], 0, ',', '.'),
+            'total' => number_format($cartData['subTotal'], 2, ',', '.'),
+            'grandTotal' => number_format($cartData['grandTotal'], 2, ',', '.'),
             'empty' => count($cartData['items']) === 0
         ]);
     }

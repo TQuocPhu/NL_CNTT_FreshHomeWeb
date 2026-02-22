@@ -54,3 +54,19 @@
 .product-images {
     display: none;
 }
+
+/* Hiển thị xem thêm trong mô tả của danh sách sản phẩm */
+.description-wrapper {
+    /* max-width: 300px; */
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+.btn-read-more {
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 5px;
+}
+.btn-read-more:hover {
+    text-decoration: underline;
+}

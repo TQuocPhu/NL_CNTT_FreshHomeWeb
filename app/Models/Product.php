@@ -63,11 +63,11 @@ class Product extends Model
     // Format tiền
     public function getFormattedPriceAttribute()
     {
-        return number_format($this->price, 0, ',', '.') . ' ' . 'đ';
+        return number_format($this->price, 2, ',', '.') . ' ' . 'đ';
     }
 
     public function getFormattedPriceNotUnitAttribute()
     {
-        return number_format($this->price, 0, ',', '.');
+        return number_format($this->price, 2, ',', '.');
     }
 }

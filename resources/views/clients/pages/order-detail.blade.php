@@ -59,12 +59,12 @@
                             <td>{{ $item->product->name }}</td>
 
                             <td>
-                                {{ $item->formatted_price }}
+                                {{ number_format($item->price, 2, ',', '.') }} đ
                             </td>
 
                             <td>{{ $item->quantity }}</td>
                             <td>
-                                {{ number_format($item->price * $item->quantity, 0, ',', '.') }} đ
+                                {{ number_format($item->price * $item->quantity, 2, ',', '.') }} đ
                             </td>
                         </tr>
                     @endforeach
@@ -73,7 +73,7 @@
 
             <div class="order-detail-summary mt-3">
                 <div class="d-flex justify-content-between mb-2">
-                    <span>Tổng tiền hàng</span>
+                    <span>Tổng tiền đơn hàng (Tiền sản phẩm + Tiền ship)</span>
                     <span>{{ $order->formatted_total_price }} đ</span>
                 </div>
 

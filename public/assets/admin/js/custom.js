@@ -1,5 +1,9 @@
 $(document).ready(function () {
 
+    const vnCurrency = new Intl.NumberFormat('vi-VN', {
+        maximumFractionDigits: 2
+    });
+
     /****************************
      * USERS MANAGEMENT
     *****************************/
@@ -346,5 +350,189 @@ $(document).ready(function () {
         });
     });
 
+    // Hiển thị xem thêm ở mô tả của danh sách sản phẩm
+    $(document).on('click', '.btn-read-more', function (e) {
+        e.preventDefault();
+        let container = $(this).closest('.description-wrapper');
+        let shortDesc = container.find('.short-desc');
+        let fullDesc = container.find('.full-desc');
 
+        if (fullDesc.is(':hidden')) {
+            fullDesc.fadeIn(200);
+            shortDesc.hide();
+            $(this).text('Thu gọn');
+        } else {
+            fullDesc.hide();
+            shortDesc.fadeIn(200);
+            $(this).text('Xem thêm');
+        }
+    });
+
+    // Cập nhật sản phẩm
+    //Hiển thị ảnh preview trong modal
+    $('.product-images').on('change', function (e) {
+        let files = e.target.files;
+        let productId = $(this).data('id');
+        let previewContainer = $('#image-preview-container-' + productId);
+
+        previewContainer.empty();
+
+        if (files.length === 0) {
+            previewContainer.append('<p>Không có ảnh nào được chọn</p>');
+            return;
+        }
+
+        $.each(files, function (index, file) {
+            let render = new FileReader();
+            render.onload = function (e) {
+                const img = $('<img>').attr('src', e.target.result)
+                    .attr('alt', file.name)
+                    .addClass('image-preview');
+                previewContainer.append(img);
+            }
+            render.readAsDataURL(file);
+        });
+    });
+
+    //update product
+    $(document).on('click', '.btn-update-submit-product', function (e) {
+        e.preventDefault();
+
+        let button = $(this);
+        let productId = button.data('id');
+        let form = button.closest('.modal').find('form');
+        let formData = new FormData(form[0]);
+
+        formData.append('product_id', productId);
+
+        form.find('.invalid-feedback').remove();
+        form.find('.is-invalid').removeClass('is-invalid');
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '/admin/product/update',
+            data: formData,
+            contentType: false,
+            processData: false,
+
+            beforeSend: function () {
+                button.prop('disabled', true);
+                button.text('Đang cập nhật...');
+            },
+            success: function (res) {
+                if (res.status) {
+                    toastr.success(res.message);
+
+                    $(`#modalUpdate-${productId}`).modal('hide');
+
+                    var table = $('#datatable-buttons').DataTable();
+                    var row = $(`#product-row-${productId}`);
+
+                    let fullDesc = res.data.description;
+                    let words = fullDesc.split(/\s+/);
+                    let shortDesc = words.length > 50 ? words.slice(0, 50).join(' ') + '...' : fullDesc;
+
+                    let descHtml = `
+                                    <div class="description-wrapper">
+                                        <span class="short-desc">${shortDesc}</span>
+                                        ${words.length > 50 ? `
+                                            <span class="full-desc" style="display: none;">${fullDesc}</span>
+                                            <br>
+                                            <a href="javascript:void(0);" class="btn-read-more text-primary" style="font-size: 11px; font-weight: bold;">Xem thêm</a>
+                                        ` : ''}
+                                    </div>
+                                `;
+
+                    table.cell(row, 0).data(`<img src="${res.data.image_first}" class="image-product" width="80">`);
+                    table.cell(row, 1).data(res.data.name);
+                    table.cell(row, 2).data(`<strong>${res.data.category_name}</strong>`);
+                    table.cell(row, 3).data(res.data.slug);
+                    table.cell(row, 4).data(descHtml);
+                    table.cell(row, 5).data(res.data.stock);
+                    table.cell(row, 6).data(vnCurrency.format(res.data.price));
+
+                    table.cell(row, 7).data(res.data.unit);
+                    table.cell(row, 8).data(res.data.status === 'in_stock' ? 'Còn hàng' : 'Hết hàng');
+                    table.row(row).invalidate().draw(false);
+                } else {
+                    toastr.error(res.message);
+                }
+            },
+            error: function (xhr) {
+                console.error(xhr);
+                if (xhr.status === 422) {
+                    let errors = xhr.responseJSON.errors;
+                    toastr.error(Object.values(errors)[0][0]);
+                } else if (xhr.status === 404) {
+                    toastr.error(xhr.responseJSON?.message || 'Không tìm thấy sản phẩm');
+                } else {
+                    toastr.error('Đã có lỗi hệ thống xảy ra.');
+                }
+            },
+            complete: function () {
+                button.prop('disabled', false).text('Chỉnh sửa');
+            }
+        });
+    });
+
+    //delete product
+    $(document).on('click', '.btn-delete-submit-product', function (e) {
+        e.preventDefault();
+
+        let button = $(this);
+        let productId = button.data('id');
+        let row = $(`#product-row-${productId}`);
+
+        var table = $('#datatable-buttons').DataTable();
+
+        if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này? Hành động này không thể hoàn tác.')) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                }
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: '/admin/product/delete',
+                data: {
+                    product_id: productId,
+                },
+                beforeSend: function () {
+                    button.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i>');
+                },
+                success: function (res) {
+                    if (res.status) {
+                        toastr.success(res.message);
+                        table.row(row).remove().draw(false);
+                    } else {
+                        toastr.error(res.message);
+                        button.prop('disabled', false).html('<i class="fa fa-trash"></i> Xóa');
+                    }
+                },
+                error: function (xhr) {
+                    console.error(xhr);
+                    if (xhr.status === 400) {
+                        toastr.warning(xhr.responseJSON.message, 'Cảnh báo', {
+                            timeOut: 5000
+                        });
+                    } else if (xhr.status === 404) {
+                        toastr.error(xhr.responseJSON.message ?? "Sản phẩm không tồn tại");
+                    } else {
+                        toastr.error('Không thể thực hiện yêu cầu xóa lúc này.');
+                    }
+                    button.prop('disabled', false).html('<i class="fa fa-trash"></i> Xóa');
+                },
+                complete: function () {
+                    button.prop('disabled', false).html('<i class="fa fa-trash"></i> Xóa');
+                }
+            });
+        }
+    })
 });

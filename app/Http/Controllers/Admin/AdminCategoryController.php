@@ -94,7 +94,8 @@ class AdminCategoryController extends Controller
             }
 
             $category->name = $request->name;
-            $category->slug = Str::slug($request->name); // Tự động cập nhật lại slug khi đổi tên
+            // Tự động cập nhật lại slug khi đổi tên
+            // $category->slug = Str::slug($request->name); 
             $category->description = $request->description;
 
             //Xử lý ảnh
@@ -118,7 +119,7 @@ class AdminCategoryController extends Controller
                 'data'    => [
                     'id'          => $category->id,
                     'name'        => $category->name,
-                    'slug'        => $category->slug,
+                    // 'slug'        => $category->slug,
                     'description' => $category->description,
                     'image'       => asset('storage/' . $category->image),
                 ]

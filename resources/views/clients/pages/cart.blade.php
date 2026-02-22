@@ -31,7 +31,7 @@
                                                 <div class="inc qtybutton">+</div>
                                             </div>
                                         </td>
-                                        <td class="cart-product-subtotal">{{ number_format($item['quantity'] * $item['product']->price, 0, ',', '.') }} đ</td>
+                                        <td class="cart-product-subtotal">{{ number_format($item['quantity'] * $item['product']->price, 2, ',', '.') }} đ</td>
                                     </tr>
                                     @empty
                                     <tr>
@@ -48,7 +48,7 @@
                                 <tbody>
                                     <tr>
                                         <td>Tổng tiền hàng</td>
-                                        <td><span class="cart-total">{{ number_format($subTotal, 0, ',', '.') }} đ</span></td>
+                                        <td><span class="cart-total">{{ number_format($subTotal, 2, ',', '.') }} đ</span></td>
                                     </tr>
                                     <tr>
                                         <td>Phí vận chuyển</td>
@@ -56,7 +56,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>Tổng đơn hàng</strong></td>
-                                        <td><strong><span class="cart-grand-total">{{ number_format($subTotal + 25000, 0, ',', '.') }} đ</span></strong></td>
+                                        <td><strong><span class="cart-grand-total">{{ number_format($subTotal + 25000, 2, ',', '.') }} đ</span></strong></td>
                                     </tr>
                                 </tbody>
                             </table>

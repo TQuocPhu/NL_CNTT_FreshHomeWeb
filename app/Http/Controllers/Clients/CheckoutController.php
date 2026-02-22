@@ -126,8 +126,8 @@ class CheckoutController extends Controller
 
         return response()->json([
             'success' => true,
-            'discount' => number_format($discount, 0, ',', '.'),
-            'final_price' => number_format($finalPrice, 0, ',', '.'),
+            'discount' => number_format($discount, 2, ',', '.'),
+            'final_price' => number_format($finalPrice, 2, ',', '.'),
             'message' => 'Áp dụng mã khuyến mãi thành công'
         ]);
     }
@@ -142,7 +142,7 @@ class CheckoutController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Đã hủy mã khuyến mãi',
-            'totalPrice' => number_format($totalPrice, 0, ',', '.'),
+            'totalPrice' => number_format($totalPrice, 2, ',', '.'),
         ]);
     }
 
