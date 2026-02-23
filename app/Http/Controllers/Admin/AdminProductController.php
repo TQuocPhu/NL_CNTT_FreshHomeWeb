@@ -101,10 +101,13 @@ class AdminProductController extends Controller
                     }
                 }
 
+                $product->save();
+
                 toastr()->success('Sản phẩm đã được thêm thành công!');
-                return redirect()->route('admin.product.add');
+                return redirect()->route('admin.products.add');
             });
         } catch (\Exception $e) {
+            // dd($e->getMessage());
             return back()->withInput()->withErrors(['error' => 'Có lỗi xảy ra: ' . $e->getMessage()]);
         }
     }

@@ -58,8 +58,8 @@
                         <li><a><i class="fa fa-tags"></i> Quản lý mã khuyến mãi <span
                                     class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
-                                <li><a href="#"> Thêm mã khuyến mãi </a></li>
-                                <li><a href="#"> Danh sách mã khuyến mãi </a></li>
+                                <li><a href="{{ route('admin.coupons.add') }}"> Thêm mã khuyến mãi </a></li>
+                                <li><a href="{{ route('admin.coupons.index') }}"> Danh sách mã khuyến mãi </a></li>
                             </ul>
                         </li>
                     @endif

@@ -534,5 +534,144 @@ $(document).ready(function () {
                 }
             });
         }
+    });
+
+    /****************************
+     * COUPONS MANAGEMENT
+    *****************************/
+
+    //update coupon
+    $(document).on('click', '.btn-update-submit-coupon', function (e) {
+        e.preventDefault();
+
+        let button = $(this);
+        let couponId = button.data('id');
+        let form = $(`#update-coupon-form-${couponId}`);
+
+        let formData = new FormData(form[0]);
+
+        formData.append('coupon_id', couponId);
+
+        if (!formData.has('is_active')) {
+            formData.append('is_active', '0');
+        }
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "/admin/coupon/update",
+            data: formData,
+            contentType: false,
+            processData: false,
+            beforeSend: function () {
+                button.prop('disabled', true).text('Đang lưu...');
+            },
+            success: function (res) {
+                if (res.status) {
+                    toastr.success(res.message);
+                    $(`#modalUpdate-${couponId}`).modal('hide');
+
+                    var table = $('#datatable-buttons').DataTable();
+                    var row = $(`#coupon-row-${couponId}`);
+
+                    let typeText = res.data.type === 'percent' ? 'Phần trăm (%)' : 'Tiền mặt (đ)';
+                    let valueText = res.data.type === 'percent' ? res.data.value + '%' : new Intl.NumberFormat('vi-VN').format(res.data.value) + 'đ';
+                    let minOrder = vnCurrency.format(res.data.min_order_value) + 'đ';
+                    let limit = res.data.usage_limit ? res.data.usage_limit : '∞';
+
+                    let expiryDate = 'Không';
+                    if (res.data.expires_at) {
+                        let date = new Date(res.data.expires_at);
+                        expiryDate = date.toLocaleDateString('vi-VN');
+                    }
+
+                    let statusHtml = res.data.is_active == 1
+                        ? '<span class="badge badge-success">Kích hoạt</span>'
+                        : '<span class="badge badge-secondary">Tạm dừng</span>';
+
+                    table.cell(row, 0).data(`<strong class="text-primary">${res.data.code}</strong>`);
+                    table.cell(row, 1).data(typeText);
+                    table.cell(row, 2).data(valueText);
+                    table.cell(row, 3).data(minOrder);
+                    table.cell(row, 4).data(limit);
+                    table.cell(row, 6).data(expiryDate);
+                    table.cell(row, 7).data(statusHtml);
+
+                    table.row(row).invalidate().draw(false);
+                } else {
+                    toastr.error(res.message);
+                }
+            },
+            error: function (xhr) {
+                if (xhr.status === 422) {
+                    let errors = xhr.responseJSON.errors;
+                    toastr.error(Object.values(errors)[0][0]);
+                } else {
+                    toastr.error('Đã có lỗi hệ thống xảy ra.');
+                }
+            },
+            complete: function () {
+                button.prop('disabled', false).text('Lưu thay đổi');
+            }
+        });
+    });
+
+    //delete coupon
+    $(document).on('click', '.btn-delete-submit-coupon', function (e) {
+        e.preventDefault();
+
+        let button = $(this);
+        let couponId = button.data('id');
+        let row = $(`#coupon-row-${couponId}`);
+        var table = $('#datatable-buttons').DataTable();
+
+        if (confirm('Bạn có chắc chắn muốn xóa mã giảm giá này?')) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/admin/coupon/delete",
+                data: {
+                    coupon_id: couponId,
+                },
+                beforeSend: function () {
+                    button.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i>');
+                },
+                success: function (res) {
+                    if (res.status) {
+                        toastr.success(res.message);
+                        table.row(row).remove().draw(false);
+                    } else {
+                        toastr.warning(res.message);
+                        button.prop('disabled', false).html('<i class="fa fa-trash"></i> Xóa');
+                    }
+                },
+                error: function (xhr) {
+                    console.error(xhr);
+                    if (xhr.status === 400) {
+                        toastr.warning(xhr.responseJSON.message, 'Cảnh báo', {
+                            timeOut: 5000
+                        });
+                    } else if (xhr.status === 404) {
+                        toastr.error(xhr.responseJSON.message ?? "Mã khuyến mãi không tồn tại");
+                    } else {
+                        toastr.error('Không thể thực hiện yêu cầu xóa lúc này.');
+                    }
+                    button.prop('disabled', false).html('<i class="fa fa-trash"></i> Xóa');
+                },
+                complete: function () {
+                    button.prop('disabled', false).html('<i class="fa fa-trash"></i> Xóa');
+                }
+            });
+        }
     })
 });

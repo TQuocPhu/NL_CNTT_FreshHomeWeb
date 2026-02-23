@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminCategoryController;
+use App\Http\Controllers\Admin\AdminCouponController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -53,7 +54,11 @@ Route::prefix('admin')->group(function () {
             // *********************
             //  Quản lý khuyến mãi
             // *********************
-            
+            Route::get('/coupons', [AdminCouponController::class, 'index'])->name('admin.coupons.index');
+            Route::get('/coupon/add', [AdminCouponController::class, 'showFormAddCoupon'])->name('admin.coupons.add');
+            Route::post('/coupon/add', [AdminCouponController::class, 'addCoupon'])->name('admin.coupon.add-post');
+            Route::post('/coupon/update', [AdminCouponController::class, 'updateCoupon'])->name('admin.coupon.update');
+            Route::post('/coupon/delete', [AdminCouponController::class, 'deleteCoupon'])->name('admin.coupon.delete');
         });
 
         Route::middleware(['permission:manage_orders'])->group(function () {
