@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminCouponController;
+use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -65,6 +66,9 @@ Route::prefix('admin')->group(function () {
             // *********************
             //  Quản lý đơn hàng
             // *********************
+            Route::get('/orders', [AdminOrderController::class, 'index'])->name('admin.orders.index');
+            Route::get('/order/{id}', [AdminOrderController::class, 'showOrderDetailPage'])->name('admin.order-detail');
+
             
         });
 
