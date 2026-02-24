@@ -71,7 +71,7 @@ Route::prefix('admin')->group(function () {
             Route::post('/order/confirm', [AdminOrderController::class, 'confirmOrder'])->name('admin.order.confirm');
             Route::post('/order/complete', [AdminOrderController::class, 'completedOrderByAdmin'])->name('admin.order.complete');
             Route::post('/order/send-invoice', [AdminOrderController::class, 'sendInvoice'])->name('admin.order.send-invoice');
-            
+            Route::post('/order/canceled', [AdminOrderController::class, 'cancelOrderInDetail'])->name('admin.order.cancel');
         });
 
         Route::middleware(['permission:manage_contacts'])->group(function () {

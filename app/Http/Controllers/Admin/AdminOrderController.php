@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderStatusHistory;
 use App\Models\Payment;
@@ -249,6 +250,91 @@ class AdminOrderController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Không thể gửi hóa đơn. Vui lòng thử lại.'
+            ], 500);
+        }
+    }
+
+    public function cancelOrderInDetail(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'order_id' => 'required|exists:orders,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            return DB::transaction(function () use ($request) {
+                $order = Order::where('id', $request->order_id)
+                    ->lockForUpdate()
+                    ->first();
+
+                if (!$order) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Không thể hủy đơn đã hoàn thành hoặc đã bị hủy.'
+                    ], 400);
+                }
+
+                if (in_array($order->status, ['completed', 'canceled'])) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Không thể hủy đơn đã hoàn thành hoặc đã bị hủy.'
+                    ], 400);
+                }
+
+                $order->load([
+                    'orderItems.product',
+                    'payment'
+                ]);
+
+                //Hoàn kho
+                foreach ($order->orderItems as $item) {
+                    if ($item->product) {
+                        $item->product->increment('stock', $item->quantity);
+                    }
+                }
+
+                //Hoàn coupon (nếu có)
+                if ($order->coupon_id) {
+                    Coupon::where('id', $order->coupon_id)
+                        ->where('used_count', '>', 0)
+                        ->decrement('used_count');
+                }
+
+                //Cập nhật trạng thái đơn hàng
+                $order->update([
+                    'status' => 'canceled'
+                ]);
+
+                //Cập nhật trạng thái thanh toán
+                if ($order->payment) {
+                    $order->payment->update([
+                        'status' => 'failed'
+                    ]);
+                }
+
+                //Lưu lịch sử
+                OrderStatusHistory::create([
+                    'order_id'   => $order->id,
+                    'status'     => 'canceled',
+                    'changed_at' => now(),
+                    'note'       => 'Admin hủy đơn hàng',
+                ]);
+
+                return response()->json([
+                    'status'  => true,
+                    'message' => 'Đã hủy đơn hàng thành công và hoàn kho.'
+                ]);
+            });
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Không thể hủy đơn hàng. Vui lòng thử lại.'
             ], 500);
         }
     }

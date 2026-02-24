@@ -783,7 +783,7 @@ $(document).ready(function () {
                 } else if (xhr.status === 400) {
                     toastr.error(xhr.responseJSON.message ?? 'Có lỗi nghiệp vụ xảy ra.');
                 } else {
-                    toastr.error('Không thể thực hiện xác nhận đơn hàng lúc này.');
+                    toastr.error('Không thể thực hiện xác nhận hoàn thành đơn hàng lúc này.');
                 }
             },
         });
@@ -819,12 +819,88 @@ $(document).ready(function () {
                     button.remove();
                 } else {
                     toastr.error(res.message);
+                    button.prop('disabled', false);
+                    button.html('<i class="fa fa-send"></i> Gửi hóa đơn');
                 }
             },
             error: function (xhr) {
                 console.error(xhr);
                 console.log(xhr.responseJSON?.message);
+                button.prop('disabled', false);
+                button.html('<i class="fa fa-send"></i> Gửi hóa đơn');
             }
+        });
+    });
+
+    //Hủy đơn hàng
+    $(document).on('click', '.cancel-order', function (e) {
+        e.preventDefault();
+
+        let button = $(this);
+        let orderId = button.data('id');
+
+        if (!confirm('Bạn có chắc muốn hủy đơn hàng này?')) {
+            return;
+        }
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json',
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '/admin/order/canceled',
+            data: {
+                order_id: orderId,
+            },
+            beforeSend: function () {
+                button.prop('disabled', true);
+                button.html('<i class="fa fa-spinner fa-spin"></i> Đang hủy...');
+            },
+            success: function (res) {
+                if (res.status) {
+                    toastr.success(res.message);
+
+                    $('#order-status-badge').html(`
+                            <span class="custom-badge badge badge-danger">
+                                Đã hủy
+                            </span>
+                        `);
+                    $('#payment-status-badge').html(`
+                            <span class="custom-badge badge badge-danger">
+                                Đã hủy
+                            </span>
+                        `);
+
+                    button.prop('disabled', true);
+                    button.removeClass('btn-danger')
+                        .addClass('btn-secondary')
+                        .html('<i class="fa fa-check"></i> Đã hủy');
+                } else {
+                    toastr.error(res.message);
+                    button.prop('disabled', false);
+                    button.html('<i class="fa fa-remove"></i> Hủy đơn hàng');
+                }
+            },
+            error: function (xhr) {
+                console.error(xhr);
+                if (xhr.status === 422) {
+                    let errors = xhr.responseJSON.errors;
+                    toastr.error(Object.values(errors)[0][0]);
+                } else if (xhr.status === 404) {
+                    toastr.error(xhr.responseJSON.message ?? 'Đơn hàng không tồn tại');
+                } else if (xhr.status === 400) {
+                    toastr.error(xhr.responseJSON.message ?? 'Có lỗi nghiệp vụ xảy ra.');
+                } else {
+                    toastr.error('Không thể thực hiện hủy đơn hàng lúc này.');
+                }
+
+                button.prop('disabled', false);
+                button.html('<i class="fa fa-remove"></i> Hủy đơn hàng');
+            },
         });
     });
 });

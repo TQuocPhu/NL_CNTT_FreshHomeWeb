@@ -131,26 +131,30 @@
                                             </span></h6>
 
                                         <h4>Trạng thái đơn hàng:
-                                            @if ($order->status == 'pending')
-                                                <span class="custom-badge badge badge-warning">Đợi xác nhận</span>
-                                            @elseif($order->status == 'processing')
-                                                <span class="custom-badge badge badge-info">Đang xử lý</span>
-                                            @elseif($order->status == 'completed')
-                                                <span class="custom-badge badge badge-success">Đã hoàn thành</span>
-                                            @elseif($order->status == 'canceled')
-                                                <span class="custom-badge badge badge-danger">Đã hủy</span>
-                                            @endif
+                                            <span id="order-status-badge">
+                                                @if ($order->status == 'pending')
+                                                    <span class="custom-badge badge badge-warning">Đợi xác nhận</span>
+                                                @elseif($order->status == 'processing')
+                                                    <span class="custom-badge badge badge-info">Đang xử lý</span>
+                                                @elseif($order->status == 'completed')
+                                                    <span class="custom-badge badge badge-success">Đã hoàn thành</span>
+                                                @elseif($order->status == 'canceled')
+                                                    <span class="custom-badge badge badge-danger">Đã hủy</span>
+                                                @endif
+                                            </span>
                                         </h4>
 
                                         <h4>Trạng thái thanh toán:
-                                            @if($order->payment && $order->payment->status == 'pending')
-                                                <span class="custom-badge badge badge-warning">Chưa thanh
-                                                    toán</span>
-                                            @elseif($order->payment && $order->payment->status == 'completed')
-                                                <span class="custom-badge badge badge-success">Đã thanh toán</span>
-                                            @elseif($order->payment && $order->payment->status == 'failed')
-                                                <span class="custom-badge badge badge-danger">Đã hủy</span>
-                                            @endif
+                                            <span id="payment-status-badge">
+                                                @if($order->payment && $order->payment->status == 'pending')
+                                                    <span class="custom-badge badge badge-warning">Chưa thanh
+                                                        toán</span>
+                                                @elseif($order->payment && $order->payment->status == 'completed')
+                                                    <span class="custom-badge badge badge-success">Đã thanh toán</span>
+                                                @elseif($order->payment && $order->payment->status == 'failed')
+                                                    <span class="custom-badge badge badge-danger">Đã hủy</span>
+                                                @endif
+                                            </span>
                                         </h4>
 
                                         <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
