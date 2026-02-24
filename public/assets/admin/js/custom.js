@@ -673,5 +673,119 @@ $(document).ready(function () {
                 }
             });
         }
-    })
+    });
+
+
+    /****************************
+     * ORDERS MANAGEMENT
+    *****************************/
+    //Xác nhận đơn hàng
+    $(document).on('click', '.confirm-order', function (e) {
+        e.preventDefault();
+
+        let button = $(this);
+        let orderId = button.data('id');
+
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json',
+            }
+        });
+
+        $.ajax({
+            url: '/admin/order/confirm',
+            type: 'POST',
+            data: {
+                order_id: orderId,
+            },
+            success: function (res) {
+                if (res.status) {
+                    toastr.success(res.message);
+                    button.closest('tr').find('.order-status').html(`
+                            <span class="custom-badge badge badge-info">Đang xử lý</span>
+                        `);
+                    button.closest('.dropdown-menu').html(`
+                            <a class="dropdown-item completed-order"
+                                href="javascript:void(0)"
+                                data-id="${orderId}">
+                                Hoàn thành
+                            </a>
+                            <a class="dropdown-item" target="_blank"
+                                href="{{ route('admin.order-detail', ['id' => $order->id]) }}">Xem
+                                chi
+                                tiết</a>
+                        `);
+                    button.hide();
+                } else {
+                    toastr.error(res.message);
+                }
+            },
+            error: function (xhr) {
+                console.error(xhr);
+                if (xhr.status === 422) {
+                    let errors = xhr.responseJSON.errors;
+                    toastr.error(Object.values(errors)[0][0]);
+                } else if (xhr.status === 404) {
+                    toastr.error(xhr.responseJSON.message ?? 'Đơn hàng không tồn tại');
+                } else if (xhr.status === 400) {
+                    toastr.error(xhr.responseJSON.message ?? 'Có lỗi nghiệp vụ xảy ra.');
+                } else {
+                    toastr.error('Không thể thực hiện xác nhận đơn hàng lúc này.');
+                }
+            },
+        });
+    });
+
+    // hoàn thành đơn hàng
+    $(document).on('click', '.completed-order', function (e) {
+        e.preventDefault();
+
+        let button = $(this);
+        let orderId = button.data('id');
+
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json',
+            }
+        });
+
+        $.ajax({
+            url: '/admin/order/complete',
+            type: 'POST',
+            data: {
+                order_id: orderId,
+            },
+            success: function (res) {
+                if (res.status) {
+                    toastr.success(res.message);
+                    button.closest('tr').find('.order-status').html(`
+                            <span class="custom-badge badge badge-success">Đã hoàn thành</span>
+                        `);
+                    button.closest('tr').find('.order-payment-method').html(`
+                        <span class="custom-badge badge badge-success">Đã thanh toán</span>
+                        `);
+                    button.hide();
+                } else {
+                    toastr.error(res.message);
+                }
+            },
+            error: function (xhr) {
+                console.error(xhr);
+                if (xhr.status === 422) {
+                    let errors = xhr.responseJSON.errors;
+                    toastr.error(Object.values(errors)[0][0]);
+                } else if (xhr.status === 404) {
+                    toastr.error(xhr.responseJSON.message ?? 'Đơn hàng không tồn tại');
+                } else if (xhr.status === 400) {
+                    toastr.error(xhr.responseJSON.message ?? 'Có lỗi nghiệp vụ xảy ra.');
+                } else {
+                    toastr.error('Không thể thực hiện xác nhận đơn hàng lúc này.');
+                }
+            },
+        });
+    });
 });

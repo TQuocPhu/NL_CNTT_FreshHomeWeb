@@ -48,8 +48,8 @@
                                                     <th>Ngày đặt</th>
                                                     <th>Tổng tiền hàng</th>
                                                     <th>Mã khuyến mãi</th>
-                                                    <th>Tổng tiền giảm giá</th>
-                                                    <th>Tổng tiền thanh toán</th>
+                                                    <th>Tổng giảm giá (đ)</th>
+                                                    <th>Tổng thanh toán (đ)</th>
                                                     <th>Trạng thái đơn hàng</th>
                                                     <th>Trạng thái thanh toán</th>
                                                     <th>Chi tiết đơn hàng</th>
@@ -95,7 +95,7 @@
                                                                 <span class="custom-badge badge badge-danger">Đã hủy</span>
                                                             @endif
                                                         </td>
-                                                        <td>
+                                                        <td class="order-payment-method">
                                                             @if($order->payment && $order->payment->status == 'pending')
                                                                 <span class="custom-badge badge badge-warning">Chưa thanh
                                                                     toán</span>
@@ -122,6 +122,10 @@
                                                                         <a class="dropdown-item confirm-order"
                                                                             href="javascript:void(0)" data-id="{{ $order->id }}">Xác
                                                                             nhận</a>
+                                                                    @endif
+                                                                    @if ($order->status == 'processing')
+                                                                        <a class="dropdown-item completed-order"
+                                                                            href="javascript:void(0)" data-id="{{ $order->id }}">Hoàn thành</a>
                                                                     @endif
                                                                     <a class="dropdown-item" target="_blank"
                                                                         href="{{ route('admin.order-detail', ['id' => $order->id]) }}">Xem
