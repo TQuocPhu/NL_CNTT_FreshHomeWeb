@@ -62,6 +62,30 @@
     <!-- toastr -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
+    <style>
+        @media print {
+
+            body * {
+                visibility: hidden;
+            }
+
+            .invoice,
+            .invoice * {
+                visibility: visible;
+            }
+
+            .invoice {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
 </head>
 
 <body class="nav-md">

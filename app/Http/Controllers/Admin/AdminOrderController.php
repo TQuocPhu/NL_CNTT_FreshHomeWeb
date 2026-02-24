@@ -8,6 +8,7 @@ use App\Models\OrderStatusHistory;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class AdminOrderController extends Controller
@@ -67,7 +68,7 @@ class AdminOrderController extends Controller
                 'shipping_address_id',
                 'created_at'
             ])
-            ->find($id);
+            ->findOrFail($id);
 
         return view('admin.pages.order-detail', compact('order'));
     }
@@ -197,6 +198,57 @@ class AdminOrderController extends Controller
             return response()->json([
                 'status'  => false,
                 'message' => 'Lỗi hệ thống: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function sendInvoice(Request $request)
+    {
+        $order = Order::with([
+            'user:id,name,email',
+            'coupon:id,code,type,value',
+            'shippingAddress:id,full_name,phone,address,city',
+
+            'payment:id,order_id,status,payment_method',
+
+            'orderItems:id,order_id,product_id,quantity,price',
+            'orderItems.product:id,name'
+        ])
+            ->select([
+                'id',
+                'user_id',
+                'total_price',
+                'coupon_id',
+                'coupon_code',
+                'discount_amount',
+                'final_price',
+                'status',
+                'shipping_address_id',
+                'created_at'
+            ])
+            ->findOrFail($request->order_id);
+
+        if (!$order->user || !$order->user->email) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Khách hàng không có email.'
+            ]);
+        }
+        try {
+            Mail::send('admin.emails.invoice', compact('order'), function ($message) use ($order) {
+                $message->to($order->user->email)->subject('Hóa đơn của ' . $order->shippingAddress->full_name . ' đã đặt đơn hàng #' . $order->id);
+            });
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Hóa đơn đã được gửi qua email',
+            ]);
+        } catch (\Exception $e) {
+            // \Log::error('Send invoice error: ' . $e->getMessage());
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Không thể gửi hóa đơn. Vui lòng thử lại.'
             ], 500);
         }
     }

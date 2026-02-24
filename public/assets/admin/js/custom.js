@@ -788,4 +788,43 @@ $(document).ready(function () {
             },
         });
     });
+
+    //Gửi hóa đơn qua mail
+    $(document).on('click', '.send-invoice-email', function (e) {
+        e.preventDefault();
+
+        let button = $(this);
+        let orderId = button.data('id');
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json',
+            }
+        });
+
+        $.ajax({
+            url: '/admin/order/send-invoice',
+            type: 'POST',
+            data: {
+                order_id: orderId,
+            },
+            beforeSend: function () {
+                button.prop('disabled', true);
+                button.html('<i class="fa fa-spinner fa-spin"></i> Đang gửi...');
+            },
+            success: function (res) {
+                if (res.status) {
+                    toastr.success(res.message);
+                    button.remove();
+                } else {
+                    toastr.error(res.message);
+                }
+            },
+            error: function (xhr) {
+                console.error(xhr);
+                console.log(xhr.responseJSON?.message);
+            }
+        });
+    });
 });

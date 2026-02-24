@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Storage;
 class AccountController extends Controller
 {
     //Hiển thị trang tài khoản
-    public function index() {
+    public function index()
+    {
         $user = Auth::user();
         $addresses = ShippingAddress::where('user_id', $user->id)->get();
         $orders = Order::where('user_id', $user->id)->orderByDesc('created_at')->get();
@@ -21,7 +22,8 @@ class AccountController extends Controller
     }
 
     //Chức năng cập nhật thông tin tài khoản
-    public function updateProfileHandler(Request $request) {
+    public function updateProfileHandler(Request $request)
+    {
         $request->validate(
             [
                 'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -46,9 +48,9 @@ class AccountController extends Controller
         $user = Auth::user();
 
         //Xử lý ảnh avatar
-        if($request->hasFile('avatar')) {
+        if ($request->hasFile('avatar')) {
             // Xóa ảnh cũ nếu có
-            if($user->avatar && Storage::disk('public')->exists($user->avatar)){
+            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
                 Storage::disk('public')->delete($user->avatar);
             }
 
@@ -72,9 +74,10 @@ class AccountController extends Controller
         $avatarUrl = $user->avatar;
 
         //Có avatar không bắt đầu bằng http / https (cho tài khoản đăng ký qua form)
-        if($avatarUrl && 
-            !str_starts_with($avatarUrl, 'http'))
-        {
+        if (
+            $avatarUrl &&
+            !str_starts_with($avatarUrl, 'http')
+        ) {
             $avatarUrl = asset('storage/' . $avatarUrl);
         }
 
@@ -88,7 +91,8 @@ class AccountController extends Controller
 
 
     // Chức năng đổi mật khẩu tài khoản
-    public function changePassword(Request $request) {
+    public function changePassword(Request $request)
+    {
         $request->validate(
             [
                 'current_password' => 'required',
@@ -107,14 +111,14 @@ class AccountController extends Controller
         $user = Auth::user();
 
         //Kiểm tra mật khẩu hiện tại đúng không => không đúng hiện lỗi 422 / đúng thì cập nhật mật khẩu mới
-        if(!Hash::check($request->current_password, $user->password)){
+        if (!Hash::check($request->current_password, $user->password)) {
             return response()->json([
                 'errors' => ['current_password' => ['Mật khẩu hiện tại không đúng!']]
             ], 422);
         }
 
         //cập nhật mật khẩu mới
-        $user->update(['password' => Hash::make($request->new_password)] );
+        $user->update(['password' => Hash::make($request->new_password)]);
 
         return response()->json([
             'success' => true,
@@ -122,7 +126,8 @@ class AccountController extends Controller
         ]);
     }
 
-    public function addAddress(Request $request) {
+    public function addAddress(Request $request)
+    {
         $request->validate(
             [
                 'full_name' => 'required|string|max:255',
@@ -151,7 +156,7 @@ class AccountController extends Controller
 
         //Nếu db có địa chỉ của user_id đó thì thêm một địa chỉ mới (có đánh dấu mặc định) 
         // => các địa chỉ khác của user đó sẽ trở thành địa chỉ không phải mặc đinh
-        if($request->has('default')) {
+        if ($request->has('default')) {
             ShippingAddress::where('user_id', Auth::id())->update(['default' => 0]);
         }
 
@@ -166,11 +171,11 @@ class AccountController extends Controller
         ]);
 
         return back()->with('success', 'Địa chỉ đã được thêm!');
-
     }
 
     //Hàm chọn địa chỉ là mặc định
-    public function chooseDefaultAddress($id) {
+    public function chooseDefaultAddress($id)
+    {
         // Tìm address có id trên tham số
         $address = ShippingAddress::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
 
@@ -184,18 +189,23 @@ class AccountController extends Controller
     }
 
     // Xóa địa chỉ
-    public function removeAddress($id) {
+    public function removeAddress($id)
+    {
         //Tìm địa chỉ có id trên tham số
         $address = ShippingAddress::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
 
         //Nếu không tìm thấy địa chỉ này trong csdl thì báo lỗi
-        if(!$address) {
+        if (!$address) {
             return back()->with('error', 'Địa chỉ không tồn tại.');
         }
 
         //Nếu là địa chỉ mặc định thì không cho xóa
-        if($address->default) {
+        if ($address->default) {
             return back()->with('error', 'Không thể xóa địa chỉ mặc định.');
+        }
+
+        if (Order::where('shipping_address_id', $address->id)->exists()) {
+            return back()->with('error', 'Không thể xóa vì địa chỉ đã được sử dụng trong đơn hàng.');
         }
 
         //Xóa bảng ghi trong cơ sở dữ liệu

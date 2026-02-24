@@ -70,6 +70,7 @@ Route::prefix('admin')->group(function () {
             Route::get('/order/{id}', [AdminOrderController::class, 'showOrderDetailPage'])->name('admin.order-detail');
             Route::post('/order/confirm', [AdminOrderController::class, 'confirmOrder'])->name('admin.order.confirm');
             Route::post('/order/complete', [AdminOrderController::class, 'completedOrderByAdmin'])->name('admin.order.complete');
+            Route::post('/order/send-invoice', [AdminOrderController::class, 'sendInvoice'])->name('admin.order.send-invoice');
             
         });
 

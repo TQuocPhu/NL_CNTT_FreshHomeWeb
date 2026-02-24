@@ -144,11 +144,11 @@
 
                                         <div class="tab-pane fade" id="liton_tab_order">
                                             <div class="ltn__myaccount-tab-content-inner">
-                                                <div class="table-responsive">
+                                                <div class="table-responsive" style="overflow-x: auto; overflow-y: scroll; max-height: 500px;">
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
-                                                                <th>Đơn hàng</th>
+                                                                <th>Mã đơn hàng</th>
                                                                 <th>Thời điểm đặt</th>
                                                                 <th>Tổng tiền hàng (đ)</th>
                                                                 <th>Tổng tiền trả (đ)</th>
