@@ -904,10 +904,10 @@ $(document).ready(function () {
         });
     });
 
+
     /****************************
      * CONTACTS MANAGEMENT
     *****************************/
-
     //Khởi tạo editor
     if ($('#editor-contact').length && typeof CKEDITOR !== 'undefined') {
         if (CKEDITOR.instances['editor-contact']) {
@@ -1015,4 +1015,184 @@ $(document).ready(function () {
             }
         });
     });
+
+    /****************************
+     * PROFILE MANAGEMENT
+    *****************************/
+    $('.show-form-change-password').on('click', function (e) {
+        e.preventDefault();
+
+        $('#change-password').toggle();
+        if ($('#change-password').is(':visible')) {
+            $(this).text('Đóng');
+        } else {
+            $(this).text('Đổi mật khẩu');
+        }
+    });
+
+    $('.update-avatar').on('click', function (e) {
+        e.preventDefault();
+        $('#avatar').trigger('click');
+    });
+
+    $('#avatar').on('change', function (e) {
+        let file = e.target.files[0];
+
+        if (file) {
+            let render = new FileReader();
+            render.onload = function (e) {
+                $('#avatar-preview').attr('src', e.target.result);
+            };
+            render.readAsDataURL(file);
+
+            let formData = new FormData();
+            formData.append('type', 'avatar');
+            formData.append('avatar', file);
+            // updateProfile(formData);
+            updateProfile(formData, $('.update-avatar'));
+        } else {
+            $('#avatar-preview').attr('src', '');
+        }
+    });
+
+    $('#update-profile').submit(function (e) {
+        e.preventDefault();
+        let button = $(this).find('button[type="submit"]');
+        let valid = true;
+        let name = $('#name').val().trim();
+        let address = $('#address').val().trim();
+        let phone = $('#phone_number').val().trim();
+
+        if (name.length < 3) {
+            toastr.error('Họ tên phải có ít nhất 3 kí tự');
+            valid = false;
+        }
+
+        let phoneRegex = /^0\d{9}$/;
+        if (!phoneRegex.test(phone)) {
+            toastr.error('Số điện thoại không hợp lệ!.');
+            valid = false;
+        }
+
+        if (address === '') {
+            toastr.error('Địa chỉ không được để trống!.');
+            valid = false;
+        }
+
+        if (valid) {
+            let formData = new FormData();
+            formData.append('type', 'profile');
+            formData.append('name', name);
+            formData.append('phone_number', phone);
+            formData.append('address', address);
+            // updateProfile(formData);
+            updateProfile(formData, button);
+        }
+    });
+
+    $('#change-password').submit(function (e) {
+        e.preventDefault();
+
+        let button = $(this).find('button[type="submit"]');
+        let valid = true;
+        let current_password = $('#current_password').val().trim();
+        let new_password = $('#new_password').val().trim();
+        let confirm_password = $('#confirm_password').val().trim();
+
+        if (current_password.length === 0) {
+            toastr.error('Vui lòng nhập mật khẩu hiện tại.');
+            valid = false;
+        }
+
+        if (new_password.length < 6) {
+            toastr.error('Mật khẩu mới phải có ít nhất 6 kí tự!.');
+            valid = false;
+        }
+
+        if (new_password !== confirm_password) {
+            toastr.error('Mật khẩu xác nhận không đúng!.');
+            valid = false;
+        }
+
+        if (valid) {
+            let formData = new FormData();
+            formData.append('type', 'password');
+            formData.append('current_password', current_password);
+            formData.append('new_password', new_password);
+            formData.append('confirm_password', confirm_password);
+            updateProfile(formData, button);
+        }
+    });
+
+    function updateProfile(formData, button) {
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json',
+            }
+        });
+
+        let originalText = button.html();
+
+        $.ajax({
+            type: 'POST',
+            url: '/admin/profile/update',
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+
+            beforeSend: function () {
+                button.prop('disabled', true);
+                button.html('<i class="fa fa-spinner fa-spin"></i> Đang xử lý...');
+            },
+
+            success: function (res) {
+
+                toastr.success(res.message);
+
+                let type = formData.get('type');
+
+                if (type === 'profile') {
+                    $('#user-name').text(formData.get('name'));
+                    $('#user-address').text(formData.get('address'));
+                    $('#user-phone').text(formData.get('phone'));
+                }
+
+                if (type === 'password') {
+                    $('#change-password')[0].reset();
+                }
+
+                if (type === 'avatar') {
+                    $('#avatar-preview').attr('src', res.avatar_url);
+                }
+            },
+
+            error: function (xhr) {
+                if (xhr.status === 422) {
+                    let errors = xhr.responseJSON.errors;
+
+                    if (errors) {
+                        toastr.error(Object.values(errors)[0][0]);
+                    } else {
+                        toastr.error(xhr.responseJSON.message);
+                    }
+                }
+                else if (xhr.status === 404) {
+                    toastr.error(xhr.responseJSON.message);
+                }
+                else if (xhr.status === 400) {
+                    toastr.error(xhr.responseJSON.message);
+                }
+                else {
+                    toastr.error('Có lỗi xảy ra, vui lòng thử lại.');
+                }
+            },
+            complete: function () {
+                button.prop('disabled', false);
+                button.html(originalText);
+            }
+        });
+    }
 });

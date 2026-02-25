@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminAccountController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminContactController;
@@ -20,6 +21,13 @@ Route::prefix('admin')->group(function () {
     Route::middleware(['auth.custom'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+
+        // *********************
+        //  Quản lý tài khoản
+        // *********************
+        Route::get('/profile', [AdminAccountController::class, 'index'])->name('admin.profile');
+        Route::post('/profile/update', [AdminAccountController::class, 'updateProfile'])->name('admin.profile.update');
+        
 
         Route::middleware(['permission:manage_users'])->group(function () {
             // *********************
