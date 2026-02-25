@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminCategoryController;
+use App\Http\Controllers\Admin\AdminContactController;
 use App\Http\Controllers\Admin\AdminCouponController;
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminProductController;
@@ -78,7 +79,8 @@ Route::prefix('admin')->group(function () {
             // *********************
             //  Quản lý liên hệ
             // *********************
-            
+            Route::get('/contacts', [AdminContactController::class, 'index'])->name('admin.contacts.index');
+            Route::post('/contact/send-reply', [AdminContactController::class, 'replyContact'])->name('admin.contact.send-reply');
         });
     });
 });

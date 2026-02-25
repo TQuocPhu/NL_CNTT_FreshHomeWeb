@@ -903,4 +903,116 @@ $(document).ready(function () {
             },
         });
     });
+
+    /****************************
+     * CONTACTS MANAGEMENT
+    *****************************/
+
+    //Khởi tạo editor
+    if ($('#editor-contact').length && typeof CKEDITOR !== 'undefined') {
+        if (CKEDITOR.instances['editor-contact']) {
+            CKEDITOR.instances['editor-contact'].destroy(true);
+        }
+        CKEDITOR.replace('editor-contact', {
+            versionCheck: false
+        });
+    }
+
+    // load nội dung chi tiết đơn liên hệ
+    $(document).on('click', '.contact-item', function (e) {
+        e.preventDefault();
+
+        let button = $(this);
+
+        let contactId = $(this).data('id');
+
+        let contactFullName = button.data('name');
+        let contactEmail = button.data('email');
+        let contactMessage = button.data('message');
+        let contactIsReplied = button.data('is_replied');
+
+        $('.mail_view .inbox-body .sender-info strong').text(contactFullName);
+        $('.mail_view .inbox-body .sender-info span').text('(' + contactEmail + ')');
+        $('.mail_view .view-mail p').text(contactMessage);
+
+        $('.mail_view').show();
+
+        if (Number(contactIsReplied) != 0) {
+            $('#compose').hide();
+        } else {
+            $('.send-reply-contact').attr('data-email', contactEmail);
+            $('.send-reply-contact').attr('data-id', contactId);
+            $('#compose').show();
+        }
+    });
+
+    // Gửi email trả lời liên hệ
+    $(document).on('click', '.send-reply-contact', function (e) {
+        e.preventDefault();
+
+        let button = $(this);
+        let contactId = button.data('id');
+        let contactEmail = button.data('email');
+        let message = CKEDITOR.instances['editor-contact'].getData();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json',
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '/admin/contact/send-reply',
+            data: {
+                contact_id: contactId,
+                email: contactEmail,
+                message: message,
+            },
+            beforeSend: function () {
+                button.prop('disabled', true);
+                button.html('<i class="fa fa-spinner fa-spin"></i> Đang gửi');
+            },
+            success: function (res) {
+                if (!res.status) {
+                    toastr.error(res.message);
+                    return;
+                }
+
+                toastr.success(res.message);
+
+                // Update trạng thái contact
+                let contactItem = $('.contact-item[data-id="' + contactId + '"]');
+
+                contactItem.attr('data-is_replied', '1');
+                contactItem.find('i.fa-circle').css('color', 'green');
+
+                // Ẩn nút trả lời vì đã reply
+                $('#compose').hide();
+
+                // Clear editor
+                CKEDITOR.instances['editor-contact'].setData('');
+
+                // Đóng popup
+                $('.compose').slideUp();
+            },
+            error: function (xhr) {
+                console.error(xhr);
+                if (xhr.status === 422) {
+                    let errors = xhr.responseJSON.errors;
+                    toastr.error(Object.values(errors)[0][0]);
+                } else if (xhr.status === 404) {
+                    toastr.error(xhr.responseJSON.message ?? 'Liên hệ không tồn tại');
+                } else if (xhr.status === 400) {
+                    toastr.error(xhr.responseJSON.message ?? 'Có lỗi nghiệp vụ xảy ra.');
+                } else {
+                    toastr.error('Không thể thực hiện gửi email trả lời liên hệ lúc này.');
+                }
+            },
+            complete: function () {
+                button.prop('disabled', false).html('<i class="fa fa-paper-plane me-1"></i> Gửi Email');
+            }
+        });
+    });
 });

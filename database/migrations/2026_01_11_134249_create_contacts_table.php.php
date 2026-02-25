@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('full_name');
             $table->string('phone_number')->nullable();
             $table->string('email')->nullable();
-            $table->string('message');
+            $table->text('message');
             $table->boolean('is_replied')->default(false);
 
             $table->timestamps();
