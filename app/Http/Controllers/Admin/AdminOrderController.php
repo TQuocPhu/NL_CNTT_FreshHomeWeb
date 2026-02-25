@@ -276,8 +276,8 @@ class AdminOrderController extends Controller
                 if (!$order) {
                     return response()->json([
                         'status' => false,
-                        'message' => 'Không thể hủy đơn đã hoàn thành hoặc đã bị hủy.'
-                    ], 400);
+                        'message' => 'Đơn hàng không tồn tại.'
+                    ], 404);
                 }
 
                 if (in_array($order->status, ['completed', 'canceled'])) {
