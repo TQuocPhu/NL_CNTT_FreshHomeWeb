@@ -1195,4 +1195,88 @@ $(document).ready(function () {
             }
         });
     }
+
+    /****************************
+     * NOTIFICATIONS MANAGEMENT
+    *****************************/
+    $(document).on('click', '.notification-item', function (e) {
+        e.preventDefault();
+
+        let button = $(this);
+        let notificationId = button.data('id');
+        let url = button.attr('href');
+        let listItem = button.closest('li');
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Accept': 'application/json',
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '/admin/notification/read',
+            data: {
+                notification_id: notificationId,
+            }, dataType: 'json',
+            beforeSend: function () {
+                button.css('pointer-events', 'none');
+            },
+            success: function (res) {
+                if (res.status) {
+                    listItem.fadeOut(300, function () {
+                        $(this).remove();
+
+                        // Nếu không còn thông báo
+                        if ($('.messages li').length === 0) {
+                            $('.messages').html(
+                                '<p class="text-gray">Không có thông báo mới</p>'
+                            );
+                        }
+                    });
+
+                    let badge = $('.notification-badge');
+                    let currentCount = parseInt(badge.text());
+
+                    if (!isNaN(currentCount) && currentCount > 0) {
+                        badge.text(currentCount - 1);
+                    }
+
+                    if (currentCount - 1 <= 0) {
+                        badge.fadeOut(200);
+                    }
+
+                    setTimeout(function () {
+                        window.location.href = url;
+                    }, 350);
+                } else {
+                    toastr.error(res.message);
+                    button.css('pointer-events', 'auto');
+                }
+            },
+            error: function (xhr) {
+
+                if (xhr.status === 422) {
+                    let errors = xhr.responseJSON.errors;
+                    if (errors) {
+                        toastr.error(Object.values(errors)[0][0]);
+                    } else {
+                        toastr.error(xhr.responseJSON.message);
+                    }
+                }
+                else if (xhr.status === 400) {
+                    toastr.warning(xhr.responseJSON.message);
+                }
+                else if (xhr.status === 404) {
+                    toastr.error(xhr.responseJSON.message);
+                }
+                else {
+                    toastr.error('Có lỗi xảy ra, vui lòng thử lại.');
+                }
+
+                button.css('pointer-events', 'auto');
+            },
+        });
+    });
 });

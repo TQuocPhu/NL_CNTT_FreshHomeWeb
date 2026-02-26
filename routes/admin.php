@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminContactController;
 use App\Http\Controllers\Admin\AdminCouponController;
+use App\Http\Controllers\Admin\AdminNotificationController;
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminUserController;
@@ -18,7 +19,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/login', [AdminAuthController::class, 'loginAdmin'])->name('admin.login-post');
     });
 
-    Route::middleware(['auth.custom'])->group(function () {
+    Route::middleware(['auth.custom', 'admin.data'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
@@ -28,6 +29,11 @@ Route::prefix('admin')->group(function () {
         Route::get('/profile', [AdminAccountController::class, 'index'])->name('admin.profile');
         Route::post('/profile/update', [AdminAccountController::class, 'updateProfile'])->name('admin.profile.update');
         
+        // *********************
+        //  Quản lý thông báo
+        // *********************
+        Route::get('/notifications', [AdminNotificationController::class, 'index'])->name('admin.notification.index');
+        Route::post('/notification/read', [AdminNotificationController::class, 'read'])->name('admin.notification.read');
 
         Route::middleware(['permission:manage_users'])->group(function () {
             // *********************

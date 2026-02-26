@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Clients;
 use App\Http\Controllers\Controller;
 use App\Models\CartItem;
 use App\Models\Coupon;
+use App\Models\Notification;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderStatusHistory;
@@ -234,6 +235,14 @@ class CheckoutController extends Controller
 
             DB::commit();
 
+            Notification::create([
+                'user_id' => $user->id,
+                'type' => 'order',
+                'message' => 'Bạn có đơn đặt hàng mới từ ' . $user->email,
+                'link' => '/orders',
+                'is_read' => 0,
+            ]);
+
             toastr()->success('Đặt hàng thành công !');
             return redirect()->route('account');
         } catch (\Exception $e) {
@@ -331,6 +340,14 @@ class CheckoutController extends Controller
             CartItem::where('user_id', $user->id)->delete();
 
             DB::commit();
+
+            Notification::create([
+                'user_id' => $user->id,
+                'type' => 'order',
+                'message' => 'Bạn có đơn đặt hàng mới từ ' . $user->email,
+                'link' => '/orders',
+                'is_read' => 0,
+            ]);
 
             return response()->json([
                 'success' => true,

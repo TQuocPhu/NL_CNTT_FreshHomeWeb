@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Clients;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
+use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use function Flasher\Toastr\Prime\toastr;
 
@@ -40,6 +42,26 @@ class ContactController extends Controller
             'message' => $request->message,
             'is_replied' => 0, //trạng thái trả lời: chưa trả lời
         ]);
+
+        $user = Auth::user();
+
+        if ($user) {
+            Notification::create([
+                'user_id' => $user->id,
+                'type' => 'contact',
+                'message' => 'Bạn có một liên hệ mới từ ' . $user->email,
+                'link' => '/contacts',
+                'is_read' => 0,
+            ]);
+        } else {
+            Notification::create([
+                'user_id' => null,
+                'type' => 'contact',
+                'message' => 'Bạn có một liên hệ mới từ ' . $request->email,
+                'link' => '/contacts',
+                'is_read' => 0,
+            ]);
+        }
 
         // toastr()->success('Cảm ơn bạn đã liên hệ với chúng tôi! Chúng tôi sẽ phản hồi sớm nhất có thể.');
         // return redirect()->back();

@@ -1,0 +1,8 @@
+.disabled-form-panel {
+    opacity: 0.6 !important;
+    /* Giảm độ mờ để biểu thị trạng thái vô hiệu hóa */
+    cursor: not-allowed !important;
+    /* Thay đổi con trỏ chuột để biểu thị trạng thái vô hiệu hóa */
+    pointer-events: none !important;
+    /* Vô hiệu hóa tất cả các sự kiện chuột */
+}
