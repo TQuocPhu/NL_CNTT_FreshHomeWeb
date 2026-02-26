@@ -46,10 +46,10 @@
                                                 <div class="mail_list">
                                                     <div class="left">
                                                         <i class="fa fa-circle"
-                                                            style="color: {{ $contact->is_replied ? 'green' : 'red' }};"></i>
+                                                            style="padding-left: 10px; color: {{ $contact->is_replied ? 'green' : 'red' }};"></i>
                                                     </div>
                                                     <div class="right">
-                                                        <h3>{{$contact->full_name}}
+                                                        <h3 style="padding-left: 10px;">{{$contact->full_name}}
                                                             <small>{{ $contact->created_at->format('h:i A d-m-Y') }}</small>
                                                         </h3>
                                                         <p>{{ Str::limit($contact->message, 60) }}</p>

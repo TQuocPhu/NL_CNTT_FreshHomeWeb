@@ -113,17 +113,31 @@
                     <div class="ltn__drop-menu user-menu">
                         <ul>
                             <li>
-                                <a href="#"><i class="icon-user"></i></a>
-                                <ul>
-                                    @if (Auth::check())
+                                @if(Auth::check())
+                                    @php
+                                        $user = Auth::user();
+                                    @endphp
+
+                                    <div class="search-icon">
+                                        {{-- sử dụng để đồng bộ kích thước --}}
+                                        <a href="#">
+                                            <img src="{{ $user->avatar_url }}" alt="avatar"
+                                                style="width: 50px; height: 50px; ">
+                                        </a>
+                                    </div>
+
+                                    <ul>
                                         <li><a href="{{ route('account') }}">Tài khoản</a></li>
                                         <li><a href="{{ route('wishlist.index') }}">Yêu thích</a></li>
                                         <li><a href="{{ route('logout') }}">Đăng xuất</a></li>
-                                    @else
+                                    </ul>
+                                @else
+                                    <a href="javascript:void(0)"><i class="icon-user"></i></a>
+                                    <ul>
                                         <li><a href="{{ route('login') }}">Đăng nhập</a></li>
                                         <li><a href="{{ route('register') }}">Đăng kí</a></li>
-                                    @endif
-                                </ul>
+                                    </ul>
+                                @endif
                             </li>
                         </ul>
                     </div>

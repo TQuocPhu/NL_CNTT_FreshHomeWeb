@@ -16,8 +16,7 @@
                 <div class="col-md-12 col-sm-12 ">
                     <div class="x_panel disabled-form-panel">
                         <div class="x_title">
-                            <h2>Thêm Danh Mục Mới <small style="color:red;">(Hiện tại đã có 5 danh mục sản phẩm và không cần
-                                    thiết phải thêm mới.)</small></h2>
+                            <h2>Thêm Danh Mục Mới <small style="color:gray;">(Số lượng danh mục hiện tại đã đủ dùng và có thể không nhất thiết phải thêm mới.)</small></h2>
                             <ul class="nav navbar-right panel_toolbox">
                                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                 </li>
