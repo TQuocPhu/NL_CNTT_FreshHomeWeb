@@ -123,7 +123,7 @@
                                         {{-- sử dụng để đồng bộ kích thước --}}
                                         <a href="#">
                                                 <img src="{{ $user->avatar_url }}" alt="avatar"
-                                                    style="width: 50px; height: 50px; ">
+                                                    style="width: 50px; height: 50px; " referrerpolicy="no-referrer">
                                         </a>
                                     </div>
 
