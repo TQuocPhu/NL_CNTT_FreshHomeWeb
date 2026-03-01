@@ -81,3 +81,12 @@
     line-height: 1.4; /* Khoảng cách dòng */
     max-height: 2.8em; /* Tương ứng với 2 dòng (2 x 1.5) */
 }
+
+/* Scroll trong phần thống kê số sản phẩm trong danh mục */
+.category-scroll-area::-webkit-scrollbar {
+    width: 6px;
+}
+.category-scroll-area::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}

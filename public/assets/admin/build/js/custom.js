@@ -6,18 +6,18 @@
  *     // code here
  * });
  */
-(function($,sr){
+(function ($, sr) {
     // debouncing function from John Hann
     // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
     var debounce = function (func, threshold, execAsap) {
-      var timeout;
+        var timeout;
 
-        return function debounced () {
+        return function debounced() {
             var obj = this, args = arguments;
-            function delayed () {
+            function delayed() {
                 if (!execAsap)
-                    func.apply(obj, args); 
-                timeout = null; 
+                    func.apply(obj, args);
+                timeout = null;
             }
 
             if (timeout)
@@ -25,14 +25,14 @@
             else if (execAsap)
                 func.apply(obj, args);
 
-            timeout = setTimeout(delayed, threshold || 100); 
+            timeout = setTimeout(delayed, threshold || 100);
         };
     };
 
     // smartresize 
-    jQuery.fn[sr] = function(fn){  return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };
+    jQuery.fn[sr] = function (fn) { return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };
 
-})(jQuery,'smartresize');
+})(jQuery, 'smartresize');
 /**
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -743,12 +743,13 @@ function init_skycons() {
 //     return colors;
 // }
 
+// category chart
 function init_chart_doughnut() {
-    if(typeof(Chart) === 'undefined') { return; }
+    if (typeof (Chart) === 'undefined') { return; }
 
     const ctx = document.getElementById('categoryDonutChart');
 
-    if(!ctx) return;
+    if (!ctx) return;
 
     const categoryLabels = JSON.parse(ctx.dataset.labels);
     const categoryData = JSON.parse(ctx.dataset.data);
@@ -766,13 +767,14 @@ function init_chart_doughnut() {
         },
         options: {
             responsive: true,
+            cutout: '70%',
             plugins: {
                 legend: {
                     position: 'right'
                 },
                 tooltip: {
                     callbacks: {
-                        label: function(context) {
+                        label: function (context) {
                             return context.label + ': ' + context.raw + ' sản phẩm';
                         }
                     }
@@ -780,6 +782,116 @@ function init_chart_doughnut() {
             }
         }
     })
+}
+
+// revenue chart
+
+let revenueChartInstance = null;
+
+function init_line_revenue_chart() {
+
+    const canvas = document.getElementById('revenueLineChart');
+    if (!canvas) return;
+
+    const revenues = JSON.parse(canvas.dataset.revenues || '[]');
+    const year = canvas.dataset.year;
+
+    if (revenueChartInstance) {
+        revenueChartInstance.destroy();
+    }
+
+    revenueChartInstance = new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels: Array.from({ length: 12 }, (_, i) => 'Tháng ' + (i + 1)),
+            datasets: [{
+                label: 'Doanh thu năm ' + year,
+                data: revenues,
+                borderColor: '#26B99A',
+                backgroundColor: 'rgba(38,185,154,0.2)',
+                fill: true,
+                tension: 0.3,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            // maintainAspectRatio: false,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            return context.parsed.y.toLocaleString('vi-VN') + ' đ';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function (value) {
+                            return value.toLocaleString('vi-VN') + ' đ';
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+// bar chart in order status
+
+let orderBarChartInstance = null;
+
+function init_bar_chart_order_status() {
+    const canvas = document.getElementById('orderBarChart');
+    if (!canvas) return;
+
+    const success = JSON.parse(canvas.dataset.success || '[]');
+    const canceled = JSON.parse(canvas.dataset.canceled || '[]');
+    const year = canvas.dataset.year;
+
+    if (orderBarChartInstance) {
+        orderBarChartInstance.destroy();
+    }
+
+    orderBarChartInstance = new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels: Array.from({ length: 12 }, (_, i) => 'Tháng ' + (i + 1)),
+            datasets: [
+                {
+                    label: 'Thành công ' + year,
+                    data: success,
+                    backgroundColor: '#3498DB',
+                    borderRadius: 6
+                },
+                {
+                    label: 'Đã hủy ' + year,
+                    data: canceled,
+                    backgroundColor: '#E74C3C',
+                    borderRadius: 6
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            // maintainAspectRatio: false,
+            plugins: {
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 }
 
 function init_gauge() {
@@ -5086,5 +5198,7 @@ $(document).ready(function () {
     init_CustomNotification();
     init_autosize();
     init_autocomplete();
+    init_line_revenue_chart();
+    init_bar_chart_order_status();
 
-});	
+});
