@@ -61,3 +61,23 @@
 .btn-read-more:hover {
     text-decoration: underline;
 }
+
+.table th,
+.table td {
+    height: 65px;
+    min-height: 65px;
+    max-height: 65px;
+    vertical-align: middle !important; /* Căn giữa nội dung theo chiều dọc */
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.table td .truncate-text {
+    display: -webkit-box;
+    line-clamp: 2; /* Giới hạn tối đa 2 dòng chữ */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4; /* Khoảng cách dòng */
+    max-height: 2.8em; /* Tương ứng với 2 dòng (2 x 1.5) */
+}
