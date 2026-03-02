@@ -45,6 +45,7 @@
             @yield('content')
         </main>
 
+        @include('clients.partials.chat_ai')
         @include('clients.partials.feature')
         @include('clients.partials.footer')
     </div>
@@ -80,6 +81,7 @@
     @yield('scripts')
     <script src="{{asset('assets/clients/js/custom.js')}}"></script>
 
+    <script src="{{ asset('assets/clients/js/chat_ai.js') }}"></script>
 </body>
 
 </html>
