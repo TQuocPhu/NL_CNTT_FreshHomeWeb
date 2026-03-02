@@ -71,6 +71,11 @@ class User extends Authenticatable
         return $this->hasMany(ShippingAddress::class);
     }
 
+    public function chatMessages()
+    {
+        return $this->hasMany(ChatMessage::class);
+    }
+
 
     // kiểm tra trạng thái tài khoản
     public function isPending()
