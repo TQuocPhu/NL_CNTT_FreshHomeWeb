@@ -3,6 +3,7 @@
 use App\Http\Controllers\Clients\AccountController;
 use App\Http\Controllers\Clients\AuthController;
 use App\Http\Controllers\Clients\CartController;
+use App\Http\Controllers\Clients\ChatController;
 use App\Http\Controllers\Clients\ForgotPasswordController;
 use App\Http\Controllers\Clients\HomeController;
 use App\Http\Controllers\Clients\LoginGoogleController;
@@ -141,5 +142,9 @@ Route::post('/contact', [ContactController::class, 'sendContact'])->name('contac
 //Search
 Route::get('/search', [SearchProductController::class, 'index'])->name('search.index');
 Route::post('/search-img', [SearchProductController::class, 'searchByImage'])->name('search.searchImg');
+
+// Chat
+Route::get('/chat/messages', [ChatController::class, 'fetchMessages'])->name('chat.index');
+Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
 
 require __DIR__ . '/admin.php';
