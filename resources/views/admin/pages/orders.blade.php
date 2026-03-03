@@ -110,11 +110,11 @@
                                                                 data-target="#orderItemsModal-{{ $order->id }}">Xem</button>
                                                         </td>
 
-                                                        <td>
+                                                        <td class="position-relative">
                                                             <div class="btn-group">
-                                                                <button type="button"
+                                                                <button type="button" id="dropdown-toggle-order"
                                                                     class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                                    data-toggle="dropdown" data-boundary="window" aria-haspopup="true"
                                                                     aria-expanded="false">
                                                                 </button>
                                                                 <div class="dropdown-menu">

@@ -679,6 +679,11 @@ $(document).ready(function () {
     /****************************
      * ORDERS MANAGEMENT
     *****************************/
+
+    $(document).on('shown.bs.dropdown', '.btn-group', function () {
+        var dropdown = $(this).find('.dropdown-menu');
+        $('body').append(dropdown.detach());
+    });
     //Xác nhận đơn hàng
     $(document).on('click', '.confirm-order', function (e) {
         e.preventDefault();
