@@ -602,3 +602,19 @@
 #send-btn:active {
     transform: scale(0.95);
 }
+
+.ltn__product-item-3 {
+    display: flex;
+    flex-direction: column;
+    height: 95%; /* Đảm bảo các card trong 1 row cao bằng nhau */
+}
+
+.product-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-title {
+    flex-grow: 1; /* Nó sẽ tự giãn để đẩy phần giá xuống dưới cùng */
+}
