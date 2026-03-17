@@ -536,6 +536,55 @@ $(document).ready(function () {
         }
     });
 
+    /**
+ * Hàm xóa sạch dữ liệu của một Form bất kỳ
+ * @param {string} formSelector - ID hoặc Class của form (ví dụ: '#add-product')
+ */
+    function resetFormCustom(formSelector) {
+        let form = $(formSelector);
+
+        // Xóa tất cả input (text, number, email, file,...) trừ hidden token
+        form.find('input:not([type=hidden])').val('').attr('value', '');
+
+        // Reset Select về mặc định và xóa thuộc tính selected từ Laravel
+        form.find('select').each(function () {
+            $(this).prop('selectedIndex', 0);
+            $(this).find('option').removeAttr('selected');
+        });
+
+        // Xóa nội dung Textarea
+        form.find('textarea').val('').text('');
+
+        // Xóa các class và thông báo lỗi Validation của Laravel
+        form.find('.is-invalid').removeClass('is-invalid');
+        form.find('.has-error').removeClass('has-error');
+        form.find('.invalid-feedback').remove();
+        form.find('.text-danger').not('label').empty();
+
+        form.find('.item.form-group').removeClass('bad');
+
+        // Xóa Preview ảnh (nếu có container id chuẩn)
+        // Tìm tất cả các div có class chứa chữ 'preview' bên trong form và xóa
+        form.find('[id*="preview"]').empty();
+
+        // Nếu bạn có cấu trúc preview riêng biệt như cũ:
+        if($('#image-preview-container').length) {
+        $('#image-preview-container').empty().append('<p>Không có ảnh nào được chọn</p>');
+
+        form.find('input[type="file"]').val('');
+    }
+    }
+
+    // Lắng nghe sự kiện click cho tất cả các nút có class .btn-reset-form
+    $(document).on('click', '.btn-reset-form', function (e) {
+        e.preventDefault();
+        let targetForm = $(this).closest('form'); // Tự động tìm cái form chứa cái nút đó
+
+        if (confirm('Bạn có chắc muốn xóa toàn bộ dữ liệu đang nhập?')) {
+            resetFormCustom(targetForm);
+        }
+    });
+
     /****************************
      * COUPONS MANAGEMENT
     *****************************/

@@ -37,7 +37,7 @@
                                         <span class="required">*</span>
                                     </label>
                                     <div class="col-md-6 col-sm-6 ">
-                                        <input type="text" id="category-name" required="required" name="name"
+                                        <input type="text" id="category-name" required="required" name="name" value="{{ old('name') }}"
                                             class="form-control ">
                                         @error('name')
                                             <small class="text-danger">{{ $message }}</small>
@@ -50,7 +50,7 @@
                                         <span class="required">*</span>
                                     </label>
                                     <div class="col-md-6 col-sm-6 ">
-                                        <input type="text" id="category-description" name="description" required="required"
+                                        <input type="text" id="category-description" name="description" required="required" value="{{ old('description') }}"
                                             class="form-control">
                                         @error('description')
                                             <small class="text-danger">{{ $message }}</small>
@@ -73,7 +73,7 @@
                                 <div class="ln_solid"></div>
                                 <div class="item form-group">
                                     <div class="col-md-6 col-sm-6 offset-md-3">
-                                        <button class="btn btn-primary btn-reset" type="reset">Reset</button>
+                                        <button class="btn btn-primary btn-reset btn-reset-form" type="reset">Reset</button>
                                         <button type="submit" class="btn btn-success">Thêm danh mục </button>
                                     </div>
                                 </div>

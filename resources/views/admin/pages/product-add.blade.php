@@ -37,7 +37,7 @@
                                         <span class="required">*</span>
                                     </label>
                                     <div class="col-md-6 col-sm-6 ">
-                                        <input type="text" id="product-name" required="required" name="name"
+                                        <input type="text" id="product-name" required="required" name="name" value="{{ old('name') }}"
                                             class="form-control @error('name') is-invalid @enderror">
                                         @error('name')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -55,7 +55,7 @@
                                             class="form-control @error('category_id') is-invalid @enderror">
                                             <option value="">Chọn danh mục</option>
                                             @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('category_id')
@@ -70,7 +70,7 @@
                                         <span class="required">*</span>
                                     </label>
                                     <div class="col-md-6 col-sm-6 ">
-                                        <input type="text" id="product-description" name="description" required="required"
+                                        <input type="text" id="product-description" name="description" required="required" value="{{ old('description') }}"
                                             class="form-control @error('description') is-invalid @enderror">
                                         @error('description')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -83,7 +83,7 @@
                                         <span class="required">*</span>
                                     </label>
                                     <div class="col-md-6 col-sm-6 ">
-                                        <input type="text" id="product-price" name="price" required="required"
+                                        <input type="text" id="product-price" name="price" required="required" value="{{ old('price') }}"
                                             class="form-control @error('price') is-invalid @enderror">
                                         @error('price')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -96,7 +96,7 @@
                                         <span class="required">*</span>
                                     </label>
                                     <div class="col-md-6 col-sm-6 ">
-                                        <input type="text" id="product-stock" name="stock" required="required"
+                                        <input type="text" id="product-stock" name="stock" required="required" value="{{ old('stock') }}"
                                             class="form-control @error('stock') is-invalid @enderror">
                                         @error('stock')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -110,7 +110,7 @@
                                         <span class="required">*</span>
                                     </label>
                                     <div class="col-md-6 col-sm-6 ">
-                                        <input type="text" id="product-unit" name="unit" required="required"
+                                        <input type="text" id="product-unit" name="unit" required="required" value="{{ old('unit') }}"
                                             class="form-control @error('unit') is-invalid @enderror">
                                         @error('unit')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -140,7 +140,7 @@
 
                                 <div class="item form-group">
                                     <div class="col-md-6 col-sm-6 offset-md-3">
-                                        <button class="btn btn-primary btn-reset" type="reset">Reset</button>
+                                        <button class="btn btn-primary btn-reset btn-reset-form" type="reset">Reset</button>
                                         <button type="submit" class="btn btn-success">Thêm sản phẩm </button>
                                     </div>
                                 </div>
