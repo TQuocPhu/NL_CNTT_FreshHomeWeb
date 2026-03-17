@@ -1211,7 +1211,7 @@ $(document).ready(function () {
                 if (type === 'profile') {
                     $('#user-name').text(formData.get('name'));
                     $('#user-address').text(formData.get('address'));
-                    $('#user-phone').text(formData.get('phone'));
+                    $('#user-phone').text(formData.get('phone_number'));
                 }
 
                 if (type === 'password') {
