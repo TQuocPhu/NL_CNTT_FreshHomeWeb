@@ -53,9 +53,10 @@ class ChatController extends Controller
 
         // lấy sản phẩm
         $products = Product::where('stock', '>', 0)
-            ->get(['name', 'price', 'unit', 'description'])
+            ->get(['name', 'price', 'unit', 'description', 'stock'])
             ->map(function ($product) {
-                return "{$product->name} - {$product->price} / {$product->unit}";
+                $desc = Str::limit($product->description, 400);
+                return "{$product->name} - {$product->price} / {$product->unit} - Tồn kho: {$product->stock} - Mô tả: {$desc}";
             })->toArray();
 
         $productList = implode("\n", $products);
@@ -72,6 +73,40 @@ class ChatController extends Controller
             - Không hỏi mua.
             - Trả lời ngắn gọn, rõ ràng.
             - Nếu có nhiều sản phẩm thì cách nhau một dòng trống.
+
+            Nếu khách hỏi thông tin chi tiết của một sản phẩm cụ thể có trong danh sách:
+            - Hiển thị thêm phần mô tả của sản phẩm.
+            - Chỉ sử dụng mô tả có trong danh sách.
+            - Nếu mô tả dài thì rút gọn còn tối đa 400 ký tự.
+            - Format như sau:
+            
+            Tên sản phẩm
+            Giá: giá / đơn vị
+            Mô tả: mô tả sản phẩm
+
+            Nếu khách không hỏi về tồn kho:
+            - Không hiển thị thông tin tồn kho.
+
+            Nếu khách hỏi về số lượng tồn kho hoặc hỏi còn bao nhiêu sản phẩm:
+            - Hiển thị thêm thông tin tồn kho của sản phẩm.
+            - Chỉ sử dụng số lượng có trong danh sách.
+
+            Format:
+
+            Tên sản phẩm
+            Giá: giá / đơn vị
+            Còn lại: số lượng trong kho
+
+            Nếu khách hỏi chi tiết sản phẩm và đồng thời hỏi tồn kho:
+            Format:
+
+            Tên sản phẩm
+            Giá: giá / đơn vị
+            Còn lại: số lượng trong kho
+            Mô tả: mô tả sản phẩm
+
+            Nếu khách chỉ hỏi chung về sản phẩm hoặc liệt kê sản phẩm:
+            - Chỉ hiển thị tên và giá/đơn vị tính, không hiển thị mô tả.
             
             Nếu khách giới thiệu tên hoặc hỏi bạn là ai:
             - Hãy trả lời thân thiện.
@@ -79,18 +114,25 @@ class ChatController extends Controller
             - Không nói về sản phẩm nếu khách không hỏi.
             
             Nếu khách nhắc tới vấn đề khác tư vấn sản phẩm và khác giới thiệu bản thân:
-            - Hãy trả lời bạn chỉ hỗ trợ tư vấn sản phẩm, không hỗ trợ đặt hàng, chốt đơn, thanh toán.
+            - Hãy trả lời bạn chỉ hỗ trợ tư vấn sản phẩm, không hỗ trợ đặt hàng, chốt đơn, thanh toán và các vấn đề khác ngoài tư vấn tìm kiếm sản phẩm.
 
             Không in đậm.
             Không dùng ký tự đặc biệt.
             Không thêm câu hỏi không cần thiết.
             
             Hiển thị sản phẩm theo format:
-            
+
             Chào bạn, hiện tại cửa hàng có sản phẩm:
-            
+
             Tên sản phẩm
             Giá: giá / đơn vị
+
+            Nếu khách hỏi chi tiết:
+
+            Tên sản phẩm
+            Giá: giá / đơn vị
+            Mô tả: mô tả sản phẩm
+            
             
             Danh sách sản phẩm hiện có:
             $productList
