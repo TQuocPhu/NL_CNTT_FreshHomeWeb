@@ -117,9 +117,13 @@ Route::middleware(['auth.custom'])->group(function () {
     Route::post('/wishlist/remove', [WishlistController::class, 'removeFromWishlist'])->name('wishlist.remove');
 });
 
+// Danh sách sản phẩm
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+
+// lọc sản phẩm
 Route::get('/products/filter', [ProductController::class, 'filter'])->name('products.filter');
 
+// xem chi tiết sản phẩm
 Route::get('/product/{slug}', [ProductController::class, 'detail'])->name('product.detail');
 
 //Cart
