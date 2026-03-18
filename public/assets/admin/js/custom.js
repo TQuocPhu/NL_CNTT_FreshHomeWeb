@@ -568,11 +568,11 @@ $(document).ready(function () {
         form.find('[id*="preview"]').empty();
 
         // Nếu bạn có cấu trúc preview riêng biệt như cũ:
-        if($('#image-preview-container').length) {
-        $('#image-preview-container').empty().append('<p>Không có ảnh nào được chọn</p>');
+        if ($('#image-preview-container').length) {
+            $('#image-preview-container').empty().append('<p>Không có ảnh nào được chọn</p>');
 
-        form.find('input[type="file"]').val('');
-    }
+            form.find('input[type="file"]').val('');
+        }
     }
 
     // Lắng nghe sự kiện click cho tất cả các nút có class .btn-reset-form
@@ -731,14 +731,22 @@ $(document).ready(function () {
 
     $(document).on('shown.bs.dropdown', '.btn-group', function () {
         var dropdown = $(this).find('.dropdown-menu');
+        var row = $(this).closest('tr'); // Lấy cái hàng tương ứng
+
+        dropdown.data('owner-row', row); // Lưu cái hàng đó vào "người thân" của dropdown
         $('body').append(dropdown.detach());
     });
+
     //Xác nhận đơn hàng
     $(document).on('click', '.confirm-order', function (e) {
         e.preventDefault();
 
         let button = $(this);
         let orderId = button.data('id');
+        let detailUrl = button.data('detail-url');
+
+        let dropdownMenu = button.closest('.dropdown-menu');
+        let row = dropdownMenu.data('owner-row');
 
 
         $.ajaxSetup({
@@ -757,17 +765,17 @@ $(document).ready(function () {
             success: function (res) {
                 if (res.status) {
                     toastr.success(res.message);
-                    button.closest('tr').find('.order-status').html(`
+                    row.find('.order-status').html(`
                             <span class="custom-badge badge badge-info">Đang xử lý</span>
                         `);
-                    button.closest('.dropdown-menu').html(`
+                    dropdownMenu.html(`
                             <a class="dropdown-item completed-order"
                                 href="javascript:void(0)"
-                                data-id="${orderId}">
+                                data-id="${orderId}" data-detail-url="${detailUrl}">
                                 Hoàn thành
                             </a>
                             <a class="dropdown-item" target="_blank"
-                                href="{{ route('admin.order-detail', ['id' => $order->id]) }}">Xem
+                                href="${detailUrl}">Xem
                                 chi
                                 tiết</a>
                         `);
@@ -798,6 +806,10 @@ $(document).ready(function () {
 
         let button = $(this);
         let orderId = button.data('id');
+        let detailUrl = button.data('detail-url');
+
+        let dropdownMenu = button.closest('.dropdown-menu');
+        let row = dropdownMenu.data('owner-row');
 
 
         $.ajaxSetup({
@@ -816,13 +828,17 @@ $(document).ready(function () {
             success: function (res) {
                 if (res.status) {
                     toastr.success(res.message);
-                    button.closest('tr').find('.order-status').html(`
+                    row.find('.order-status').html(`
                             <span class="custom-badge badge badge-success">Đã hoàn thành</span>
                         `);
-                    button.closest('tr').find('.order-payment-method').html(`
+                    row.find('.order-payment-method').html(`
                         <span class="custom-badge badge badge-success">Đã thanh toán</span>
                         `);
-                    button.hide();
+                    dropdownMenu.html(`
+                        <a class="dropdown-item" target="_blank"
+                            href="${detailUrl}">Xem chi tiết</a>
+                    `);
+                    // button.hide();
                 } else {
                     toastr.error(res.message);
                 }

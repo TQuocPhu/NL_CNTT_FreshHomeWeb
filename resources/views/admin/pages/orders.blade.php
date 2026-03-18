@@ -120,12 +120,12 @@
                                                                 <div class="dropdown-menu">
                                                                     @if ($order->status == 'pending')
                                                                         <a class="dropdown-item confirm-order"
-                                                                            href="javascript:void(0)" data-id="{{ $order->id }}">Xác
+                                                                            href="javascript:void(0)" data-id="{{ $order->id }}" data-detail-url="{{ route('admin.order-detail', ['id' => $order->id]) }}">Xác
                                                                             nhận</a>
                                                                     @endif
                                                                     @if ($order->status == 'processing')
                                                                         <a class="dropdown-item completed-order"
-                                                                            href="javascript:void(0)" data-id="{{ $order->id }}">Hoàn thành</a>
+                                                                            href="javascript:void(0)" data-id="{{ $order->id }}" data-detail-url="{{ route('admin.order-detail', ['id' => $order->id]) }}">Hoàn thành</a>
                                                                     @endif
                                                                     <a class="dropdown-item" target="_blank"
                                                                         href="{{ route('admin.order-detail', ['id' => $order->id]) }}">Xem
