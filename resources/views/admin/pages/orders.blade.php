@@ -38,7 +38,7 @@
                                             tác nhanh chóng.
                                         </p>
 
-                                        <table id="datatable-buttons" class="table table-striped table-bordered"
+                                        <table id="datatable-buttons" class="table table-striped table-bordered" data-order='[[ 0, "desc" ]]'
                                             style="width:100%; text-align: center;">
                                             <thead>
                                                 <tr>
