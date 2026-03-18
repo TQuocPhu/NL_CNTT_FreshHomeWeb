@@ -11,8 +11,8 @@
                 <div class="col-md-2 col-sm-4 tile_stats_count">
                     <span class="count_top"><i class="fa fa-money"></i> Tổng doanh thu (VND)</span>
                     <div class="count">{{ number_format($totalRevenue, 0, ',', '.') }}</div>
-                    <span class="count_bottom"><i class="red"><i class="fa fa-close"></i> {{ $totalFailedPayments }}</i> Lỗi
-                        thanh toán</span>
+                    {{-- <span class="count_bottom"><i class="red"><i class="fa fa-close"></i> {{ $totalFailedPayments }}</i> Lỗi
+                        thanh toán</span> --}}
                 </div>
 
                 <div class="col-md-2 col-sm-4 tile_stats_count">
