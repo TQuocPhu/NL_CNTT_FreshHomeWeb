@@ -1,4 +1,4 @@
-# 🥗 Fresh_Home - Hệ Thống Thương Mại Điện Tử Thực Phẩm Sạch
+# 🥗 Fresh_Home - Hệ Thống Thương Mại Điện Tử Thực Phẩm Sạch Và Hàng Tiêu Dùng
 
 > **Dự án Niên luận ngành Công nghệ thông tin - Đại học Cần Thơ (CTU)**
 > **Trạng thái:** Đang hoàn thiện (Dự kiến báo cáo 18/04/2026)
