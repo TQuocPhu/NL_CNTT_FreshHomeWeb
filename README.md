@@ -4,7 +4,7 @@
 > **Trạng thái:** Đang hoàn thiện (Dự kiến báo cáo 18/04/2026)
 
 ## 📝 Giới thiệu dự án
-**Fresh_Home** là một nền tảng thương mại điện tử chuyên cung cấp thực phẩm hữu cơ, rau củ quả và thịt tươi sống. Dự án tập trung vào việc giải quyết bài toán quản lý chuỗi cung ứng thực phẩm sạch và tối ưu hóa trải nghiệm mua sắm trực tuyến thông qua các công nghệ hiện đại.
+**Fresh_Home** là một nền tảng thương mại điện tử chuyên cung cấp thực phẩm hữu cơ, rau củ quả, thịt phẩm tươi sống và hàng tiêu dùng. Dự án tập trung vào việc giải quyết bài toán quản lý chuỗi cung ứng thực phẩm sạch và tối ưu hóa trải nghiệm mua sắm trực tuyến thông qua các công nghệ hiện đại.
 
 ## ✨ Điểm nhấn kỹ thuật (Highlights)
 * **🤖 Tích hợp AI (Gemini API):** Xây dựng Chatbot thông minh hỗ trợ khách hàng tìm kiếm sản phẩm, tư vấn dinh dưỡng và gợi ý công thức nấu ăn trực tiếp trên Website.
