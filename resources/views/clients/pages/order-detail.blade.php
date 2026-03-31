@@ -143,9 +143,14 @@
                         @foreach ($order->orderItems as $item)
                             <tr>
                                 <td>{{ $item->product->name }}</td>
+                                
                                 <td>
-                                    <a href="{{ route('product.detail', $item->product->slug) }}"
-                                        class="btn theme-btn-1 btn-effect-1">Đánh giá</a>
+                                    @if (!in_array($item->product->id, $reviewedProductIds))
+                                        <a href="{{ route('product.detail', $item->product->slug) }}"
+                                            class="btn theme-btn-1 btn-effect-1">Đánh giá</a>
+                                    @else
+                                        <span class="badge bg-success">Đã đánh giá</span>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
