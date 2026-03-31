@@ -42,10 +42,10 @@ class AuthController extends Controller
         //check existed email
         $existingUser = User::where('email', $request->email)->first();
 
-        if($existingUser) {
+        if ($existingUser) {
 
             // trường hợp email nhập vào đã tồn tại mà chưa kích hoạt tài khoản
-            if($existingUser->isPending()) {
+            if ($existingUser->isPending()) {
                 toastr()->error("Email đang chờ xác nhận. Vui lòng kiểm tra email của bạn để xác nhận tài khoản.");
                 return redirect()->route('register');
             }
@@ -73,10 +73,11 @@ class AuthController extends Controller
     }
 
 
-    public function activate($token) {
+    public function activate($token)
+    {
         $user = User::where('activation_token', $token)->first();
 
-        if($user) {
+        if ($user) {
             $user->status = 'active';
             $user->activation_token = null;
             $user->save();
@@ -89,11 +90,13 @@ class AuthController extends Controller
         return redirect()->back();
     }
 
-    public function showLoginForm() {
+    public function showLoginForm()
+    {
         return view('clients.pages.login');
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $request->validate(
             [
                 'email' => 'required|email',
@@ -108,8 +111,8 @@ class AuthController extends Controller
         );
 
         //check login information
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => 'active'])) {
-            if(in_array(Auth::user()->role->name, ['customer'])) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => 'active'])) {
+            if (in_array(Auth::user()->role->name, ['customer'])) {
 
                 $request->session()->regenerate();
                 toastr()->success('Đăng nhập thành công!');
@@ -126,8 +129,9 @@ class AuthController extends Controller
         return redirect()->back();
     }
 
-    public function logout(Request $request) {
-        
+    public function logout(Request $request)
+    {
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -137,5 +141,3 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 }
-
-

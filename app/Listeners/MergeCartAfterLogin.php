@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -26,7 +27,10 @@ class MergeCartAfterLogin
      */
     public function handle(Login $event): void
     {
-        $user = $event->user;
+        // $user = $event->user;
+        $user = User::find($event->user->getAuthIdentifier());
+        if (!$user) return;
+
         $sessionCart = Session::get('cart', []);
 
         if (empty($sessionCart)) {
@@ -58,7 +62,7 @@ class MergeCartAfterLogin
                 } else {
                     CartItem::create([
                         'user_id'    => $user->id,
-                        'product_id'=> $productId,
+                        'product_id' => $productId,
                         'quantity'  => $cartItem['quantity'],
                     ]);
                 }
@@ -67,5 +71,7 @@ class MergeCartAfterLogin
 
         //Xóa session cart sau khi merge
         Session::forget('cart');
+
+        $cartItems = $user->cartItems()->get();
     }
 }
