@@ -7,7 +7,7 @@
 **Fresh_Home** là một nền tảng thương mại điện tử chuyên cung cấp thực phẩm hữu cơ, rau củ quả, thịt phẩm tươi sống và hàng tiêu dùng. Dự án tập trung vào việc giải quyết bài toán quản lý chuỗi cung ứng thực phẩm sạch và tối ưu hóa trải nghiệm mua sắm trực tuyến thông qua các công nghệ hiện đại.
 
 ## ✨ Điểm nhấn kỹ thuật (Highlights)
-* **🤖 Tích hợp AI (Gemini API):** Xây dựng Chatbot thông minh hỗ trợ khách hàng tìm kiếm sản phẩm, tư vấn dinh dưỡng và gợi ý công thức nấu ăn trực tiếp trên Website.
+* **🤖 Tích hợp AI (Gemini API):** Xây dựng Chatbot thông minh hỗ trợ khách hàng tìm kiếm sản phẩm, tư vấn dinh dưỡng trực tiếp trên Website.
 * **💳 Thanh toán đa phương thức:** Tích hợp thành công cổng thanh toán quốc tế **PayPal (Sandbox)**, đảm bảo luồng giao dịch an toàn và chuyên nghiệp.
 * **🔐 Bảo mật & Xác thực:**
     * Sử dụng **Laravel Socialite** cho phép đăng nhập nhanh qua Google (OAuth2).
