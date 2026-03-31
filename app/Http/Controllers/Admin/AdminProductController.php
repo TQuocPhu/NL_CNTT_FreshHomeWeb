@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Encoders\JpegEncoder;
 
 class AdminProductController extends Controller
 {
@@ -90,7 +91,7 @@ class AdminProductController extends Controller
                         // Resize và tối ưu ảnh
                         $processedImage = $manager->read($image)
                             ->cover(600, 600)
-                            ->encode();
+                            ->encode(new JpegEncoder(quality: 75));
 
                         Storage::disk('public')->put($path, (string)$processedImage); // => storage/public/path.
 
@@ -197,7 +198,7 @@ class AdminProductController extends Controller
 
                         $processedImage = $manager->read($image)
                             ->cover(600, 600)
-                            ->encode();
+                            ->encode(new JpegEncoder(quality: 75));
 
                         Storage::disk('public')->put($path, (string)$processedImage);
 
