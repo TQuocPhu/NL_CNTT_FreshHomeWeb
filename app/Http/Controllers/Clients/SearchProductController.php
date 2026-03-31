@@ -18,26 +18,58 @@ class SearchProductController extends Controller
             return redirect()->back()->with('error', 'Vui lòng nhập từ khóa tìm kiếm.');
         }
 
-        $products = Product::query()
-            ->where(function ($query) use ($keyword) {
-                // 1. Ưu tiên tìm chính xác cả cụm từ trước
-                $query->where('name', 'LIKE', "%{$keyword}%")
-                    ->orWhere('description', 'LIKE', "%{$keyword}%");
+        // $products = Product::query()
+        //     ->where(function ($query) use ($keyword) {
+        //         // 1. Ưu tiên tìm chính xác cả cụm từ trước
+        //         // $query->where('name', 'LIKE', "%{$keyword}%")
+        //         //     ->orWhere('description', 'LIKE', "%{$keyword}%");
 
-                // 2. Tách từ để tìm kiếm mở rộng (nếu keyword có nhiều từ)
-                $words = explode(' ', $keyword);
-                if (count($words) > 1) {
-                    foreach ($words as $word) {
-                        if (mb_strlen($word) > 2) { // Bỏ qua từ quá ngắn như 'và', 'ăn'
-                            $query->orWhere('name', 'LIKE', "%{$word}%");
-                        }
-                    }
+        //         $query->where('name', 'LIKE', "%{$keyword}%");
+
+        //         // 2. Tách từ để tìm kiếm mở rộng (nếu keyword có nhiều từ)
+        //         $words = explode(' ', $keyword);
+        //         if (count($words) > 1) {
+        //             foreach ($words as $word) {
+        //                 if (mb_strlen($word) > 2) { // Bỏ qua từ quá ngắn như 'và', 'ăn'
+        //                     $query->orWhere('name', 'LIKE', "%{$word}%");
+        //                 }
+        //             }
+        //         }
+        //     })
+        //     ->paginate(12)
+        //     ->withQueryString();
+
+        // $products->appends(['keyword' => $keyword]);
+
+        $words = array_filter(explode(' ', $keyword), function ($word) {
+            return mb_strlen($word) > 2;
+        });
+
+        // Tạo câu SQL tính điểm
+        $scoreSql = "CASE 
+                    WHEN name LIKE ? THEN 100 
+                    ELSE 0 
+                 END";
+
+        $bindings = ["%{$keyword}%"];
+
+        foreach ($words as $word) {
+            $scoreSql .= " + (CASE WHEN name LIKE ? THEN 10 ELSE 0 END)";
+            $bindings[] = "%{$word}%";
+        }
+
+        $products = Product::select('*')
+            ->selectRaw("$scoreSql as score", $bindings)
+            ->where(function ($query) use ($keyword, $words) {
+                $query->where('name', 'LIKE', "%{$keyword}%");
+
+                foreach ($words as $word) {
+                    $query->orWhere('name', 'LIKE', "%{$word}%");
                 }
             })
+            ->orderByDesc('score') // sắp xếp theo độ liên quan
             ->paginate(12)
             ->withQueryString();
-
-        $products->appends(['keyword' => $keyword]);
 
         return view('clients.pages.products-search', [
             'products' => $products,
