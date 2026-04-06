@@ -156,7 +156,7 @@ class ChatController extends Controller
                 }
             })
             ->latest()
-            ->limit(6)
+            ->limit(4)
             ->orderBy('created_at', 'asc')->get();
 
 
@@ -194,7 +194,15 @@ class ChatController extends Controller
                 $response = Http::withHeaders([
                     'Content-Type' => 'application/json',
                     'X-goog-api-key' => env('GOOGLE_GEMINI_API_KEY'),
-                ])->post($url_apikey, $payload);
+                ])
+                    ->retry(3, 1000, function ($exception) {
+                        if ($exception->response?->status() === 429) {
+                            sleep(1); // delay thêm
+                            return true;
+                        }
+                        return false;
+                    })
+                    ->post($url_apikey, $payload);
 
                 if ($response->successful()) {
                     $data = $response->json();
