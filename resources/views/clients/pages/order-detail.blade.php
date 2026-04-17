@@ -73,7 +73,7 @@
 
             <div class="order-detail-summary mt-3">
                 <div class="d-flex justify-content-between mb-2">
-                    <span>Tổng tiền đơn hàng (Tiền sản phẩm + Tiền ship)</span>
+                    <span>Tổng tiền đơn hàng (Tiền sản phẩm + Tiền ship 25.000 đ)</span>
                     <span>{{ $order->formatted_total_price }} đ</span>
                 </div>
 
