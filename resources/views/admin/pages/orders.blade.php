@@ -207,7 +207,7 @@
                                                                         <th>Tên sản phẩm</th>
                                                                         <th>Số lượng</th>
                                                                         <th>Đơn giá</th>
-                                                                        <th>Thành tiền</th>
+                                                                        <th>Tổng tiền sản phẩm</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
