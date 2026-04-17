@@ -201,7 +201,7 @@
                                                                                 @error('images.*')
                                                                                     <div class="text-danger small">{{ $message }}</div>
                                                                                 @enderror
-                                                                                <div id="image-preview-container-{{ $product->id }}" class="image-preview-container image-preview-listproduct" data-id={{ $product->id }}="">
+                                                                                <div id="image-preview-container-{{ $product->id }}" class="image-preview-container image-preview-listproduct flex-wrap" data-id={{ $product->id }}="">
                                                                                     @foreach ($product->images as $image)
                                                                                         <img src="{{ asset('storage/' . $image->image) }}" alt="{{ $product->name }} Image" id="image-preview" class="image-preview">
                                                                                     @endforeach
